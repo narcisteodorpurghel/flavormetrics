@@ -1,7 +1,9 @@
 # FlavorMetrics API
 
-FlavorMetrics is a robust RESTful API built with Spring Boot 3 that allows users to manage recipes, provide ratings, and interact through a secure and role-based authorization system.
-This API is designed with clean architecture principles, DTO separation, and data validation, making it scalable and easy to maintain.
+FlavorMetrics is a robust RESTful API built with Spring Boot 3 that allows users to manage recipes, provide ratings, and
+interact through a secure and role-based authorization system.
+This API is designed with clean architecture principles, DTO separation, and data validation, making it scalable and
+easy to maintain.
 
 ---
 
@@ -14,6 +16,7 @@ This API is designed with clean architecture principles, DTO separation, and dat
 - ✅ Profile and email management
 - ✅ Ownership filtering and data projection via DTOs
 - ✅ Exception handling with meaningful HTTP responses
+
 ---
 
 ## 🧱 Tech Stack
@@ -37,71 +40,71 @@ This API is designed with clean architecture principles, DTO separation, and dat
 ### Entities
 
 - **User**
-  - First name, last name, email (wrapped in a value object)
-  - Roles (authorities)
-  - Profile, ratings, and owned recipes
+    - First name, last name, email (wrapped in a value object)
+    - Roles (authorities)
+    - Profile, ratings, and owned recipes
 
 
 - **Recipe**
-  - Name, description, difficulty, dietary preferences
-  - Linked to an owner (user)
-  - Can be rated by other users
+    - Name, description, difficulty, dietary preferences
+    - Linked to an owner (user)
+    - Can be rated by other users
 
 
 - **Rating**
-  - Linked to a user and a recipe
-  - Score from 1 to 5
-  - DTO projection supports score and ownership
+    - Linked to a user and a recipe
+    - Score from 1 to 5
+    - DTO projection supports score and ownership
 
 
 - **Profile**
-  - Profile picture URL
-  - Bio / description
-  - Linked one-to-one with a User
+    - Profile picture URL
+    - Bio / description
+    - Linked one-to-one with a User
 
 
 - **Email**
-  - Wrapper for user email address
-  - Allows future extensibility (e.g. verified flag, change history)
-  - Embedded or referenced from User
+    - Wrapper for user email address
+    - Allows future extensibility (e.g. verified flag, change history)
+    - Embedded or referenced from User
 
 
 - **Authority**
-  - Defines user roles (e.g. ROLE_USER, ROLE_ADMIN)
-  - Used by Spring Security for access control
-  - Mapped many-to-many with Users
+    - Defines user roles (e.g. ROLE_USER, ROLE_ADMIN)
+    - Used by Spring Security for access control
+    - Mapped many-to-many with Users
 
 
 - **Recipe**
-  - Name, description
-  - Difficulty level (enum)
-  - Dietary preferences (e.g. vegan, gluten-free)
-  - Linked to an owner (User)
-  - Can be rated by other users
-  - Contains multiple ingredients, tags, and allergy warnings
+    - Name, description
+    - Difficulty level (enum)
+    - Dietary preferences (e.g. vegan, gluten-free)
+    - Linked to an owner (User)
+    - Can be rated by other users
+    - Contains multiple ingredients, tags, and allergy warnings
 
 * Rating
-  * Score from 1 to 5
-  * Linked to a user and a recipe
-  * Used in DTO projections to show ownership and rating details
+    * Score from 1 to 5
+    * Linked to a user and a recipe
+    * Used in DTO projections to show ownership and rating details
 
 
 * Ingredient
-  * Name, quantity, unit
-  * Associated with a Recipe
-  * Cascade persisted with the parent Recipe
+    * Name, quantity, unit
+    * Associated with a Recipe
+    * Cascade persisted with the parent Recipe
 
 
 * Allergy
-  * Common allergens (e.g. peanuts, dairy)
-  * Linked to Recipes to help filter based on user sensitivities
-  * Cascade persisted with the parent Recipe
+    * Common allergens (e.g. peanuts, dairy)
+    * Linked to Recipes to help filter based on user sensitivities
+    * Cascade persisted with the parent Recipe
 
 
 * Tag
-  * Free-form keywords or categories (e.g. "keto", "quick", "Italian")
-  * Used for organizing and searching Recipes
-  * Cascade persisted with the parent Recipe
+    * Free-form keywords or categories (e.g. "keto", "quick", "Italian")
+    * Used for organizing and searching Recipes
+    * Cascade persisted with the parent Recipe
 
 ---
 
@@ -141,6 +144,7 @@ mvn clean test
 ```
 
 ## 📦 Build & Run
+
 ### Prerequisites
 
 Java 21
@@ -152,6 +156,7 @@ Docker & Docker Compose
 PostgreSQL (local or container)
 
 ### ❗ Don't skip this
+
 Create a `.env` file on the root folder of the project with properties:
 
 ```dotenv
@@ -176,9 +181,11 @@ mvn clean install
 ```bash
 mvn spring-boot:run
 ```
+
 App will be available at: http://localhost:8080
 
 ### 🐳 Option 2: Run with Docker Compose
+
 You can spin up the Spring Boot app + PostgreSQL using Docker Compose.
 
 Run with Docker Compose:
@@ -195,6 +202,7 @@ This will start:
 Access the app: http://localhost:8080
 
 ---
+
 # 🍳 FlavorMetrics API Documentation
 
 A comprehensive recipe management API with personalized recommendations and user profiles.
@@ -202,7 +210,6 @@ A comprehensive recipe management API with personalized recommendations and user
 ## 🌐 Base URL
 
 ### https://flavormetrics.onrender.com
-
 
 ## 🔗 API Endpoints
 
@@ -875,7 +882,7 @@ ROLE_ADMIN | ROLE_USER
 ## Response Codes
 
 | Code  | Description                          |
-| ----- | ------------------------------------ |
+|-------|--------------------------------------|
 | `200` | Success                              |
 | `201` | Created                              |
 | `204` | No Content                           |
@@ -902,7 +909,9 @@ Don't worry about that, after you log in the server puts them in the browser's c
 ---
 
 ## 📚 API Documentation (Swagger / OpenAPI)
-This project includes interactive API documentation powered by Springdoc OpenAPI, which generates Swagger UI automatically at runtime.
+
+This project includes interactive API documentation powered by Springdoc OpenAPI, which generates Swagger UI
+automatically at runtime.
 
 #### 🧩 Access Swagger UI
 
@@ -911,12 +920,12 @@ After starting the application, open your browser at:
 http://localhost:8080/swagger-ui/index.html
 
 #### 📄 Access OpenAPI JSON/YAML
+
 You can also access the raw OpenAPI specification at:
 
 JSON: http://localhost:8080/v3/api-docs
 
 YAML: http://localhost:8080/v3/api-docs.yaml
-
 
 **API Version:** v1    
 **Base URL:** https://flavormetrics.onrender.com

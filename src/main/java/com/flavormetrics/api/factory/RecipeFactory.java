@@ -22,12 +22,11 @@ public class RecipeFactory {
   private final AllergyFactory allergyFactory;
 
   RecipeFactory(
-    RecipeRepository recipeRepo,
-    UserRepository userRepo,
-    IngredientFactory ingredientFactory,
-    TagFactory tagFactory,
-    AllergyFactory allergyFactory
-  ) {
+      RecipeRepository recipeRepo,
+      UserRepository userRepo,
+      IngredientFactory ingredientFactory,
+      TagFactory tagFactory,
+      AllergyFactory allergyFactory) {
     this.recipeRepo = recipeRepo;
     this.userRepo = userRepo;
     this.ingredientFactory = ingredientFactory;
@@ -41,18 +40,19 @@ public class RecipeFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    Set<Ingredient> ingredients = Optional.of(req)
-      .map(ingredientFactory::checkIfExistsOrElseSave)
-      .orElse(Collections.emptySet());
+    Set<Ingredient> ingredients =
+        Optional.of(req)
+            .map(ingredientFactory::checkIfExistsOrElseSave)
+            .orElse(Collections.emptySet());
 
-    Set<Tag> tags = Optional.of(req)
-      .map(tagFactory::checkIfExistsOrElseSave)
-      .orElse(Collections.emptySet());
+    Set<Tag> tags =
+        Optional.of(req).map(tagFactory::checkIfExistsOrElseSave).orElse(Collections.emptySet());
 
-    Set<Allergy> allergies = Optional.of(req)
-      .map(AddRecipeRequest::allergies)
-      .map(allergyFactory::checkIfExistsOrElseSave)
-      .orElse(Collections.emptySet());
+    Set<Allergy> allergies =
+        Optional.of(req)
+            .map(AddRecipeRequest::allergies)
+            .map(allergyFactory::checkIfExistsOrElseSave)
+            .orElse(Collections.emptySet());
 
     Recipe recipe = new Recipe();
     User user = userRepo.getReferenceById(userId);

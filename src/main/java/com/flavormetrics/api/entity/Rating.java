@@ -20,18 +20,14 @@ public class Rating {
   private int score;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
@@ -70,9 +66,9 @@ public class Rating {
 
   /**
    * Sets rating's score
+   *
    * @param score must be in the interval [0, 5]
-   * @throws IllegalArgumentException if the score exceeds
-   * the interval
+   * @throws IllegalArgumentException if the score exceeds the interval
    */
   public void setScore(int score) {
     if (score > 5 || score < 0) {

@@ -21,14 +21,11 @@ class RatingRepositoryTest {
 
   private static final String EMAIL_ADDRESS = "mock-address@mock.com";
 
-  @Autowired
-  private RatingRepository ratingRepository;
+  @Autowired private RatingRepository ratingRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
-  @Autowired
-  private RecipeRepository recipeRepository;
+  @Autowired private RecipeRepository recipeRepository;
 
   private UUID userId;
   private UUID recipeId;
@@ -64,9 +61,7 @@ class RatingRepositoryTest {
 
   @Test
   void restIf_findAllByRecipeId_ReturnsEmpty() {
-    Set<RatingDto> result = ratingRepository.findAllByRecipeId(
-      UUID.randomUUID()
-    );
+    Set<RatingDto> result = ratingRepository.findAllByRecipeId(UUID.randomUUID());
     assertTrue(result.isEmpty());
   }
 
@@ -87,10 +82,7 @@ class RatingRepositoryTest {
 
   @Test
   void testIf_isRecipeAlreadyRatedByUser_ReturnsFalse() {
-    boolean result = ratingRepository.isRecipeAlreadyRatedByUser(
-      UUID.randomUUID(),
-      recipeId
-    );
+    boolean result = ratingRepository.isRecipeAlreadyRatedByUser(UUID.randomUUID(), recipeId);
     assertFalse(result);
   }
 
@@ -101,10 +93,7 @@ class RatingRepositoryTest {
     rating.setRecipe(recipeRepository.findById(recipeId).orElseThrow());
     rating.setScore(4);
     ratingRepository.save(rating);
-    boolean result = ratingRepository.isRecipeAlreadyRatedByUser(
-      userId,
-      recipeId
-    );
+    boolean result = ratingRepository.isRecipeAlreadyRatedByUser(userId, recipeId);
     assertTrue(result);
   }
 }

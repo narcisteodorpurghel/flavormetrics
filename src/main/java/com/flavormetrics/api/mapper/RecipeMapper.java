@@ -9,10 +9,7 @@ public final class RecipeMapper {
 
   RecipeMapper() {}
 
-  public static RecipeByOwner toRecipeByOwner(
-    List<Recipe> recipes,
-    String owner
-  ) {
+  public static RecipeByOwner toRecipeByOwner(List<Recipe> recipes, String owner) {
     if (recipes == null) {
       throw new IllegalArgumentException("Recipe cannot be null");
     }

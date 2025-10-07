@@ -24,36 +24,26 @@ public class AllergyFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    List<String> allergyNames = Optional.of(allergies)
-      .orElse(Collections.emptySet())
-      .stream()
-      .map(AllergyDto::name)
-      .toList();
+    List<String> allergyNames =
+        Optional.of(allergies).orElse(Collections.emptySet()).stream()
+            .map(AllergyDto::name)
+            .toList();
 
-    List<AllergyProjection> existing = allergyRepository.getIdsAndNames(
-      allergyNames
-    );
-    List<String> existingNames = existing
-      .stream()
-      .map(AllergyProjection::getName)
-      .toList();
+    List<AllergyProjection> existing = allergyRepository.getIdsAndNames(allergyNames);
+    List<String> existingNames = existing.stream().map(AllergyProjection::getName).toList();
 
     List<Allergy> newAllergies = new ArrayList<>();
     if (!existing.isEmpty()) {
-      newAllergies = Optional.of(allergies)
-        .orElse(Collections.emptySet())
-        .stream()
-        .filter(a -> !existingNames.contains(a.name()))
-        .map(Allergy::new)
-        .toList();
+      newAllergies =
+          Optional.of(allergies).orElse(Collections.emptySet()).stream()
+              .filter(a -> !existingNames.contains(a.name()))
+              .map(Allergy::new)
+              .toList();
     } else {
       newAllergies = allergyNames.stream().map(Allergy::new).toList();
     }
 
-    List<Allergy> finalAllergies = existing
-      .stream()
-      .map(Allergy::new)
-      .collect(Collectors.toList());
+    List<Allergy> finalAllergies = existing.stream().map(Allergy::new).collect(Collectors.toList());
 
     if (!newAllergies.isEmpty()) {
       List<Allergy> saved = allergyRepository.saveAll(newAllergies);

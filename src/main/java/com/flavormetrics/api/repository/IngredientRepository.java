@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, UUID> {
   @Query(
-    value = """
+      value =
+          """
     SELECT new com.flavormetrics.api.model.IngredientDto(
                 i.id,
                 i.name,
@@ -20,7 +21,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, UUID> {
     )
     FROM Ingredient i
     WHERE i.name IN (?1)
-    """
-  )
+    """)
   List<IngredientDto> getIdsAndNames(List<String> names);
 }

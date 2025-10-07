@@ -15,8 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class IngredientRepositoryTest {
 
-  @Autowired
-  private IngredientRepository ingredientRepository;
+  @Autowired private IngredientRepository ingredientRepository;
 
   @Test
   void testIf_getIdsAndNames_returnsPopulatedIdsAndNames() {

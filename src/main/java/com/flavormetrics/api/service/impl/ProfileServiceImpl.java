@@ -28,10 +28,9 @@ public class ProfileServiceImpl implements ProfileService {
   private final AllergyFactory allergyFactory;
 
   public ProfileServiceImpl(
-    ProfileRepository profileRepository,
-    UserRepository userRepository,
-    AllergyFactory allergyFactory
-  ) {
+      ProfileRepository profileRepository,
+      UserRepository userRepository,
+      AllergyFactory allergyFactory) {
     this.profileRepository = profileRepository;
     this.userRepository = userRepository;
     this.allergyFactory = allergyFactory;
@@ -41,17 +40,16 @@ public class ProfileServiceImpl implements ProfileService {
   @Transactional(readOnly = true)
   public ProfileDto findById(UUID id) {
     return profileRepository
-      .findById(id)
-      .map(ProfileMapper::toDto)
-      .orElseThrow(ProfileNotFoundException::new);
+        .findById(id)
+        .map(ProfileMapper::toDto)
+        .orElseThrow(ProfileNotFoundException::new);
   }
 
   @Override
   @Transactional
   public UUID create(CreateProfileRequest request) {
-    var principal = (UserDetailsImpl) SecurityContextHolder.getContext()
-      .getAuthentication()
-      .getPrincipal();
+    var principal =
+        (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (request == null) {
       throw new IllegalArgumentException("CreateProfileRequest cannot be null");
     }
@@ -60,9 +58,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
     Profile profile = new Profile();
     profile.setDietaryPreference(request.dietaryPreference());
-    Set<Allergy> allergies = allergyFactory.checkIfExistsOrElseSave(
-      request.allergies()
-    );
+    Set<Allergy> allergies = allergyFactory.checkIfExistsOrElseSave(request.allergies());
     profile.setAllergies(allergies);
     User user = userRepository.getReferenceById(principal.id());
     profile.setUser(user);
@@ -74,31 +70,23 @@ public class ProfileServiceImpl implements ProfileService {
 
   @Override
   public ProfileDto updateById(CreateProfileRequest request) {
-    var principal = (UserDetailsImpl) SecurityContextHolder.getContext()
-      .getAuthentication()
-      .getPrincipal();
-    Profile profile = profileRepository
-      .findByIdUserId(principal.id())
-      .orElseThrow(ProfileNotFoundException::new);
+    var principal =
+        (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Profile profile =
+        profileRepository.findByIdUserId(principal.id()).orElseThrow(ProfileNotFoundException::new);
     profile.setDietaryPreference(request.dietaryPreference());
-    Set<Allergy> allergies = allergyFactory.checkIfExistsOrElseSave(
-      request.allergies()
-    );
+    Set<Allergy> allergies = allergyFactory.checkIfExistsOrElseSave(request.allergies());
     profile.setAllergies(allergies);
-    return Optional.of(profileRepository.save(profile))
-      .map(ProfileMapper::toDto)
-      .get();
+    return Optional.of(profileRepository.save(profile)).map(ProfileMapper::toDto).get();
   }
 
   @Override
   @Transactional
   public void remove() {
-    var principal = (UserDetailsImpl) SecurityContextHolder.getContext()
-      .getAuthentication()
-      .getPrincipal();
-    UUID profileId = userRepository
-      .getProfileId(principal.id())
-      .orElseThrow(ProfileNotFoundException::new);
+    var principal =
+        (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    UUID profileId =
+        userRepository.getProfileId(principal.id()).orElseThrow(ProfileNotFoundException::new);
     profileRepository.deleteById(profileId);
   }
 }

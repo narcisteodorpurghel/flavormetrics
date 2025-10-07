@@ -6,7 +6,4 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 public record CreateProfileRequest(
-  @NotNull DietaryPreferenceType dietaryPreference,
-
-  @NotNull Set<AllergyDto> allergies
-) {}
+    @NotNull DietaryPreferenceType dietaryPreference, @NotNull Set<AllergyDto> allergies) {}

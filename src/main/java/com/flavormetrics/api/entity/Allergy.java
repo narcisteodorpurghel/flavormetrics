@@ -29,19 +29,15 @@ public class Allergy {
   @Column(nullable = false)
   private String description;
 
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
@@ -61,21 +57,19 @@ public class Allergy {
   }
 
   public Allergy(AllergyType type) {
-    this.name = Optional.ofNullable(type)
-      .map(AllergyType::name)
-      .orElseThrow(IllegalArgumentException::new);
-    this.description = Optional.of(type)
-      .map(AllergyType::getDescription)
-      .orElseThrow(IllegalArgumentException::new);
+    this.name =
+        Optional.ofNullable(type).map(AllergyType::name).orElseThrow(IllegalArgumentException::new);
+    this.description =
+        Optional.of(type)
+            .map(AllergyType::getDescription)
+            .orElseThrow(IllegalArgumentException::new);
   }
 
   public Allergy(String name) {
     this();
     this.name = Objects.requireNonNull(name, "Allergy name cannot be null");
     try {
-      this.description = AllergyType.valueOf(
-        name.toUpperCase()
-      ).getDescription();
+      this.description = AllergyType.valueOf(name.toUpperCase()).getDescription();
     } catch (IllegalArgumentException e) {
       this.description = "";
     }
@@ -87,14 +81,9 @@ public class Allergy {
       throw new IllegalArgumentException("AllergyDto cannot be null");
     }
     this.id = dto.id();
-    this.name = Objects.requireNonNull(
-      dto.name(),
-      "Allergy name cannot be null"
-    );
+    this.name = Objects.requireNonNull(dto.name(), "Allergy name cannot be null");
     try {
-      this.description = AllergyType.valueOf(
-        name.toUpperCase()
-      ).getDescription();
+      this.description = AllergyType.valueOf(name.toUpperCase()).getDescription();
     } catch (IllegalArgumentException e) {
       this.description = "";
     }
@@ -105,14 +94,8 @@ public class Allergy {
     if (projection == null) {
       throw new IllegalArgumentException("AllergyProjection cannot be null");
     }
-    this.id = Objects.requireNonNull(
-      projection.getId(),
-      "Allergy id cannot be null"
-    );
-    this.name = Objects.requireNonNull(
-      projection.getName(),
-      "Allergy name cannot be null"
-    );
+    this.id = Objects.requireNonNull(projection.getId(), "Allergy id cannot be null");
+    this.name = Objects.requireNonNull(projection.getName(), "Allergy name cannot be null");
     try {
       this.description = AllergyType.valueOf(name).getDescription();
     } catch (IllegalArgumentException e) {
@@ -177,10 +160,7 @@ public class Allergy {
     if (!(o instanceof Allergy allergy)) {
       return false;
     }
-    return (
-      Objects.equals(name, allergy.name) &&
-      Objects.equals(description, allergy.description)
-    );
+    return (Objects.equals(name, allergy.name) && Objects.equals(description, allergy.description));
   }
 
   @Override

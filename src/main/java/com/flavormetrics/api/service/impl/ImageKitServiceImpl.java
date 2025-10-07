@@ -21,10 +21,9 @@ public class ImageKitServiceImpl implements ImageKitService {
   private final String urlEndpoint;
 
   public ImageKitServiceImpl(
-    @Value("${imagekit.url}") String publicKey,
-    @Value("${imagekit.private-key}") String privateKey,
-    @Value("${imagekit.public-key}") String urlEndpoint
-  ) {
+      @Value("${imagekit.url}") String publicKey,
+      @Value("${imagekit.private-key}") String privateKey,
+      @Value("${imagekit.public-key}") String urlEndpoint) {
     this.publicKey = publicKey;
     this.privateKey = privateKey;
     this.urlEndpoint = urlEndpoint;
@@ -51,10 +50,7 @@ public class ImageKitServiceImpl implements ImageKitService {
       fileName = fileName + ".jpg";
     }
     try {
-      FileCreateRequest fileCreateRequest = new FileCreateRequest(
-        file.getBytes(),
-        fileName
-      );
+      FileCreateRequest fileCreateRequest = new FileCreateRequest(file.getBytes(), fileName);
       fileCreateRequest.setFolder("/flavormetrics");
       Result result = IMAGE_KIT.upload(fileCreateRequest);
       return result.getUrl();

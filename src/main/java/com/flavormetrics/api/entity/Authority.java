@@ -23,18 +23,14 @@ public class Authority {
   private RoleType type;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
@@ -82,9 +78,7 @@ public class Authority {
   }
 
   public void setUser(Set<User> users) {
-    this.users = Optional.ofNullable(users)
-      .map(Set::copyOf)
-      .orElse(Collections.emptySet());
+    this.users = Optional.ofNullable(users).map(Set::copyOf).orElse(Collections.emptySet());
   }
 
   public RoleType getType() {

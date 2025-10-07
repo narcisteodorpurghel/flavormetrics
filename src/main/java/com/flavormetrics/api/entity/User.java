@@ -48,31 +48,23 @@ public class User {
   @Column(nullable = false)
   private String lastName;
 
-  @Column
-  private boolean isAccountNonExpired = true;
+  @Column private boolean isAccountNonExpired = true;
 
-  @Column
-  private boolean isAccountNonLocked = true;
+  @Column private boolean isAccountNonLocked = true;
 
-  @Column
-  private boolean isCredentialsNonExpired = true;
+  @Column private boolean isCredentialsNonExpired = true;
 
-  @Column
-  private boolean isEnabled = true;
+  @Column private boolean isEnabled = true;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
@@ -86,17 +78,15 @@ public class User {
   @NotNull
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "authority_id")
-  )
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "authority_id"))
   private Set<Authority> authorities = new HashSet<>();
 
   @NotNull
   @OneToMany(
-    fetch = FetchType.LAZY,
-    mappedBy = "user",
-    cascade = { CascadeType.REMOVE }
-  )
+      fetch = FetchType.LAZY,
+      mappedBy = "user",
+      cascade = {CascadeType.REMOVE})
   private Set<Rating> ratings = new HashSet<>();
 
   @NotNull
@@ -196,9 +186,7 @@ public class User {
   }
 
   public void setAuthorities(Set<Authority> authorities) {
-    this.authorities = Optional.ofNullable(authorities)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.authorities = Optional.ofNullable(authorities).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public Set<Rating> getRatings() {
@@ -206,9 +194,7 @@ public class User {
   }
 
   public void setRatings(Set<Rating> ratings) {
-    this.ratings = Optional.ofNullable(ratings)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.ratings = Optional.ofNullable(ratings).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public Profile getProfile() {
@@ -224,9 +210,7 @@ public class User {
   }
 
   public void setRecipes(Set<Recipe> recipes) {
-    this.recipes = Optional.ofNullable(recipes)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.recipes = Optional.ofNullable(recipes).map(HashSet::new).orElse(new HashSet<>());
   }
 
   @Override
@@ -234,28 +218,25 @@ public class User {
     if (!(o instanceof User user)) {
       return false;
     }
-    return (
-      isAccountNonExpired == user.isAccountNonExpired &&
-      isAccountNonLocked == user.isAccountNonLocked &&
-      isCredentialsNonExpired == user.isCredentialsNonExpired &&
-      isEnabled == user.isEnabled &&
-      Objects.equals(passwordHash, user.passwordHash) &&
-      Objects.equals(firstName, user.firstName) &&
-      Objects.equals(lastName, user.lastName)
-    );
+    return (isAccountNonExpired == user.isAccountNonExpired
+        && isAccountNonLocked == user.isAccountNonLocked
+        && isCredentialsNonExpired == user.isCredentialsNonExpired
+        && isEnabled == user.isEnabled
+        && Objects.equals(passwordHash, user.passwordHash)
+        && Objects.equals(firstName, user.firstName)
+        && Objects.equals(lastName, user.lastName));
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      passwordHash,
-      firstName,
-      lastName,
-      isAccountNonExpired,
-      isAccountNonLocked,
-      isCredentialsNonExpired,
-      isEnabled
-    );
+        passwordHash,
+        firstName,
+        lastName,
+        isAccountNonExpired,
+        isAccountNonLocked,
+        isCredentialsNonExpired,
+        isEnabled);
   }
 
   @Override

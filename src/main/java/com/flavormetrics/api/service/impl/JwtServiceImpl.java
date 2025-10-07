@@ -26,9 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-  private static final Logger log = LoggerFactory.getLogger(
-    JwtServiceImpl.class
-  );
+  private static final Logger log = LoggerFactory.getLogger(JwtServiceImpl.class);
 
   private final String secretKet;
 
@@ -41,31 +39,25 @@ public class JwtServiceImpl implements JwtService {
     if (email == null || type == null) {
       return null;
     }
-    long expiration = type == JwtTokens.ACCESS
-      ? ACCESS_TOKEN_EXPIRATION
-      : REFRESH_TOKEN_EXPIRATION;
+    long expiration = type == JwtTokens.ACCESS ? ACCESS_TOKEN_EXPIRATION : REFRESH_TOKEN_EXPIRATION;
     return JWT.create()
-      .withJWTId(UUID.randomUUID().toString())
-      .withIssuer(ISSUER)
-      .withAudience(AUDIENCE)
-      .withSubject(email)
-      .withIssuedAt(now())
-      .withNotBefore(now())
-      .withExpiresAt(now().plusMillis(expiration))
-      .sign(getAlgorithm());
+        .withJWTId(UUID.randomUUID().toString())
+        .withIssuer(ISSUER)
+        .withAudience(AUDIENCE)
+        .withSubject(email)
+        .withIssuedAt(now())
+        .withNotBefore(now())
+        .withExpiresAt(now().plusMillis(expiration))
+        .sign(getAlgorithm());
   }
 
   @Override
-  public String generateNewAccessToken(String refreshToken)
-    throws JwtException {
+  public String generateNewAccessToken(String refreshToken) throws JwtException {
     Objects.requireNonNull(refreshToken, "Type cannot be null");
     String email;
     try {
       DecodedJWT decoded = decodeToken(refreshToken);
-      if (
-        decoded.getClaim("userId") == null ||
-        decoded.getClaim("userId").isNull()
-      ) {
+      if (decoded.getClaim("userId") == null || decoded.getClaim("userId").isNull()) {
         throw new JwtException("JWT is missing 'userId' claim.");
       }
       if (decoded.getSubject() == null || decoded.getSubject().isBlank()) {
@@ -82,13 +74,14 @@ public class JwtServiceImpl implements JwtService {
 
   @Override
   public DecodedJWT decodeToken(String token) throws JwtException {
-    JWTVerifier verifier = JWT.require(getAlgorithm())
-      .withIssuer(ISSUER)
-      .withAudience(AUDIENCE)
-      .acceptNotBefore(5)
-      .acceptExpiresAt(5)
-      .withClaimPresence("jti")
-      .build();
+    JWTVerifier verifier =
+        JWT.require(getAlgorithm())
+            .withIssuer(ISSUER)
+            .withAudience(AUDIENCE)
+            .acceptNotBefore(5)
+            .acceptExpiresAt(5)
+            .withClaimPresence("jti")
+            .build();
     try {
       return verifier.verify(token);
     } catch (JWTVerificationException e) {
@@ -115,29 +108,25 @@ public class JwtServiceImpl implements JwtService {
   }
 
   @Override
-  public String getCookieValueFromRequest(
-    HttpServletRequest request,
-    String cookieName
-  ) {
+  public String getCookieValueFromRequest(HttpServletRequest request, String cookieName) {
     Objects.requireNonNull(request, "Request cannot be null.");
     if (request.getCookies() == null) {
       return null;
     }
     return Optional.ofNullable(request.getCookies())
-      .map(Arrays::asList)
-      .orElse(Collections.emptyList())
-      .stream()
-      .filter(c -> cookieName.equals(c.getName()))
-      .findFirst()
-      .map(Cookie::getValue)
-      .orElse(null);
+        .map(Arrays::asList)
+        .orElse(Collections.emptyList())
+        .stream()
+        .filter(c -> cookieName.equals(c.getName()))
+        .findFirst()
+        .map(Cookie::getValue)
+        .orElse(null);
   }
 
   @Override
   public boolean isAboveThreshold(Instant expire) {
     Objects.requireNonNull(expire, "Expire cannot be null.");
-    long accessExpiration =
-      expire.toEpochMilli() - Instant.now().toEpochMilli();
+    long accessExpiration = expire.toEpochMilli() - Instant.now().toEpochMilli();
     log.info("Access token expires in {} ms", accessExpiration);
     return accessExpiration <= ACCESS_TOKEN_THRESHOLD;
   }

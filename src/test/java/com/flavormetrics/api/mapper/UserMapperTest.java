@@ -76,14 +76,14 @@ class UserMapperTest {
   @Test
   void toRegisterResponse_shouldThrowWhenNull() {
     assertThatThrownBy(() -> UserMapper.toRegisterResponse(null))
-      .isInstanceOf(IllegalArgumentException.class)
-      .hasMessage("User cannot be null");
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("User cannot be null");
   }
 
   @Test
   void toUserDto_shouldThrowWhenNull() {
     assertThatThrownBy(() -> UserMapper.toUserDto(null))
-      .isInstanceOf(IllegalArgumentException.class)
-      .hasMessage("User cannot be null");
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("User cannot be null");
   }
 }

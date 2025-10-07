@@ -4,12 +4,7 @@ import com.flavormetrics.api.enums.RoleType;
 import java.util.UUID;
 
 public record RegisterResponse(
-  UUID id,
-  String email,
-  String firstName,
-  String lastName,
-  RoleType role
-) {
+    UUID id, String email, String firstName, String lastName, RoleType role) {
   public static Builder builder() {
     return new Builder();
   }

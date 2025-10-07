@@ -24,40 +24,29 @@ public class IngredientFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    Set<IngredientDto> ingredientsFromReq = Optional.ofNullable(
-      req.ingredients()
-    ).orElse(Collections.emptySet());
+    Set<IngredientDto> ingredientsFromReq =
+        Optional.ofNullable(req.ingredients()).orElse(Collections.emptySet());
 
-    List<String> ingredientsFromReqAsNames = ingredientsFromReq
-      .stream()
-      .map(IngredientDto::name)
-      .toList();
+    List<String> ingredientsFromReqAsNames =
+        ingredientsFromReq.stream().map(IngredientDto::name).toList();
 
     List<IngredientDto> existingIngredients =
-      ingredientRepository.getIdsAndNames(ingredientsFromReqAsNames);
-    List<String> existingNames = existingIngredients
-      .stream()
-      .map(IngredientDto::name)
-      .toList();
+        ingredientRepository.getIdsAndNames(ingredientsFromReqAsNames);
+    List<String> existingNames = existingIngredients.stream().map(IngredientDto::name).toList();
 
     List<Ingredient> newIngredients;
     if (!existingIngredients.isEmpty()) {
-      newIngredients = ingredientsFromReq
-        .stream()
-        .filter(n -> !existingNames.contains(n.name()))
-        .map(Ingredient::new)
-        .toList();
+      newIngredients =
+          ingredientsFromReq.stream()
+              .filter(n -> !existingNames.contains(n.name()))
+              .map(Ingredient::new)
+              .toList();
     } else {
-      newIngredients = ingredientsFromReq
-        .stream()
-        .map(Ingredient::new)
-        .toList();
+      newIngredients = ingredientsFromReq.stream().map(Ingredient::new).toList();
     }
 
-    List<Ingredient> finalIngredients = existingIngredients
-      .stream()
-      .map(Ingredient::new)
-      .collect(Collectors.toList());
+    List<Ingredient> finalIngredients =
+        existingIngredients.stream().map(Ingredient::new).collect(Collectors.toList());
 
     if (!newIngredients.isEmpty()) {
       List<Ingredient> saved = ingredientRepository.saveAll(newIngredients);

@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-  private static final Logger log = LoggerFactory.getLogger(
-    UserDetailsServiceImpl.class
-  );
+  private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
   private final UserRepository userRepository;
 
@@ -23,14 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String email)
-    throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     try {
       log.debug("Searching for user '{}'", email);
       return userRepository
-        .findByEmailWithAuthoritiesAndEmail(email)
-        .map(UserDetailsImpl::new)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+          .findByEmailWithAuthoritiesAndEmail(email)
+          .map(UserDetailsImpl::new)
+          .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     } catch (UsernameNotFoundException e) {
       log.debug("User not found");
       throw e;

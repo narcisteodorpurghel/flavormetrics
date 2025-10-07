@@ -28,53 +28,38 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtAuthenticationFilter extends JwtFilter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-    JwtAuthenticationFilter.class
-  );
+  private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
 
-  public JwtAuthenticationFilter(
-    JwtService jwtService,
-    UserDetailsService userDetailsService
-  ) {
+  public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
     this.jwtService = jwtService;
     this.userDetailsService = userDetailsService;
   }
 
   @Override
   public void doFilterInternal(
-    @NonNull HttpServletRequest request,
-    @NonNull HttpServletResponse response,
-    @NonNull FilterChain filterChain
-  ) throws ServletException, IOException {
-    Authentication auth =
-      SecurityContextHolder.getContext().getAuthentication();
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain)
+      throws ServletException, IOException {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth != null) {
       filterChain.doFilter(request, response);
       return;
     }
     if (isPublicEndpoint(request.getRequestURI())) {
-      LOGGER.info(
-        "Public endpoint {} pass the filter",
-        request.getRequestURI()
-      );
+      LOGGER.info("Public endpoint {} pass the filter", request.getRequestURI());
       filterChain.doFilter(request, response);
       return;
     }
-    String accessToken = jwtService.getCookieValueFromRequest(
-      request,
-      ACCESS_TOKEN_NAME
-    );
+    String accessToken = jwtService.getCookieValueFromRequest(request, ACCESS_TOKEN_NAME);
     if (accessToken == null) {
       response.sendError(401, "Missing authentication cookie");
       return;
     }
-    String refreshToken = jwtService.getCookieValueFromRequest(
-      request,
-      REFRESH_TOKEN_NAME
-    );
+    String refreshToken = jwtService.getCookieValueFromRequest(request, REFRESH_TOKEN_NAME);
     Instant expiresAt = null;
     try {
       expiresAt = jwtService.decodeToken(accessToken).getExpiresAtAsInstant();
@@ -105,15 +90,10 @@ public class JwtAuthenticationFilter extends JwtFilter {
       response.sendError(401, ex.getMessage());
       return;
     }
-    LOGGER.info(
-      "Access tokens expires at {}.",
-      new Date(expiresAt.toEpochMilli())
-    );
+    LOGGER.info("Access tokens expires at {}.", new Date(expiresAt.toEpochMilli()));
     try {
       LOGGER.info(
-        "Refresh tokens expires at {}",
-        jwtService.decodeToken(refreshToken).getExpiresAt()
-      );
+          "Refresh tokens expires at {}", jwtService.decodeToken(refreshToken).getExpiresAt());
     } catch (JwtException e) {
       LOGGER.info(e.getMessage());
       return;
@@ -147,12 +127,14 @@ public class JwtAuthenticationFilter extends JwtFilter {
   }
 
   protected boolean isPublicEndpoint(String endpoint) {
-    return PUBLIC_ENDPOINTS.stream().anyMatch(pe -> {
-        if (pe.endsWith("/**")) {
-          return endpoint.startsWith(pe.substring(0, pe.length() - 3));
-        }
-        return endpoint.equals(pe);
-      });
+    return PUBLIC_ENDPOINTS.stream()
+        .anyMatch(
+            pe -> {
+              if (pe.endsWith("/**")) {
+                return endpoint.startsWith(pe.substring(0, pe.length() - 3));
+              }
+              return endpoint.equals(pe);
+            });
   }
 
   protected void setAuthentication(String email) {
@@ -160,11 +142,8 @@ public class JwtAuthenticationFilter extends JwtFilter {
       throw new IllegalArgumentException("Email cannot be null");
     }
     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-    var authToken = new UsernamePasswordAuthenticationToken(
-      userDetails,
-      null,
-      userDetails.getAuthorities()
-    );
+    var authToken =
+        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(authToken);
   }
 }

@@ -10,30 +10,21 @@ import java.util.UUID;
 import org.springframework.lang.NonNull;
 
 public record ProfileDto(
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID id,
-
-  String bio,
-
-  DietaryPreferenceType dietaryPreference,
-
-  Set<AllergyDto> allergies,
-
-  @NotNull @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID userId,
-
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY) LocalDateTime createdAt,
-
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY) LocalDateTime updatedAt
-) {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID id,
+    String bio,
+    DietaryPreferenceType dietaryPreference,
+    Set<AllergyDto> allergies,
+    @NotNull @JsonProperty(access = JsonProperty.Access.READ_ONLY) UUID userId,
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY) LocalDateTime createdAt,
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY) LocalDateTime updatedAt) {
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof ProfileDto that)) {
       return false;
     }
-    return (
-      Objects.equals(bio, that.bio) &&
-      Objects.equals(userId, that.userId) &&
-      dietaryPreference == that.dietaryPreference
-    );
+    return (Objects.equals(bio, that.bio)
+        && Objects.equals(userId, that.userId)
+        && dietaryPreference == that.dietaryPreference);
   }
 
   @Override
@@ -49,9 +40,7 @@ public record ProfileDto(
     sb.append("id=").append(id);
     sb.append(", bio='").append(bio).append('\'');
     sb.append(", dietaryPreference=").append(dietaryPreference);
-    sb
-      .append(", allergies=")
-      .append(allergies == null ? "null" : allergies.size());
+    sb.append(", allergies=").append(allergies == null ? "null" : allergies.size());
     sb.append(", userId=").append(userId);
     sb.append(", createdAt=").append(createdAt);
     sb.append(", updatedAt=").append(updatedAt);

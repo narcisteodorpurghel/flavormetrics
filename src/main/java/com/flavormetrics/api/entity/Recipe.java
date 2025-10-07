@@ -52,53 +52,51 @@ public class Recipe {
   private DietaryPreferenceType dietaryPreferences;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
-  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE})
   @JoinTable(
-    name = "recipes_tags",
-    joinColumns = @JoinColumn(name = "recipe_id"),
-    inverseJoinColumns = @JoinColumn(name = "tag_id")
-  )
+      name = "recipes_tags",
+      joinColumns = @JoinColumn(name = "recipe_id"),
+      inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<Tag> tags = new HashSet<>();
 
   @NotNull
-  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE})
   @JoinTable(
-    name = "recipes_ingredients",
-    joinColumns = @JoinColumn(name = "recipe_id"),
-    inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-  )
+      name = "recipes_ingredients",
+      joinColumns = @JoinColumn(name = "recipe_id"),
+      inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
   private Set<Ingredient> ingredients = new HashSet<>();
 
   @NotNull
   @OneToMany(
-    fetch = FetchType.LAZY,
-    mappedBy = "recipe",
-    cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }
-  )
+      fetch = FetchType.LAZY,
+      mappedBy = "recipe",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
   private Set<Rating> ratings = new HashSet<>();
 
   @NotNull
-  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE})
   @JoinTable(
-    name = "recipes_allergies",
-    joinColumns = @JoinColumn(name = "recipe_id"),
-    inverseJoinColumns = @JoinColumn(name = "allergy_id")
-  )
+      name = "recipes_allergies",
+      joinColumns = @JoinColumn(name = "recipe_id"),
+      inverseJoinColumns = @JoinColumn(name = "allergy_id"))
   private Set<Allergy> allergies = new HashSet<>();
 
   @NotNull
@@ -213,9 +211,7 @@ public class Recipe {
   }
 
   public void setTags(Set<Tag> tags) {
-    this.tags = Optional.ofNullable(tags)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.tags = Optional.ofNullable(tags).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public Set<Ingredient> getIngredients() {
@@ -223,9 +219,7 @@ public class Recipe {
   }
 
   public void setIngredients(Set<Ingredient> ingredients) {
-    this.ingredients = Optional.ofNullable(ingredients)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.ingredients = Optional.ofNullable(ingredients).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public Set<Rating> getRatings() {
@@ -233,9 +227,7 @@ public class Recipe {
   }
 
   public void setRatings(Set<Rating> ratings) {
-    this.ratings = Optional.ofNullable(ratings)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.ratings = Optional.ofNullable(ratings).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public Set<Allergy> getAllergies() {
@@ -243,9 +235,7 @@ public class Recipe {
   }
 
   public void setAllergies(Set<Allergy> allergies) {
-    this.allergies = Optional.ofNullable(allergies)
-      .map(HashSet::new)
-      .orElse(new HashSet<>());
+    this.allergies = Optional.ofNullable(allergies).map(HashSet::new).orElse(new HashSet<>());
   }
 
   public User getUser() {
@@ -261,30 +251,27 @@ public class Recipe {
     if (!(o instanceof Recipe recipe)) {
       return false;
     }
-    return (
-      Objects.equals(name, recipe.name) &&
-      Objects.equals(instructions, recipe.instructions) &&
-      Objects.equals(imageUrl, recipe.imageUrl) &&
-      Objects.equals(prepTimeMinutes, recipe.prepTimeMinutes) &&
-      Objects.equals(cookTimeMinutes, recipe.cookTimeMinutes) &&
-      difficulty == recipe.difficulty &&
-      Objects.equals(estimatedCalories, recipe.estimatedCalories) &&
-      dietaryPreferences == recipe.dietaryPreferences
-    );
+    return (Objects.equals(name, recipe.name)
+        && Objects.equals(instructions, recipe.instructions)
+        && Objects.equals(imageUrl, recipe.imageUrl)
+        && Objects.equals(prepTimeMinutes, recipe.prepTimeMinutes)
+        && Objects.equals(cookTimeMinutes, recipe.cookTimeMinutes)
+        && difficulty == recipe.difficulty
+        && Objects.equals(estimatedCalories, recipe.estimatedCalories)
+        && dietaryPreferences == recipe.dietaryPreferences);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      name,
-      instructions,
-      imageUrl,
-      prepTimeMinutes,
-      cookTimeMinutes,
-      difficulty,
-      estimatedCalories,
-      dietaryPreferences
-    );
+        name,
+        instructions,
+        imageUrl,
+        prepTimeMinutes,
+        cookTimeMinutes,
+        difficulty,
+        estimatedCalories,
+        dietaryPreferences);
   }
 
   @Override

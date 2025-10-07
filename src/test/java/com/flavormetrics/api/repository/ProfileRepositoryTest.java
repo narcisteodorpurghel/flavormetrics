@@ -15,11 +15,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class ProfileRepositoryTest {
 
-  @Autowired
-  private ProfileRepository profileRepository;
+  @Autowired private ProfileRepository profileRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   @Test
   void testIf_findByUserId_ReturnsNotEmpty() {
@@ -42,9 +40,7 @@ class ProfileRepositoryTest {
 
   @Test
   void testIf_findByUserId_ReturnsEmpty() {
-    Optional<Profile> result = profileRepository.findByIdUserId(
-      UUID.randomUUID()
-    );
+    Optional<Profile> result = profileRepository.findByIdUserId(UUID.randomUUID());
     assertTrue(result.isEmpty());
   }
 }

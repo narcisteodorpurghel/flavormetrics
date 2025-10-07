@@ -35,18 +35,14 @@ public class Ingredient {
   private UnitType unit;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
@@ -62,19 +58,13 @@ public class Ingredient {
       throw new IllegalArgumentException("Ingredient DTO cannot be null");
     }
     this.id = dto.id();
-    this.name = Objects.requireNonNullElse(
-      dto.name(),
-      "IngredientDto cannot be null"
-    );
+    this.name = Objects.requireNonNullElse(dto.name(), "IngredientDto cannot be null");
     this.quantity = dto.quantity();
     this.unit = Objects.requireNonNull(dto.unit(), "Unit cannot be null");
   }
 
   public Ingredient(String name) {
-    this.name = Objects.requireNonNullElse(
-      name,
-      "Ingredient name cannot be null"
-    );
+    this.name = Objects.requireNonNullElse(name, "Ingredient name cannot be null");
   }
 
   public UUID getId() {
@@ -118,11 +108,9 @@ public class Ingredient {
     if (!(o instanceof Ingredient that)) {
       return false;
     }
-    return (
-      Objects.equals(name, that.name) &&
-      Objects.equals(quantity, that.quantity) &&
-      Objects.equals(unit, that.unit)
-    );
+    return (Objects.equals(name, that.name)
+        && Objects.equals(quantity, that.quantity)
+        && Objects.equals(unit, that.unit));
   }
 
   @Override

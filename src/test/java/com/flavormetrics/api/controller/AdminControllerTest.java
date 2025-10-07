@@ -31,132 +31,104 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(
-  controllers = AdminController.class,
-  excludeFilters = @ComponentScan.Filter(
-    type = FilterType.ASSIGNABLE_TYPE,
-    classes = { JwtAuthenticationFilter.class, CsrfFilter.class }
-  )
-)
+    controllers = AdminController.class,
+    excludeFilters =
+        @ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            classes = {JwtAuthenticationFilter.class, CsrfFilter.class}))
 @Import(TestSecurityConfig.class)
 class AdminControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @MockitoBean
-  private UserService userService;
+  @MockitoBean private UserService userService;
 
   private UserDto userDto;
 
   @BeforeEach
   void setUp() {
-    userDto = new UserDto(
-      UUID.randomUUID(),
-      "mock-password",
-      "mock-firstName",
-      "mock-lastName",
-      true,
-      true,
-      true,
-      true,
-      LocalDateTime.now(),
-      LocalDateTime.now(),
-      "mock-email",
-      UUID.randomUUID(),
-      null,
-      null,
-      null
-    );
+    userDto =
+        new UserDto(
+            UUID.randomUUID(),
+            "mock-password",
+            "mock-firstName",
+            "mock-lastName",
+            true,
+            true,
+            true,
+            true,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            "mock-email",
+            UUID.randomUUID(),
+            null,
+            null,
+            null);
   }
 
   @Test
-  @WithMockUser(username = "admin-mock", roles = { "ADMIN" })
+  @WithMockUser(
+      username = "admin-mock",
+      roles = {"ADMIN"})
   void getAllUsers() throws Exception {
     when(userService.findAllUsers()).thenReturn(Set.of(userDto));
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get("/api/v1/users/all")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpectAll(
-        MockMvcResultMatchers.status().isOk(),
-        MockMvcResultMatchers.jsonPath("$.length()").value(1),
-        MockMvcResultMatchers.jsonPath("$[0].id").value(
-          userDto.getId().toString()
-        ),
-        MockMvcResultMatchers.jsonPath("$[0].firstName").value(
-          userDto.getFirstName()
-        ),
-        MockMvcResultMatchers.jsonPath("$[0].lastName").value(
-          userDto.getLastName()
-        ),
-        MockMvcResultMatchers.jsonPath("$[0].email").value(userDto.getEmail())
-      );
+        .perform(
+            MockMvcRequestBuilders.get("/api/v1/users/all")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.length()").value(1),
+            MockMvcResultMatchers.jsonPath("$[0].id").value(userDto.getId().toString()),
+            MockMvcResultMatchers.jsonPath("$[0].firstName").value(userDto.getFirstName()),
+            MockMvcResultMatchers.jsonPath("$[0].lastName").value(userDto.getLastName()),
+            MockMvcResultMatchers.jsonPath("$[0].email").value(userDto.getEmail()));
   }
 
   @Test
-  @WithMockUser(username = "admin-mock", roles = { "ADMIN" })
+  @WithMockUser(
+      username = "admin-mock",
+      roles = {"ADMIN"})
   void getUserById() throws Exception {
     when(userService.findUserById(userDto.getId())).thenReturn(userDto);
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(
-          "/api/v1/users/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpectAll(
-        MockMvcResultMatchers.status().isOk(),
-        MockMvcResultMatchers.jsonPath("$.id").value(
-          userDto.getId().toString()
-        ),
-        MockMvcResultMatchers.jsonPath("$.firstName").value(
-          userDto.getFirstName()
-        ),
-        MockMvcResultMatchers.jsonPath("$.lastName").value(
-          userDto.getLastName()
-        ),
-        MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail())
-      );
+        .perform(
+            MockMvcRequestBuilders.get("/api/v1/users/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.id").value(userDto.getId().toString()),
+            MockMvcResultMatchers.jsonPath("$.firstName").value(userDto.getFirstName()),
+            MockMvcResultMatchers.jsonPath("$.lastName").value(userDto.getLastName()),
+            MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail()));
   }
 
   @Test
-  @WithMockUser(username = "admin-mock", roles = { "ADMIN" })
+  @WithMockUser(
+      username = "admin-mock",
+      roles = {"ADMIN"})
   void lockUserById() throws Exception {
-    var userDetails = new UserDetailsImpl(
-      userDto.getId(),
-      "mock-email",
-      "mock-password",
-      true,
-      true,
-      true,
-      true,
-      Set.of()
-    );
+    var userDetails =
+        new UserDetailsImpl(
+            userDto.getId(), "mock-email", "mock-password", true, true, true, true, Set.of());
     when(userService.lockUserById(userDto.getId())).thenReturn(userDetails);
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.patch(
-          "/api/v1/users/lock/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpectAll(
-        MockMvcResultMatchers.status().isOk(),
-        MockMvcResultMatchers.jsonPath("$.id").value(
-          userDto.getId().toString()
-        ),
-        MockMvcResultMatchers.jsonPath("$.isAccountNonLocked").value(
-          userDetails.isAccountNonLocked()
-        ),
-        MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail())
-      );
+        .perform(
+            MockMvcRequestBuilders.patch(
+                    "/api/v1/users/lock/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.id").value(userDto.getId().toString()),
+            MockMvcResultMatchers.jsonPath("$.isAccountNonLocked")
+                .value(userDetails.isAccountNonLocked()),
+            MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail()));
   }
 
   @Test
@@ -164,50 +136,37 @@ class AdminControllerTest {
   void lockUserById_ReturnsForbidden() throws Exception {
     when(userService.lockUserById(userDto.getId())).thenReturn(null);
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.patch(
-          "/api/v1/users/lock/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
+        .perform(
+            MockMvcRequestBuilders.patch(
+                    "/api/v1/users/lock/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
-  @WithMockUser(username = "admin-mock", roles = { "ADMIN" })
+  @WithMockUser(
+      username = "admin-mock",
+      roles = {"ADMIN"})
   void unlockUserById() throws Exception {
-    var userDetails = new UserDetailsImpl(
-      userDto.getId(),
-      "mock-email",
-      "mock-password",
-      true,
-      false,
-      true,
-      true,
-      Set.of()
-    );
+    var userDetails =
+        new UserDetailsImpl(
+            userDto.getId(), "mock-email", "mock-password", true, false, true, true, Set.of());
     when(userService.unlockUserById(userDto.getId())).thenReturn(userDetails);
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.patch(
-          "/api/v1/users/unlock/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpectAll(
-        MockMvcResultMatchers.status().isOk(),
-        MockMvcResultMatchers.jsonPath("$.id").value(
-          userDto.getId().toString()
-        ),
-        MockMvcResultMatchers.jsonPath("$.isAccountNonLocked").value(
-          userDetails.isAccountNonLocked()
-        ),
-        MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail())
-      );
+        .perform(
+            MockMvcRequestBuilders.patch(
+                    "/api/v1/users/unlock/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.id").value(userDto.getId().toString()),
+            MockMvcResultMatchers.jsonPath("$.isAccountNonLocked")
+                .value(userDetails.isAccountNonLocked()),
+            MockMvcResultMatchers.jsonPath("$.email").value(userDto.getEmail()));
   }
 
   @Test
@@ -215,15 +174,13 @@ class AdminControllerTest {
   void unlockUserById_ReturnsForbidden() throws Exception {
     when(userService.unlockUserById(userDto.getId())).thenReturn(null);
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.patch(
-          "/api/v1/users/unlock/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
+        .perform(
+            MockMvcRequestBuilders.patch(
+                    "/api/v1/users/unlock/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
@@ -231,15 +188,13 @@ class AdminControllerTest {
   void deleteUserById() throws Exception {
     doNothing().when(userService).deleteUserById(userDto.getId());
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.delete(
-          "/api/v1/users/delete/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(MockMvcResultMatchers.status().isNoContent());
+        .perform(
+            MockMvcRequestBuilders.delete(
+                    "/api/v1/users/delete/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
   @Test
@@ -247,14 +202,12 @@ class AdminControllerTest {
   void deleteUserById_ReturnsForbidden() throws Exception {
     doNothing().when(userService).deleteUserById(userDto.getId());
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.delete(
-          "/api/v1/users/delete/%s".formatted(userDto.getId().toString())
-        )
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(MockMvcResultMatchers.status().isForbidden());
+        .perform(
+            MockMvcRequestBuilders.delete(
+                    "/api/v1/users/delete/%s".formatted(userDto.getId().toString()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 }

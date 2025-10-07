@@ -22,22 +22,12 @@ public interface RecipeService {
 
   DataWithPagination<List<RecipeDto>> findAll(int pageNumber, int pageSize);
 
-  DataWithPagination<RecipeByOwner> findAllByUserEmail(
-    String email,
-    int pageNumber,
-    int pageSize
-  );
+  DataWithPagination<RecipeByOwner> findAllByUserEmail(String email, int pageNumber, int pageSize);
 
   DataWithPagination<List<RecipeDto>> findAllByRecipeFilter(
-    RecipeFilter filter,
-    int pageNumber,
-    int pageSize
-  );
+      RecipeFilter filter, int pageNumber, int pageSize);
 
-  DataWithPagination<Set<RecipeDto>> getRecommendations(
-    int pageNumber,
-    int pageSize
-  );
+  DataWithPagination<Set<RecipeDto>> getRecommendations(int pageNumber, int pageSize);
 
   RecipeDto updateRecipeImageById(UUID id, UploadImage request);
 

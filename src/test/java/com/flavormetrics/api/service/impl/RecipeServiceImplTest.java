@@ -52,29 +52,21 @@ class RecipeServiceImplTest {
   private Recipe recipe;
   private UserDetailsImpl principal;
 
-  @Mock
-  private RecipeRepository recipeRepository;
+  @Mock private RecipeRepository recipeRepository;
 
-  @Mock
-  private RecipeFactory recipeFactory;
+  @Mock private RecipeFactory recipeFactory;
 
-  @Mock
-  private IngredientFactory ingredientFactory;
+  @Mock private IngredientFactory ingredientFactory;
 
-  @Mock
-  private AllergyFactory allergyFactory;
+  @Mock private AllergyFactory allergyFactory;
 
-  @Mock
-  private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-  @Mock
-  private TagFactory tagFactory;
+  @Mock private TagFactory tagFactory;
 
-  @Mock
-  private ImageKitService imageKitService;
+  @Mock private ImageKitService imageKitService;
 
-  @InjectMocks
-  private RecipeServiceImpl recipeService;
+  @InjectMocks private RecipeServiceImpl recipeService;
 
   @BeforeEach
   void setUp() {
@@ -105,29 +97,21 @@ class RecipeServiceImplTest {
   @Test
   void getById_existingRecipe_returnsDto() {
     RecipeDto dto = new RecipeDto(recipe);
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.of(recipe)
-    );
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
     RecipeDto result = recipeService.getById(RECIPE_ID);
     assertEquals(dto, result);
   }
 
   @Test
   void getById_notFound_throwsException() {
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.empty()
-    );
-    assertThrows(RecipeNotFoundException.class, () ->
-      recipeService.getById(RECIPE_ID)
-    );
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.empty());
+    assertThrows(RecipeNotFoundException.class, () -> recipeService.getById(RECIPE_ID));
   }
 
   @Test
   void updateById_authorized_updatesAndReturnsDto() {
     AddRecipeRequest req = mock(AddRecipeRequest.class);
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.of(recipe)
-    );
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
     when(ingredientFactory.checkIfExistsOrElseSave(req)).thenReturn(Set.of());
     when(allergyFactory.checkIfExistsOrElseSave(any())).thenReturn(Set.of());
     when(tagFactory.checkIfExistsOrElseSave(req)).thenReturn(Set.of());
@@ -145,12 +129,8 @@ class RecipeServiceImplTest {
     email.setAddress("other@example.com");
     otherUser.setEmail(email);
     recipe.setUser(otherUser);
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.of(recipe)
-    );
-    assertThrows(UnAuthorizedException.class, () ->
-      recipeService.updateById(RECIPE_ID, req)
-    );
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
+    assertThrows(UnAuthorizedException.class, () -> recipeService.updateById(RECIPE_ID, req));
   }
 
   @Test
@@ -163,35 +143,22 @@ class RecipeServiceImplTest {
   void findAll_returnsPaginatedData() {
     Pageable pageable = PageRequest.of(0, 10);
     List<Recipe> recipes = List.of(recipe);
-    when(recipeRepository.findAll(pageable)).thenReturn(
-      new PageImpl<>(recipes)
-    );
+    when(recipeRepository.findAll(pageable)).thenReturn(new PageImpl<>(recipes));
     DataWithPagination<List<RecipeDto>> result = recipeService.findAll(0, 10);
     assertEquals(1, result.data().size());
   }
 
   @Test
   void findAllByUserEmail_returnsPaginatedOwnerData() {
-    try (
-      MockedStatic<RecipeMapper> mockedRecipeMapper = mockStatic(
-        RecipeMapper.class
-      );
-    ) {
+    try (MockedStatic<RecipeMapper> mockedRecipeMapper = mockStatic(RecipeMapper.class); ) {
       Pageable pageable = PageRequest.of(0, 10);
       String email = "test@example.com";
       List<Recipe> recipes = List.of(recipe);
-      List<RecipeDto> recipesDto = recipes
-        .stream()
-        .map(RecipeDto::new)
-        .toList();
-      when(recipeRepository.findByOwner(email, pageable)).thenReturn(
-        new PageImpl<>(recipes)
-      );
-      when(RecipeMapper.toRecipeByOwner(any(), eq(email))).thenReturn(
-        new RecipeByOwner(email, recipesDto)
-      );
-      DataWithPagination<RecipeByOwner> result =
-        recipeService.findAllByUserEmail(email, 0, 10);
+      List<RecipeDto> recipesDto = recipes.stream().map(RecipeDto::new).toList();
+      when(recipeRepository.findByOwner(email, pageable)).thenReturn(new PageImpl<>(recipes));
+      when(RecipeMapper.toRecipeByOwner(any(), eq(email)))
+          .thenReturn(new RecipeByOwner(email, recipesDto));
+      DataWithPagination<RecipeByOwner> result = recipeService.findAllByUserEmail(email, 0, 10);
       assertEquals(1, result.data().recipes().size());
       assertEquals(email, result.data().owner());
     }
@@ -200,26 +167,13 @@ class RecipeServiceImplTest {
   @Test
   void findAllByRecipeFilter_returnsFilteredPaginatedData() {
     Pageable pageable = PageRequest.of(0, 10);
-    RecipeFilter filter = new RecipeFilter(
-      10,
-      10,
-      200,
-      DifficultyType.easy,
-      DietaryPreferenceType.vegan
-    );
+    RecipeFilter filter =
+        new RecipeFilter(10, 10, 200, DifficultyType.easy, DietaryPreferenceType.vegan);
     List<Recipe> recipes = List.of(recipe);
-    when(
-      recipeRepository.findAllByFilter(
-        10,
-        10,
-        200,
-        DifficultyType.easy,
-        DietaryPreferenceType.vegan,
-        pageable
-      )
-    ).thenReturn(new PageImpl<>(recipes));
-    DataWithPagination<List<RecipeDto>> result =
-      recipeService.findAllByRecipeFilter(filter, 0, 10);
+    when(recipeRepository.findAllByFilter(
+            10, 10, 200, DifficultyType.easy, DietaryPreferenceType.vegan, pageable))
+        .thenReturn(new PageImpl<>(recipes));
+    DataWithPagination<List<RecipeDto>> result = recipeService.findAllByRecipeFilter(filter, 0, 10);
     assertEquals(1, result.data().size());
   }
 
@@ -228,50 +182,38 @@ class RecipeServiceImplTest {
     Pageable pageable = PageRequest.of(0, 10);
     List<Recipe> recipes = List.of(recipe);
     when(userRepository.hasProfile(any())).thenReturn(true);
-    when(recipeRepository.findAllRecommendations(USER_ID, pageable)).thenReturn(
-      new PageImpl<>(recipes)
-    );
-    DataWithPagination<Set<RecipeDto>> result =
-      recipeService.getRecommendations(0, 10);
+    when(recipeRepository.findAllRecommendations(USER_ID, pageable))
+        .thenReturn(new PageImpl<>(recipes));
+    DataWithPagination<Set<RecipeDto>> result = recipeService.getRecommendations(0, 10);
     assertEquals(1, result.data().size());
   }
 
   @Test
   void updateRecipeImageById_WithUploadImage_ReturnsUpdatedRecipe() {
     var req = new UploadImage("mock-url", "mock-name");
-    when(imageKitService.upload(req.url(), req.name())).thenReturn(
-      "https://imagekit.io/mock-image.jpg"
-    );
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.of(recipe)
-    );
+    when(imageKitService.upload(req.url(), req.name()))
+        .thenReturn("https://imagekit.io/mock-image.jpg");
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
     when(recipeRepository.save(any())).thenReturn(recipe);
     RecipeDto result = recipeService.updateRecipeImageById(RECIPE_ID, req);
     assertThat(result).isNotNull();
     assertThat(result.imageUrl()).isNotNull();
-    assertThat(result.imageUrl()).isEqualTo(
-      "https://imagekit.io/mock-image.jpg"
-    );
+    assertThat(result.imageUrl()).isEqualTo("https://imagekit.io/mock-image.jpg");
     assertThat(result.imageUrl()).isEqualTo(recipe.getImageUrl());
   }
 
   @Test
   void updateRecipeImageById_RecipeNotFound_ThrowsRecipeNotFoundException() {
     var req = new UploadImage("mock-url", "mock-name");
-    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-      Optional.empty()
-    );
-    assertThrows(RecipeNotFoundException.class, () ->
-      recipeService.updateRecipeImageById(RECIPE_ID, req)
-    );
+    when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.empty());
+    assertThrows(
+        RecipeNotFoundException.class, () -> recipeService.updateRecipeImageById(RECIPE_ID, req));
   }
 
   @Test
   void updateRecipeImageById_RecipeNotFound_ThrowsUnAuthorizedException() {
-    try (
-      MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-        mockStatic(SecurityContextHolder.class);
-    ) {
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
+        mockStatic(SecurityContextHolder.class); ) {
       var otherUser = new User();
       var otherEmail = new Email("mock-address");
       otherUser.setEmail(otherEmail);
@@ -280,42 +222,28 @@ class RecipeServiceImplTest {
       var auth = new TestingAuthenticationToken(principal, null);
       var req = new UploadImage("mock-url", "mock-name");
       SecurityContext context = new SecurityContextImpl(auth);
-      mockedSecurityContextHolder
-        .when(SecurityContextHolder::getContext)
-        .thenReturn(context);
-      when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-        Optional.of(recipe)
-      );
-      assertThrows(UnAuthorizedException.class, () ->
-        recipeService.updateRecipeImageById(RECIPE_ID, req)
-      );
+      mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(context);
+      when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
+      assertThrows(
+          UnAuthorizedException.class, () -> recipeService.updateRecipeImageById(RECIPE_ID, req));
     }
   }
 
   @Test
   void updateRecipeImageById_WithMultipartFile_ReturnsUpdatedRecipe() {
-    try (
-      MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-        mockStatic(SecurityContextHolder.class);
-      MockedStatic<ImageIO> mockedImageIO = mockStatic(ImageIO.class);
-    ) {
-      SecurityContext context = new SecurityContextImpl(
-        new TestingAuthenticationToken(principal, null)
-      );
-      mockedSecurityContextHolder
-        .when(SecurityContextHolder::getContext)
-        .thenReturn(context);
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
+            mockStatic(SecurityContextHolder.class);
+        MockedStatic<ImageIO> mockedImageIO = mockStatic(ImageIO.class); ) {
+      SecurityContext context =
+          new SecurityContextImpl(new TestingAuthenticationToken(principal, null));
+      mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(context);
       when(recipeRepository.save(any())).thenReturn(recipe);
-      when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(
-        Optional.of(recipe)
-      );
+      when(recipeRepository.getRecipeByIdEager(RECIPE_ID)).thenReturn(Optional.of(recipe));
       MultipartFile file = mock(MultipartFile.class);
       mockedImageIO
-        .when(() -> ImageIO.read(file.getInputStream()))
-        .thenReturn(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
-      when(imageKitService.upload(file, file.getOriginalFilename())).thenReturn(
-        "mock-url"
-      );
+          .when(() -> ImageIO.read(file.getInputStream()))
+          .thenReturn(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
+      when(imageKitService.upload(file, file.getOriginalFilename())).thenReturn("mock-url");
       RecipeDto result = recipeService.updateRecipeImageById(RECIPE_ID, file);
       assertThat(result).isNotNull();
       assertThat(result.imageUrl()).isNotNull();

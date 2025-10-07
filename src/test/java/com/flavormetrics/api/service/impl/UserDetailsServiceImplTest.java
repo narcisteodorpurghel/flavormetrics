@@ -19,11 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @ExtendWith(MockitoExtension.class)
 class UserDetailsServiceImplTest {
 
-  @Mock
-  private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-  @InjectMocks
-  private UserDetailsServiceImpl userDetailsService;
+  @InjectMocks private UserDetailsServiceImpl userDetailsService;
 
   @Test
   void loadUserByUsername_existingUser_returnsUserDetails() {
@@ -35,9 +33,7 @@ class UserDetailsServiceImplTest {
     user.setPasswordHash("TestPasswordHash");
     user.setEmail(new Email(email));
 
-    when(userRepository.findByEmailWithAuthoritiesAndEmail(email)).thenReturn(
-      Optional.of(user)
-    );
+    when(userRepository.findByEmailWithAuthoritiesAndEmail(email)).thenReturn(Optional.of(user));
 
     var result = userDetailsService.loadUserByUsername(email);
 
@@ -50,13 +46,10 @@ class UserDetailsServiceImplTest {
   @Test
   void loadUserByUsername_userNotFound_throwsException() {
     String email = "notfound@email.com";
-    when(userRepository.findByEmailWithAuthoritiesAndEmail(email)).thenReturn(
-      Optional.empty()
-    );
+    when(userRepository.findByEmailWithAuthoritiesAndEmail(email)).thenReturn(Optional.empty());
 
-    assertThrows(UsernameNotFoundException.class, () ->
-      userDetailsService.loadUserByUsername(email)
-    );
+    assertThrows(
+        UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(email));
     verify(userRepository).findByEmailWithAuthoritiesAndEmail(email);
   }
 }

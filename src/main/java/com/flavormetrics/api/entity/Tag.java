@@ -26,18 +26,14 @@ public class Tag {
   private String name;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
@@ -77,14 +73,8 @@ public class Tag {
     if (projection == null) {
       throw new IllegalArgumentException("TagDto cannot be null");
     }
-    this.id = Objects.requireNonNull(
-      projection.getId(),
-      "Tag id cannot be null"
-    );
-    this.name = Objects.requireNonNull(
-      projection.getName(),
-      "Tag name cannot be null"
-    );
+    this.id = Objects.requireNonNull(projection.getId(), "Tag id cannot be null");
+    this.name = Objects.requireNonNull(projection.getName(), "Tag name cannot be null");
   }
 
   public UUID getId() {
@@ -124,9 +114,7 @@ public class Tag {
   }
 
   public void setRecipes(Set<Recipe> recipes) {
-    this.recipes = Optional.ofNullable(recipes)
-      .map(List::copyOf)
-      .orElse(Collections.emptyList());
+    this.recipes = Optional.ofNullable(recipes).map(List::copyOf).orElse(Collections.emptyList());
   }
 
   @Override

@@ -25,34 +25,26 @@ public class TagFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    List<String> tagsName = Optional.ofNullable(req.tags())
-      .orElse(Collections.emptySet())
-      .stream()
-      .map(TagDto::name)
-      .toList();
+    List<String> tagsName =
+        Optional.ofNullable(req.tags()).orElse(Collections.emptySet()).stream()
+            .map(TagDto::name)
+            .toList();
 
     List<TagProjection> existing = tagRepository.getIdsAndNames(tagsName);
-    List<String> existingNames = existing
-      .stream()
-      .map(TagProjection::getName)
-      .toList();
+    List<String> existingNames = existing.stream().map(TagProjection::getName).toList();
 
     List<Tag> newTags = new ArrayList<>();
     if (!existing.isEmpty()) {
-      newTags = Optional.ofNullable(req.tags())
-        .orElse(Collections.emptySet())
-        .stream()
-        .filter(t -> !existingNames.contains(t.name()))
-        .map(Tag::new)
-        .toList();
+      newTags =
+          Optional.ofNullable(req.tags()).orElse(Collections.emptySet()).stream()
+              .filter(t -> !existingNames.contains(t.name()))
+              .map(Tag::new)
+              .toList();
     } else {
       newTags = tagsName.stream().map(Tag::new).toList();
     }
 
-    List<Tag> finalTags = existing
-      .stream()
-      .map(Tag::new)
-      .collect(Collectors.toList());
+    List<Tag> finalTags = existing.stream().map(Tag::new).collect(Collectors.toList());
 
     if (!newTags.isEmpty()) {
       List<Tag> saved = tagRepository.saveAll(newTags);

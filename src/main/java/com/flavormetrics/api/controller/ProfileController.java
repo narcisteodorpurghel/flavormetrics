@@ -28,119 +28,99 @@ public class ProfileController {
   }
 
   @Operation(
-    summary = "Get user profile",
-    description = "Get associated user profile from authentication"
-  )
+      summary = "Get user profile",
+      description = "Get associated user profile from authentication")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "Operation success",
-        content = @Content(
-          schema = @Schema(implementation = ProfileProjection.class),
-          mediaType = "application/json"
-        )
-      ),
-      @ApiResponse(
-        responseCode = "204",
-        description = "Operation success but user doesn't have an associated profile yet",
-        content = @Content(
-          schema = @Schema(implementation = ObjectUtils.Null.class),
-          mediaType = "application/json"
-        )
-      ),
-      @ApiResponse(
-        responseCode = "401",
-        description = "Unauthenticated",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = String.class)
-        )
-      ),
-      @ApiResponse(
-        responseCode = "403",
-        description = "Unauthorized",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = String.class)
-        )
-      ),
-      @ApiResponse(
-        responseCode = "500",
-        description = "Internal Server Error",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = ApiErrorResponse.class)
-        )
-      ),
-    }
-  )
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Operation success",
+            content =
+                @Content(
+                    schema = @Schema(implementation = ProfileProjection.class),
+                    mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "204",
+            description = "Operation success but user doesn't have an associated profile yet",
+            content =
+                @Content(
+                    schema = @Schema(implementation = ObjectUtils.Null.class),
+                    mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthenticated",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Unauthorized",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorResponse.class))),
+      })
   @GetMapping("/{id}")
-  public ResponseEntity<ProfileDto> getProfileById(
-    @PathVariable("id") UUID id
-  ) {
+  public ResponseEntity<ProfileDto> getProfileById(@PathVariable("id") UUID id) {
     return ResponseEntity.ok(profileService.findById(id));
   }
 
   @Operation(
-    summary = "Add user profile",
-    description = "Associate a profile to current user from authentication"
-  )
+      summary = "Add user profile",
+      description = "Associate a profile to current user from authentication")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "Operation success",
-        content = @Content(
-          schema = @Schema(implementation = ProfileProjection.class),
-          mediaType = "application/json"
-        )
-      ),
-      @ApiResponse(
-        responseCode = "400",
-        description = "Invalid request data",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = ApiErrorResponse.class)
-        )
-      ),
-      @ApiResponse(
-        responseCode = "401",
-        description = "Unauthenticated",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = String.class)
-        )
-      ),
-      @ApiResponse(
-        responseCode = "403",
-        description = "Unauthorized",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = String.class)
-        )
-      ),
-      @ApiResponse(
-        responseCode = "500",
-        description = "Internal Server Error",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = ApiErrorResponse.class)
-        )
-      ),
-    }
-  )
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Operation success",
+            content =
+                @Content(
+                    schema = @Schema(implementation = ProfileProjection.class),
+                    mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request data",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorResponse.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthenticated",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Unauthorized",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = String.class))),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorResponse.class))),
+      })
   @PostMapping
-  public ResponseEntity<UUID> create(
-    @RequestBody @Valid CreateProfileRequest req
-  ) {
+  public ResponseEntity<UUID> create(@RequestBody @Valid CreateProfileRequest req) {
     return ResponseEntity.ok(profileService.create(req));
   }
 
   @PutMapping("/update")
-  public ResponseEntity<ProfileDto> update(
-    @RequestBody @Valid CreateProfileRequest req
-  ) {
+  public ResponseEntity<ProfileDto> update(@RequestBody @Valid CreateProfileRequest req) {
     return ResponseEntity.ok(profileService.updateById(req));
   }
 

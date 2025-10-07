@@ -45,9 +45,7 @@ class JwtServiceImplTest {
   @Test
   void decodeToken_invalidSignature_shouldThrowJwtException() {
     String invalidToken = "invalid.token.value";
-    assertThrows(JwtException.class, () ->
-      jwtService.decodeToken(invalidToken)
-    );
+    assertThrows(JwtException.class, () -> jwtService.decodeToken(invalidToken));
   }
 
   @Test
@@ -61,24 +59,20 @@ class JwtServiceImplTest {
 
   @Test
   void extractUsername_invalidToken_shouldThrowJwtException() {
-    assertThrows(JwtException.class, () ->
-      jwtService.extractUsername("invalid-token")
-    );
+    assertThrows(JwtException.class, () -> jwtService.extractUsername("invalid-token"));
   }
 
   @Test
   void generateNewAccessToken_invalidRefreshToken_shouldThrowJwtException() {
     String invalid = "invalid-token-value";
-    assertThrows(JwtException.class, () ->
-      jwtService.generateNewAccessToken(invalid)
-    );
+    assertThrows(JwtException.class, () -> jwtService.generateNewAccessToken(invalid));
   }
 
   @Test
   void getCookieValueFromRequest_cookieExists_shouldReturnValue() {
     HttpServletRequest request = mock(HttpServletRequest.class);
     Cookie cookie = new Cookie("Auth", "jwt-token");
-    when(request.getCookies()).thenReturn(new Cookie[] { cookie });
+    when(request.getCookies()).thenReturn(new Cookie[] {cookie});
 
     String result = jwtService.getCookieValueFromRequest(request, "Auth");
     assertEquals("jwt-token", result);
@@ -107,17 +101,16 @@ class JwtServiceImplTest {
 
   @Test
   void decodeToken_expiredToken_shouldThrowJwtTokenExpiredException() {
-    String expiredToken = JWT.create()
-      .withJWTId("test-id")
-      .withIssuer(ISSUER)
-      .withAudience(AUDIENCE)
-      .withSubject("test@email.com")
-      .withIssuedAt(Instant.now().minusSeconds(3600))
-      .withExpiresAt(Instant.now().minusSeconds(1800))
-      .sign(Algorithm.HMAC256(secret));
+    String expiredToken =
+        JWT.create()
+            .withJWTId("test-id")
+            .withIssuer(ISSUER)
+            .withAudience(AUDIENCE)
+            .withSubject("test@email.com")
+            .withIssuedAt(Instant.now().minusSeconds(3600))
+            .withExpiresAt(Instant.now().minusSeconds(1800))
+            .sign(Algorithm.HMAC256(secret));
 
-    assertThrows(JwtTokenExpiredException.class, () ->
-      jwtService.decodeToken(expiredToken)
-    );
+    assertThrows(JwtTokenExpiredException.class, () -> jwtService.decodeToken(expiredToken));
   }
 }

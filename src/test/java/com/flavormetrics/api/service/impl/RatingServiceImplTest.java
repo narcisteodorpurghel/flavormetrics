@@ -41,17 +41,13 @@ class RatingServiceImplTest {
   private Recipe recipe;
   private Rating rating;
 
-  @Mock
-  private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-  @Mock
-  private RecipeRepository recipeRepository;
+  @Mock private RecipeRepository recipeRepository;
 
-  @Mock
-  private RatingRepository ratingRepository;
+  @Mock private RatingRepository ratingRepository;
 
-  @InjectMocks
-  private RatingServiceImpl ratingService;
+  @InjectMocks private RatingServiceImpl ratingService;
 
   @BeforeEach
   void setUp() {
@@ -73,17 +69,14 @@ class RatingServiceImplTest {
     rating.setRecipe(recipe);
 
     var principal = new UserDetailsImpl(user);
-    SecurityContextHolder.getContext().setAuthentication(
-      new TestingAuthenticationToken(principal, null)
-    );
+    SecurityContextHolder.getContext()
+        .setAuthentication(new TestingAuthenticationToken(principal, null));
   }
 
   @Test
   void addRecipeRating_success() {
     when(recipeRepository.getRecipeByIdEager(recipeId)).thenReturn(Optional.of(recipe));
-    when(
-      ratingRepository.isRecipeAlreadyRatedByUser(userId, recipeId)
-    ).thenReturn(false);
+    when(ratingRepository.isRecipeAlreadyRatedByUser(userId, recipeId)).thenReturn(false);
     when(userRepository.getReferenceById(userId)).thenReturn(user);
 
     Map<String, String> result = ratingService.addRecipeRating(recipeId, 5);
@@ -97,21 +90,16 @@ class RatingServiceImplTest {
   void addRecipeRating_recipeNotFound_throwsException() {
     when(recipeRepository.getRecipeByIdEager(recipeId)).thenReturn(Optional.empty());
 
-    assertThrows(RecipeNotFoundException.class, () ->
-      ratingService.addRecipeRating(recipeId, 4)
-    );
+    assertThrows(RecipeNotFoundException.class, () -> ratingService.addRecipeRating(recipeId, 4));
   }
 
   @Test
   void addRecipeRating_alreadyRated_throwsException() {
     when(recipeRepository.getRecipeByIdEager(recipeId)).thenReturn(Optional.of(recipe));
-    when(
-      ratingRepository.isRecipeAlreadyRatedByUser(userId, recipeId)
-    ).thenReturn(true);
+    when(ratingRepository.isRecipeAlreadyRatedByUser(userId, recipeId)).thenReturn(true);
 
-    assertThrows(MaximumNumberOfRatingException.class, () ->
-      ratingService.addRecipeRating(recipeId, 3)
-    );
+    assertThrows(
+        MaximumNumberOfRatingException.class, () -> ratingService.addRecipeRating(recipeId, 3));
   }
 
   @Test

@@ -30,11 +30,7 @@ class ImageKitServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    service = new ImageKitServiceImpl(
-      "mock-public-key",
-      "mock-private-key",
-      "mock-url-endpoint"
-    );
+    service = new ImageKitServiceImpl("mock-public-key", "mock-private-key", "mock-url-endpoint");
     service.configure();
   }
 
@@ -45,9 +41,7 @@ class ImageKitServiceImplTest {
     Result mockResult = new Result();
     mockResult.setUrl("https://imagekit.io/test-image.jpg");
 
-    when(mockImageKit.upload(any(FileCreateRequest.class))).thenReturn(
-      mockResult
-    );
+    when(mockImageKit.upload(any(FileCreateRequest.class))).thenReturn(mockResult);
 
     String resultUrl = service.upload(url, fileName);
 
@@ -61,9 +55,7 @@ class ImageKitServiceImplTest {
     Result mockResult = new Result();
     mockResult.setUrl("https://imagekit.io/no-extension.jpg");
 
-    when(mockImageKit.upload(any(FileCreateRequest.class))).thenReturn(
-      mockResult
-    );
+    when(mockImageKit.upload(any(FileCreateRequest.class))).thenReturn(mockResult);
 
     String result = service.upload(url, fileName);
     assertEquals("https://imagekit.io/no-extension.jpg", result);
@@ -74,12 +66,8 @@ class ImageKitServiceImplTest {
     String url = "https://test.com/image.jpg";
     String fileName = "invalid-image.jpg";
 
-    when(mockImageKit.upload(any(FileCreateRequest.class))).thenThrow(
-      new RuntimeException()
-    );
+    when(mockImageKit.upload(any(FileCreateRequest.class))).thenThrow(new RuntimeException());
 
-    assertThrows(ImageKitUploadException.class, () ->
-      service.upload(url, fileName)
-    );
+    assertThrows(ImageKitUploadException.class, () -> service.upload(url, fileName));
   }
 }

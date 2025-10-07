@@ -20,9 +20,7 @@ public class DbConfig {
   CommandLineRunner initDatabase(AuthorityRepository authorityRepository) {
     return args -> {
       log.info("Initializing Database...");
-      if (
-        authorityRepository.findAuthorityByType(RoleType.ROLE_USER).isEmpty()
-      ) {
+      if (authorityRepository.findAuthorityByType(RoleType.ROLE_USER).isEmpty()) {
         var authority = new Authority(RoleType.ROLE_USER);
         authorityRepository.save(authority);
       }

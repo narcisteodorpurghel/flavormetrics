@@ -22,19 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RatingServiceImpl implements RatingService {
 
-  private static final Logger log = LoggerFactory.getLogger(
-    RatingServiceImpl.class
-  );
+  private static final Logger log = LoggerFactory.getLogger(RatingServiceImpl.class);
 
   private final UserRepository userRepository;
   private final RecipeRepository recipeRepository;
   private final RatingRepository ratingRepository;
 
   public RatingServiceImpl(
-    UserRepository userRepository,
-    RecipeRepository recipeRepository,
-    RatingRepository ratingRepository
-  ) {
+      UserRepository userRepository,
+      RecipeRepository recipeRepository,
+      RatingRepository ratingRepository) {
     this.userRepository = userRepository;
     this.recipeRepository = recipeRepository;
     this.ratingRepository = ratingRepository;
@@ -46,18 +43,13 @@ public class RatingServiceImpl implements RatingService {
     log.debug("Initialization of adding recipe rating");
     Recipe recipe;
     log.debug("Getting recipe with id {}", recipeId);
-    recipe = recipeRepository
-      .getRecipeByIdEager(recipeId)
-      .orElseThrow(RecipeNotFoundException::new);
+    recipe =
+        recipeRepository.getRecipeByIdEager(recipeId).orElseThrow(RecipeNotFoundException::new);
     log.debug("Recipe found");
-    var principal = (UserDetailsImpl) SecurityContextHolder.getContext()
-      .getAuthentication()
-      .getPrincipal();
+    var principal =
+        (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     log.debug("Checking if the recipe is already rated by the current user");
-    boolean isRated = ratingRepository.isRecipeAlreadyRatedByUser(
-      principal.id(),
-      recipeId
-    );
+    boolean isRated = ratingRepository.isRecipeAlreadyRatedByUser(principal.id(), recipeId);
     if (isRated) {
       log.debug("Recipe is already rated by the current user");
       throw new MaximumNumberOfRatingException();

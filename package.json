@@ -8,7 +8,7 @@
   },
   "author": "Narcis Purghel",
   "homepage": "https://github.com/narcispurghel/flavormetrics#readme",
-    "devDependencies": {
+  "devDependencies": {
     "prettier": "3.6.2",
     "prettier-plugin-java": "2.7.3"
   }

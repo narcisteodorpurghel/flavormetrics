@@ -14,7 +14,5 @@ public interface UserService {
 
   void deleteUserById(UUID id);
 
-  UserDetailsImpl unlockUserById(
-    @org.hibernate.validator.constraints.UUID UUID id
-  );
+  UserDetailsImpl unlockUserById(@org.hibernate.validator.constraints.UUID UUID id);
 }

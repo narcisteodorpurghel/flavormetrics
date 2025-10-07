@@ -18,25 +18,19 @@ public class Email {
   private UUID id;
 
   @NotBlank
-  @jakarta.validation.constraints.Email(
-    regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+"
-  )
+  @jakarta.validation.constraints.Email(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")
   @Column(nullable = false, unique = true)
   private String address;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @OneToOne(mappedBy = "email")

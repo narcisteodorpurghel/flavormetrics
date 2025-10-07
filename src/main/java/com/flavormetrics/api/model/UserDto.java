@@ -8,8 +8,7 @@ public class UserDto {
 
   private final UUID id;
 
-  @JsonIgnore
-  private final String passwordHash;
+  @JsonIgnore private final String passwordHash;
 
   private final String firstName;
 
@@ -38,22 +37,21 @@ public class UserDto {
   private final Set<RatingWithScore> ratings;
 
   public UserDto(
-    UUID id,
-    String passwordHash,
-    String firstName,
-    String lastName,
-    boolean isAccountNonExpired,
-    boolean isAccountNonLocked,
-    boolean isCredentialsNonExpired,
-    boolean isEnabled,
-    LocalDateTime updatedAt,
-    LocalDateTime createdAt,
-    String email,
-    UUID profileId,
-    Set<UUID> recipes,
-    Set<String> authorities,
-    Set<RatingWithScore> ratings
-  ) {
+      UUID id,
+      String passwordHash,
+      String firstName,
+      String lastName,
+      boolean isAccountNonExpired,
+      boolean isAccountNonLocked,
+      boolean isCredentialsNonExpired,
+      boolean isEnabled,
+      LocalDateTime updatedAt,
+      LocalDateTime createdAt,
+      String email,
+      UUID profileId,
+      Set<UUID> recipes,
+      Set<String> authorities,
+      Set<RatingWithScore> ratings) {
     this.id = id;
     this.passwordHash = passwordHash;
     this.firstName = firstName;
@@ -121,21 +119,15 @@ public class UserDto {
   }
 
   public Set<String> getAuthorities() {
-    return Optional.ofNullable(authorities)
-      .map(Set::copyOf)
-      .orElse(Collections.emptySet());
+    return Optional.ofNullable(authorities).map(Set::copyOf).orElse(Collections.emptySet());
   }
 
   public Set<RatingWithScore> getRatings() {
-    return Optional.ofNullable(ratings)
-      .map(Set::copyOf)
-      .orElse(Collections.emptySet());
+    return Optional.ofNullable(ratings).map(Set::copyOf).orElse(Collections.emptySet());
   }
 
   public Set<UUID> getRecipes() {
-    return Optional.ofNullable(recipes)
-      .map(Set::copyOf)
-      .orElse(Collections.emptySet());
+    return Optional.ofNullable(recipes).map(Set::copyOf).orElse(Collections.emptySet());
   }
 
   @Override
@@ -143,34 +135,31 @@ public class UserDto {
     if (!(o instanceof UserDto userDto)) {
       return false;
     }
-    return (
-      isAccountNonExpired == userDto.isAccountNonExpired &&
-      isAccountNonLocked == userDto.isAccountNonLocked &&
-      isCredentialsNonExpired == userDto.isCredentialsNonExpired &&
-      isEnabled == userDto.isEnabled &&
-      Objects.equals(id, userDto.id) &&
-      Objects.equals(firstName, userDto.firstName) &&
-      Objects.equals(lastName, userDto.lastName) &&
-      Objects.equals(updatedAt, userDto.updatedAt) &&
-      Objects.equals(createdAt, userDto.createdAt) &&
-      Objects.equals(email, userDto.email)
-    );
+    return (isAccountNonExpired == userDto.isAccountNonExpired
+        && isAccountNonLocked == userDto.isAccountNonLocked
+        && isCredentialsNonExpired == userDto.isCredentialsNonExpired
+        && isEnabled == userDto.isEnabled
+        && Objects.equals(id, userDto.id)
+        && Objects.equals(firstName, userDto.firstName)
+        && Objects.equals(lastName, userDto.lastName)
+        && Objects.equals(updatedAt, userDto.updatedAt)
+        && Objects.equals(createdAt, userDto.createdAt)
+        && Objects.equals(email, userDto.email));
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-      id,
-      firstName,
-      lastName,
-      isAccountNonExpired,
-      isAccountNonLocked,
-      isCredentialsNonExpired,
-      isEnabled,
-      updatedAt,
-      createdAt,
-      email
-    );
+        id,
+        firstName,
+        lastName,
+        isAccountNonExpired,
+        isAccountNonLocked,
+        isCredentialsNonExpired,
+        isEnabled,
+        updatedAt,
+        createdAt,
+        email);
   }
 
   @Override
@@ -188,21 +177,12 @@ public class UserDto {
     sb.append(", createdAt=").append(createdAt);
     sb.append(", email='").append(email).append('\'');
     sb.append(", profileId=").append(profileId);
-    sb
-      .append(", authorities=")
-      .append(
-        Optional.ofNullable(authorities).orElse(Collections.emptySet()).size()
-      );
-    sb
-      .append(", ratings=")
-      .append(
-        Optional.ofNullable(ratings).orElse(Collections.emptySet()).size()
-      );
-    sb
-      .append(", recipes=")
-      .append(
-        Optional.ofNullable(recipes).orElse(Collections.emptySet()).size()
-      );
+    sb.append(", authorities=")
+        .append(Optional.ofNullable(authorities).orElse(Collections.emptySet()).size());
+    sb.append(", ratings=")
+        .append(Optional.ofNullable(ratings).orElse(Collections.emptySet()).size());
+    sb.append(", recipes=")
+        .append(Optional.ofNullable(recipes).orElse(Collections.emptySet()).size());
     sb.append('}');
     return sb.toString();
   }

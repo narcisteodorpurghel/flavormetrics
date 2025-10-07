@@ -22,8 +22,7 @@ class AllergyTest {
   private Allergy allergy;
   private final UUID testId = UUID.randomUUID();
   private final String testName = "PEANUTS";
-  private final String testDescription =
-    "A common food allergy related to peanuts.";
+  private final String testDescription = "A common food allergy related to peanuts.";
 
   @BeforeEach
   void setUp() {
@@ -35,32 +34,21 @@ class AllergyTest {
   class ConstructorTests {
 
     @Test
-    @DisplayName(
-      "Constructor with null AllergyType should throw IllegalArgumentException"
-    )
+    @DisplayName("Constructor with null AllergyType should throw IllegalArgumentException")
     void allergyTypeConstructor_withNull_shouldThrowException() {
-      assertThrows(IllegalArgumentException.class, () ->
-        new Allergy((AllergyType) null)
-      );
+      assertThrows(IllegalArgumentException.class, () -> new Allergy((AllergyType) null));
     }
 
     @Test
-    @DisplayName(
-      "Constructor with valid name string should set name and description"
-    )
+    @DisplayName("Constructor with valid name string should set name and description")
     void nameConstructor_withValidName_shouldSetFields() {
       Allergy allergyFromName = new Allergy("DAIRY");
       assertEquals("DAIRY", allergyFromName.getName());
-      assertEquals(
-        AllergyType.DAIRY.getDescription(),
-        allergyFromName.getDescription()
-      );
+      assertEquals(AllergyType.DAIRY.getDescription(), allergyFromName.getDescription());
     }
 
     @Test
-    @DisplayName(
-      "Constructor with invalid name string should set name and empty description"
-    )
+    @DisplayName("Constructor with invalid name string should set name and empty description")
     void nameConstructor_withInvalidName_shouldSetEmptyDescription() {
       Allergy allergyFromName = new Allergy("UNKNOWN_ALLERGY");
       assertEquals("UNKNOWN_ALLERGY", allergyFromName.getName());
@@ -68,47 +56,30 @@ class AllergyTest {
     }
 
     @Test
-    @DisplayName(
-      "Constructor with null name string should throw NullPointerException"
-    )
+    @DisplayName("Constructor with null name string should throw NullPointerException")
     void nameConstructor_withNull_shouldThrowException() {
-      assertThrows(NullPointerException.class, () ->
-        new Allergy((String) null)
-      );
+      assertThrows(NullPointerException.class, () -> new Allergy((String) null));
     }
 
     @Test
     @DisplayName("Constructor with AllergyDto should map fields correctly")
     void dtoConstructor_shouldMapFields() {
-      AllergyDto dto = new AllergyDto(
-        testId,
-        "SOY",
-        "Description from DTO is ignored"
-      );
+      AllergyDto dto = new AllergyDto(testId, "SOY", "Description from DTO is ignored");
       Allergy allergyFromDto = new Allergy(dto);
 
       assertEquals(testId, allergyFromDto.getId());
       assertEquals("SOY", allergyFromDto.getName());
-      assertEquals(
-        AllergyType.SOY.getDescription(),
-        allergyFromDto.getDescription()
-      );
+      assertEquals(AllergyType.SOY.getDescription(), allergyFromDto.getDescription());
     }
 
     @Test
-    @DisplayName(
-      "Constructor with null AllergyDto should throw IllegalArgumentException"
-    )
+    @DisplayName("Constructor with null AllergyDto should throw IllegalArgumentException")
     void dtoConstructor_withNull_shouldThrowException() {
-      assertThrows(IllegalArgumentException.class, () ->
-        new Allergy((AllergyDto) null)
-      );
+      assertThrows(IllegalArgumentException.class, () -> new Allergy((AllergyDto) null));
     }
 
     @Test
-    @DisplayName(
-      "Constructor with AllergyProjection should map fields correctly"
-    )
+    @DisplayName("Constructor with AllergyProjection should map fields correctly")
     void projectionConstructor_shouldMapFields() {
       AllergyProjection projection = Mockito.mock(AllergyProjection.class);
       when(projection.getId()).thenReturn(testId);
@@ -118,20 +89,13 @@ class AllergyTest {
 
       assertEquals(testId, allergyFromProjection.getId());
       assertEquals("WHEAT", allergyFromProjection.getName());
-      assertEquals(
-        AllergyType.WHEAT.getDescription(),
-        allergyFromProjection.getDescription()
-      );
+      assertEquals(AllergyType.WHEAT.getDescription(), allergyFromProjection.getDescription());
     }
 
     @Test
-    @DisplayName(
-      "Constructor with null AllergyProjection should throw IllegalArgumentException"
-    )
+    @DisplayName("Constructor with null AllergyProjection should throw IllegalArgumentException")
     void projectionConstructor_withNull_shouldThrowException() {
-      assertThrows(IllegalArgumentException.class, () ->
-        new Allergy((AllergyProjection) null)
-      );
+      assertThrows(IllegalArgumentException.class, () -> new Allergy((AllergyProjection) null));
     }
   }
 
@@ -165,10 +129,9 @@ class AllergyTest {
       originalProfiles.add(new Profile());
 
       assertEquals(
-        1,
-        allergy.getProfiles().size(),
-        "Internal set should not be affected by changes to the original set."
-      );
+          1,
+          allergy.getProfiles().size(),
+          "Internal set should not be affected by changes to the original set.");
     }
 
     @Test
@@ -179,9 +142,8 @@ class AllergyTest {
       retrievedProfiles.add(new Profile());
 
       assertTrue(
-        allergy.getProfiles().isEmpty(),
-        "Internal set should not be modifiable from the outside."
-      );
+          allergy.getProfiles().isEmpty(),
+          "Internal set should not be modifiable from the outside.");
     }
   }
 
@@ -244,9 +206,7 @@ class AllergyTest {
   }
 
   @Test
-  @DisplayName(
-    "toString should return a non-empty string containing class info"
-  )
+  @DisplayName("toString should return a non-empty string containing class info")
   void toString_shouldReturnStringWithInfo() {
     allergy.setId(testId);
     allergy.setName(testName);

@@ -17,25 +17,22 @@ public class HomeController {
 
   @Operation(summary = "Get home page", description = "Get home page data")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "Success",
-        content = @Content(
-          schema = @Schema(implementation = String.class),
-          mediaType = "application/json"
-        )
-      ),
-      @ApiResponse(
-        responseCode = "500",
-        description = "Internal Server Error",
-        content = @Content(
-          mediaType = "application/json",
-          schema = @Schema(implementation = ApiErrorResponse.class)
-        )
-      ),
-    }
-  )
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Success",
+            content =
+                @Content(
+                    schema = @Schema(implementation = String.class),
+                    mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorResponse.class))),
+      })
   @GetMapping
   public ResponseEntity<String> home() {
     return ResponseEntity.ok("FlavorMetricsAPI");

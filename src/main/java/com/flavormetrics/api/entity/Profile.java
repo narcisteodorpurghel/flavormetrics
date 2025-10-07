@@ -29,26 +29,21 @@ public class Profile {
   private String bio;
 
   @UpdateTimestamp
-  @Column(
-    name = "updated_at",
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+  @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime updatedAt;
 
   @CreationTimestamp
   @Column(
-    name = "created_at",
-    updatable = false,
-    columnDefinition = "timestamp not null default current_timestamp"
-  )
+      name = "created_at",
+      updatable = false,
+      columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
   @NotNull
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @JoinTable(
-    joinColumns = @JoinColumn(name = "profile_id"),
-    inverseJoinColumns = @JoinColumn(name = "allergy_id")
-  )
+      joinColumns = @JoinColumn(name = "profile_id"),
+      inverseJoinColumns = @JoinColumn(name = "allergy_id"))
   private Set<Allergy> allergies = new HashSet<>();
 
   @OneToOne(fetch = FetchType.LAZY)
@@ -116,10 +111,7 @@ public class Profile {
     if (!(o instanceof Profile profile)) {
       return false;
     }
-    return (
-      dietaryPreference == profile.dietaryPreference &&
-      Objects.equals(bio, profile.bio)
-    );
+    return (dietaryPreference == profile.dietaryPreference && Objects.equals(bio, profile.bio));
   }
 
   @Override
