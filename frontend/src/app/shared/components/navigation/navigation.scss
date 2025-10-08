@@ -1,0 +1,28 @@
+.example-icon {
+  display: none;
+}
+
+.toolbar {
+  padding: 0;
+}
+
+.custom-tab-link {
+  height: auto;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.tab-panel {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 370px);
+  justify-content: start;
+  grid-row-gap: 16px;
+}

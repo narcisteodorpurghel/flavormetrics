@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-swamp-500: oklch(62.87% 0.1033 126.1);
+  --color-mustard-500: oklch(71.97% 0.1403 75.1);
+}

@@ -1,0 +1,63 @@
+<mat-toolbar class="w-screen toolbar sticky top-0 left-0 z-50">
+  <nav
+    mat-tab-nav-bar
+    class="flex flex-row justify-between h-auto content-center w-full"
+    [tabPanel]="tabPanel"
+  >
+    <button
+      matIconButton
+      class="example-icon bg-swamp-500"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <app-logo />
+    <span class="flex-1"></span>
+    <div class="flex flex-row h-auto">
+      @for (link of links; track link) {
+        <a
+          class="custom-tab-link"
+          mat-tab-link
+          (click)="activeLink = link"
+          [active]="activeLink == link"
+        >
+          {{ link }}
+        </a>
+      }
+    </div>
+    <div class="h-16 flex flex-col justify-center mr-4 ml-4">
+      <button matIconButton aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+  </nav>
+</mat-toolbar>
+
+<mat-tab-nav-panel #tabPanel class="tab-panel">
+  @for (card of cards; track card) {
+    <mat-card class="example-card z-0" appearance="outlined">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      </mat-card-header>
+      <img
+        mat-card-image
+        src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+        alt="Photo of a Shiba Inu"
+      />
+      <mat-card-content>
+        <p>
+          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from
+          Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
+          originally bred for hunting.
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button matButton>LIKE</button>
+        <button matButton>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
+  }
+  <router-outlet />
+</mat-tab-nav-panel>
