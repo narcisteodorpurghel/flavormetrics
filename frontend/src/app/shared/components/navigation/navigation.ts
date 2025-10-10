@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { Logo } from '../logo/logo';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -18,12 +18,12 @@ import { RouterOutlet } from '@angular/router';
     MatTabsModule,
     RouterOutlet,
     MatCardModule,
+    RouterLink
   ],
   templateUrl: './navigation.html',
   styleUrl: './navigation.scss',
 })
 export class Navigation {
-  links = ['Recipes', 'Share', 'Community'];
-  cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  links = ['Recipes', 'Share', 'Community', 'Home'];
   activeLink = this.links[0];
 }

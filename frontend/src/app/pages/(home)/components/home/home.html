@@ -1,0 +1,102 @@
+<section class="py-4 px-8 w-screen h-screen gap-4 flex flex-col">
+  <div
+    class="search-container min-h-1/3 flex flex-col justify-center items-center bg-cover bg-center w-full"
+  >
+    <div class="w-1/2" matAutocompleteOrigin #origin="matAutocompleteOrigin">
+      <mat-form-field appearance="outline" class="w-full bg-amber-50 rounded">
+        <input
+          type="text"
+          placeholder="Search"
+          matInput
+          (change)="($event.target.value)"
+          [formControl]="search"
+          [matAutocomplete]="auto"
+          [matAutocompleteConnectedTo]="origin"
+          class="w-full h-12 rounded bg-white"
+        />
+        <button matIconButton matSuffix class="mr-2">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <mat-autocomplete #auto="matAutocomplete">
+      @for (option of filteredStreets | async; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+      }
+    </mat-autocomplete>
+  </div>
+  <div class="w-full h-full flex flex-row justify-between">
+    <div class="w-3/4 flex flex-col gap-4 h-fit">
+      <h1 class="text-2xl">Discover Recipes</h1>
+      <div class="w-full flex flex-row gap-4 overflow-x-scroll flex-1">
+        @for (card of cards; track card) {
+          <mat-card class="min-w-[350px] h-fit" appearance="outlined">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            </mat-card-header>
+            <img
+              mat-card-image
+              class="mb-4"
+              src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+              alt="Photo of a Shiba Inu"
+            />
+            <mat-card-content>
+              <p>
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
+                from Japan. A small, agile dog that copes very well with mountainous terrain, the
+                Shiba Inu was originally bred for hunting.
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button matButton>LIKE</button>
+              <button matButton>SHARE</button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    </div>
+    <div class="flex flex-col gap-4 items-start">
+      <h1 class="text-2xl">Top rated recipes</h1>
+      <mat-card appearance="filled" class="p-4 gap-4">
+        <mat-card class="min-w-[300px]" appearance="outlined">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="min-w-[300px]" appearance="outlined">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="min-w-[300px]" appearance="outlined">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="min-w-[300px]" appearance="outlined">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="min-w-[300px]" appearance="outlined">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </mat-card>
+    </div>
+  </div>
+</section>
