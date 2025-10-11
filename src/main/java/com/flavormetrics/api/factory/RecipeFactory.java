@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RecipeFactory {
-
   private final RecipeRepository recipeRepo;
   private final UserRepository userRepo;
   private final IngredientFactory ingredientFactory;

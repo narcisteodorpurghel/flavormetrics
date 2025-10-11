@@ -9,7 +9,6 @@ import com.flavormetrics.api.model.RatingWithScore;
 import java.util.Optional;
 
 public final class RatingMapper {
-
   private RatingMapper() {}
 
   public static RatingDto toRatingDto(Rating rating) {

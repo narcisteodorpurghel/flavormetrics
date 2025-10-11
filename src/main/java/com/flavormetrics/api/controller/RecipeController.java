@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/recipe")
 public class RecipeController {
+  private static final Logger log = LoggerFactory.getLogger(RecipeController.class);
 
   private final RecipeService recipeService;
 
@@ -92,7 +96,7 @@ public class RecipeController {
         .body(
             Map.of(
                 "message",
-                "Recipe create successfully",
+                "Recipe created successfully",
                 "id",
                 String.valueOf(recipeService.create(request))));
   }
@@ -429,8 +433,7 @@ public class RecipeController {
       })
   @GetMapping("/recommendations")
   public ResponseEntity<DataWithPagination<Set<RecipeDto>>> getRecommendations(
-      @RequestParam @Min(0) int pageNumber,
-      @RequestParam @Min(1) int pageSize) {
+      @RequestParam @Min(0) int pageNumber, @RequestParam @Min(1) int pageSize) {
     return ResponseEntity.ok(recipeService.getRecommendations(pageNumber, pageSize));
   }
 
@@ -518,5 +521,11 @@ public class RecipeController {
           MultipartFile file,
       @PathVariable UUID id) {
     return ResponseEntity.ok(recipeService.updateRecipeImageById(id, file));
+  }
+
+  @GetMapping("/byName")
+  public List<RecipeDto> searchByName(@RequestParam String name) {
+    log.info("Searching for recipe by name {}", name);
+    return recipeService.searchByName(name);
   }
 }

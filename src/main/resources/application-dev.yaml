@@ -3,8 +3,6 @@ server:
     threads:
       max: 200
 spring:
-  config:
-    import: file:.env.local[.properties]
   application:
     name: FlavorMetrics API
   datasource:
@@ -41,9 +39,9 @@ logging:
   pattern:
     console: "%d{HH:mm:ss} %clr(%-5level){${LOG_LEVEL_PATTERN_COLOR}} %thread %clr(%logger{20}){cyan} - %msg%n"
   level:
-    "[org.hibernate]": debug
-    "[org.springframework.security]": debug
-    "[org.springframework]": debug
+    "[org.hibernate]": info
+    "[org.springframework.security]": info
+    "[org.springframework]": info
     "[com.flavormetrics.api]": debug
 
 security:

@@ -5,35 +5,20 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserDto {
-
   private final UUID id;
-
   @JsonIgnore private final String passwordHash;
-
   private final String firstName;
-
   private final String lastName;
-
   private final boolean isAccountNonExpired;
-
   private final boolean isAccountNonLocked;
-
   private final boolean isCredentialsNonExpired;
-
   private final boolean isEnabled;
-
   private final LocalDateTime updatedAt;
-
   private final LocalDateTime createdAt;
-
   private final String email;
-
   private final UUID profileId;
-
   private final Set<UUID> recipes;
-
   private final Set<String> authorities;
-
   private final Set<RatingWithScore> ratings;
 
   public UserDto(

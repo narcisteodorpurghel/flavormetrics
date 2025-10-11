@@ -14,7 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "recipes")
 public class Recipe {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -38,7 +37,6 @@ public class Recipe {
   @Column(name = "cook_time_minutes")
   private int cookTimeMinutes;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   @Column(name = "difficulty")
   private DifficultyType difficulty;
@@ -46,7 +44,6 @@ public class Recipe {
   @Column(name = "estimated_calories")
   private int estimatedCalories;
 
-  @NotNull
   @Enumerated(value = EnumType.STRING)
   @Column(name = "dietary_preferences")
   private DietaryPreferenceType dietaryPreferences;
@@ -62,7 +59,6 @@ public class Recipe {
       columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
-  @NotNull
   @ManyToMany(
       fetch = FetchType.LAZY,
       cascade = {CascadeType.MERGE})
@@ -72,7 +68,6 @@ public class Recipe {
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<Tag> tags = new HashSet<>();
 
-  @NotNull
   @ManyToMany(
       fetch = FetchType.LAZY,
       cascade = {CascadeType.MERGE})
@@ -82,14 +77,12 @@ public class Recipe {
       inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
   private Set<Ingredient> ingredients = new HashSet<>();
 
-  @NotNull
   @OneToMany(
       fetch = FetchType.LAZY,
       mappedBy = "recipe",
       cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
   private Set<Rating> ratings = new HashSet<>();
 
-  @NotNull
   @ManyToMany(
       fetch = FetchType.LAZY,
       cascade = {CascadeType.MERGE})
@@ -99,7 +92,6 @@ public class Recipe {
       inverseJoinColumns = @JoinColumn(name = "allergy_id"))
   private Set<Allergy> allergies = new HashSet<>();
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;

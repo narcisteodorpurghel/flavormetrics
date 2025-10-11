@@ -32,4 +32,6 @@ public interface RecipeService {
   RecipeDto updateRecipeImageById(UUID id, UploadImage request);
 
   RecipeDto updateRecipeImageById(UUID id, MultipartFile file);
+
+  List<RecipeDto> searchByName(String name);
 }

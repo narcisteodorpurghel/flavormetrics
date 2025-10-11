@@ -14,8 +14,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class UserMapper {
-
-  private UserMapper() {}
+  private UserMapper() {
+    // Utility class
+  }
 
   public static RegisterResponse toRegisterResponse(User user) {
     if (user == null) {
@@ -35,18 +36,22 @@ public final class UserMapper {
     if (user == null) {
       throw new IllegalArgumentException("User cannot be null");
     }
+
     Set<RatingWithScore> ratings =
         Optional.ofNullable(user.getRatings()).orElse(Collections.emptySet()).stream()
             .map(RatingMapper::toRatingWithScore)
             .collect(Collectors.toSet());
+
     Set<UUID> recipes =
         Optional.ofNullable(user.getRecipes()).orElse(Collections.emptySet()).stream()
             .map(Recipe::getId)
             .collect(Collectors.toSet());
+
     Set<String> authorities =
         Optional.ofNullable(user.getAuthorities()).orElse(Collections.emptySet()).stream()
             .map(Authority::getAuthority)
             .collect(Collectors.toSet());
+
     return new UserDto(
         user.getId(),
         user.getPasswordHash(),

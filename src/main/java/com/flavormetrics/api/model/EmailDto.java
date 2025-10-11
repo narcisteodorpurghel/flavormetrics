@@ -8,7 +8,6 @@ public record EmailDto(UUID id, String value) {
   }
 
   public static class Builder {
-
     private UUID id;
     private String value;
 

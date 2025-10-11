@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "Register request")
 public record RegisterRequest(
-    @Schema(description = "Unique identifier", example = "narcis@email.com")
+    @Schema(description = "Unique identifier", example = "narcispurghel@example.com")
         @Email(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")
         @NotEmpty
         String email,

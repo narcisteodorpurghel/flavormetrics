@@ -27,8 +27,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthenticationFilter extends JwtFilter {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+  private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
@@ -45,44 +44,52 @@ public class JwtAuthenticationFilter extends JwtFilter {
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
     if (auth != null) {
       filterChain.doFilter(request, response);
       return;
     }
+
     if (isPublicEndpoint(request.getRequestURI())) {
-      LOGGER.info("Public endpoint {} pass the filter", request.getRequestURI());
+      log.info("Public endpoint {} pass the filter", request.getRequestURI());
       filterChain.doFilter(request, response);
       return;
     }
+
     String accessToken = jwtService.getCookieValueFromRequest(request, ACCESS_TOKEN_NAME);
+
     if (accessToken == null) {
       response.sendError(401, "Missing authentication cookie");
       return;
     }
+
     String refreshToken = jwtService.getCookieValueFromRequest(request, REFRESH_TOKEN_NAME);
     Instant expiresAt = null;
+
     try {
       expiresAt = jwtService.decodeToken(accessToken).getExpiresAtAsInstant();
     } catch (JwtTokenExpiredException accessTokenExpiredEx) {
-      LOGGER.info("Access tokens is expired");
-      LOGGER.info("Checking for refresh token");
+      log.info("Access tokens is expired");
+      log.info("Checking for refresh token");
+
       if (refreshToken == null) {
-        LOGGER.info("Refresh token not found");
+        log.info("Refresh token not found");
         response.sendError(401, "Missing refresh token cookie");
-        LOGGER.info("Sending error response");
+        log.info("Sending error response");
         return;
       }
-      LOGGER.info("Refresh token found");
+
+      log.info("Refresh token found");
       try {
         accessToken = jwtService.generateNewAccessToken(refreshToken);
         expiresAt = jwtService.decodeToken(accessToken).getExpiresAtAsInstant();
-        LOGGER.info("Refresh token is valid, generating new access token");
+        log.info("Refresh token is valid, generating new access token");
       } catch (JwtTokenExpiredException ex) {
-        LOGGER.info("Refresh token is not valid");
+        log.info("Refresh token is expired");
         response.sendError(401, "Refresh token is expired");
         return;
       } catch (JwtException ex) {
-        LOGGER.info("Refresh token is not valid");
+        log.info("Refresh token is not valid");
         response.sendError(401, ex.getMessage());
         return;
       }
@@ -90,26 +97,30 @@ public class JwtAuthenticationFilter extends JwtFilter {
       response.sendError(401, ex.getMessage());
       return;
     }
-    LOGGER.info("Access tokens expires at {}.", new Date(expiresAt.toEpochMilli()));
+
+    log.info("Access tokens expires at {}.", new Date(expiresAt.toEpochMilli()));
+
     try {
-      LOGGER.info(
-          "Refresh tokens expires at {}", jwtService.decodeToken(refreshToken).getExpiresAt());
+      log.info("Refresh tokens expires at {}", jwtService.decodeToken(refreshToken).getExpiresAt());
     } catch (JwtException e) {
-      LOGGER.info(e.getMessage());
+      log.info(e.getMessage());
       return;
     }
+
     if (jwtService.isAboveThreshold(expiresAt) && refreshToken != null) {
-      LOGGER.info("Access token is above threshold");
-      LOGGER.info("Generating new access token");
+      log.info("Access token is above threshold");
+      log.info("Generating new access token");
       try {
         accessToken = jwtService.generateNewAccessToken(refreshToken);
       } catch (JwtException ex) {
         response.sendError(401, ex.getMessage());
         return;
       }
-      LOGGER.trace("New access token: {}", accessToken);
+      log.trace("New access token: {}", accessToken);
     }
-    LOGGER.info("Access token does not require refreshing");
+
+    log.info("Access token does not require refreshing");
+
     String userEmail;
     try {
       userEmail = jwtService.extractUsername(accessToken);
@@ -117,12 +128,14 @@ public class JwtAuthenticationFilter extends JwtFilter {
       response.sendError(401, ex.getMessage());
       return;
     }
+
     try {
       setAuthentication(userEmail);
     } catch (AuthenticationException e) {
       response.sendError(401, e.getMessage());
       return;
     }
+
     filterChain.doFilter(request, response);
   }
 

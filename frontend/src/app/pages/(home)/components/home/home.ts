@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeService } from '../../services/home/home.service';
 import { HOME_SERVICE_TOKEN } from '../../../../di/custom-injections';
 import { HomeServiceImpl } from '../../services/home/home.service.impl';
+import { RecipeDto } from '../../../(recipe)/interfaces/recipe.interfaces';
 
 @Component({
   selector: 'app-home',
@@ -37,10 +38,10 @@ import { HomeServiceImpl } from '../../services/home/home.service.impl';
 })
 export class Home {
   readonly cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  options: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
+  options: RecipeDto[] = [];
   search: FormControl<string | null> = new FormControl('');
   searchValue = signal(this.search.value);
-  filteredStreets: Observable<string[]>;
+  filteredStreets: Observable<RecipeDto[]>;
 
   constructor(@Inject(HOME_SERVICE_TOKEN) private homeService: HomeService) {
     this.filteredStreets = this.search.valueChanges.pipe(
@@ -51,14 +52,17 @@ export class Home {
       this.search.valueChanges.pipe(debounceTime(300)).subscribe((res) => {
         this.searchValue.set(res ?? '');
         console.log(res);
-        console.log(this.homeService.searchRecipesByName('search'));
+        this.homeService.searchRecipesByName(res ?? '').subscribe((res) => {
+          this.options = res;
+          console.log(res);
+        });
       });
     });
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): RecipeDto[] {
     const filterValue = this._normalizeValue(value);
-    return this.options.filter((option) => this._normalizeValue(option).includes(filterValue));
+    return this.options.filter((option) => this._normalizeValue(option.name).includes(filterValue));
   }
 
   private _normalizeValue(value: string): string {

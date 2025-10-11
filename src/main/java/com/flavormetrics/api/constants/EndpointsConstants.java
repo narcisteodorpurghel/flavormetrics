@@ -26,6 +26,7 @@ public final class EndpointsConstants {
           "/api/v1/auth/login",
           "/api/v1/recipe/all",
           "/api/v1/recipe/byId/**",
+          "/api/v1/recipe/byName/**",
           "/api/v1/recipe/byFilter");
 
   public static final List<String> ADMIN_ENDPOINTS = List.of("/api/admin/**");

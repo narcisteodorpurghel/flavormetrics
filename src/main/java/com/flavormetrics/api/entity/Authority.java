@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "authorities")
 public class Authority {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(nullable = false)

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class DbConfig {
-
   private static final Logger log = LoggerFactory.getLogger(DbConfig.class);
 
   @Bean

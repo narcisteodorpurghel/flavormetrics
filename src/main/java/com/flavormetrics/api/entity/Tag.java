@@ -36,7 +36,6 @@ public class Tag {
       columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
-  @NotNull
   @ManyToMany(mappedBy = "tags")
   private List<Recipe> recipes = new ArrayList<>();
 

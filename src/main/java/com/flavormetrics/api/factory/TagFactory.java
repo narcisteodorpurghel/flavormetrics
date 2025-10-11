@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class TagFactory {
-
   private final TagRepository tagRepository;
 
   TagFactory(TagRepository tagRepository) {
@@ -33,7 +32,7 @@ public class TagFactory {
     List<TagProjection> existing = tagRepository.getIdsAndNames(tagsName);
     List<String> existingNames = existing.stream().map(TagProjection::getName).toList();
 
-    List<Tag> newTags = new ArrayList<>();
+    List<Tag> newTags;
     if (!existing.isEmpty()) {
       newTags =
           Optional.ofNullable(req.tags()).orElse(Collections.emptySet()).stream()

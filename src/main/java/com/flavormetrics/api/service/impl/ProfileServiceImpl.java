@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
-
   private final ProfileRepository profileRepository;
   private final UserRepository userRepository;
   private final AllergyFactory allergyFactory;

@@ -57,7 +57,6 @@ public record RecipeDto(
   }
 
   public static class Builder {
-
     private UUID id;
     private String name;
     private String user;

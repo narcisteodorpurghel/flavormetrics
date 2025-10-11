@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/users")
 public class AdminController {
-
   private final UserService userService;
 
   public AdminController(UserService userService) {

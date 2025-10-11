@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ImageKitServiceImpl implements ImageKitService {
-
   private static final ImageKit IMAGE_KIT = ImageKit.getInstance();
 
   private final String publicKey;

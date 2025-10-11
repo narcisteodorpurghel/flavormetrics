@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AllergyFactory {
-
   private final AllergyRepository allergyRepository;
 
   AllergyFactory(AllergyRepository allergyRepository) {
@@ -32,7 +31,7 @@ public class AllergyFactory {
     List<AllergyProjection> existing = allergyRepository.getIdsAndNames(allergyNames);
     List<String> existingNames = existing.stream().map(AllergyProjection::getName).toList();
 
-    List<Allergy> newAllergies = new ArrayList<>();
+    List<Allergy> newAllergies;
     if (!existing.isEmpty()) {
       newAllergies =
           Optional.of(allergies).orElse(Collections.emptySet()).stream()

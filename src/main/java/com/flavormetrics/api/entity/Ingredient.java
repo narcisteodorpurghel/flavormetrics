@@ -17,7 +17,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "ingredients")
 public class Ingredient {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;

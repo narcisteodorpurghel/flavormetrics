@@ -3,12 +3,17 @@ package com.flavormetrics.api.repository;
 import com.flavormetrics.api.entity.Recipe;
 import com.flavormetrics.api.enums.DietaryPreferenceType;
 import com.flavormetrics.api.enums.DifficultyType;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.flavormetrics.api.model.RecipeDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -77,4 +82,15 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
         ORDER BY function('random')
     """)
   Page<Recipe> findAllRecommendations(UUID userId, Pageable pageable);
+
+  @Query(
+      """
+   SELECT r
+   FROM Recipe r
+   JOIN FETCH r.user u
+   LEFT JOIN FETCH u.profile p
+   LEFT JOIN FETCH p.allergies pa
+   WHERE r.name LIKE %?1%
+   """)
+  List<Recipe> searchByName(String name);
 }

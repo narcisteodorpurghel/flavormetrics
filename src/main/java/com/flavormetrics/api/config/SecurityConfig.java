@@ -27,7 +27,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
   private final UserDetailsService userDetailsService;
   private final JwtFilter jwtFilter;
 
@@ -73,7 +72,7 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:80"));
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:4200"));
     configuration.setAllowedMethods(List.of("*"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);

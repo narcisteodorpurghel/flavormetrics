@@ -15,7 +15,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "allergies")
 public class Allergy {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;

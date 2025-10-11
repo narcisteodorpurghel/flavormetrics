@@ -19,7 +19,6 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
   @ExceptionHandler(TypeMismatchException.class)
   public ResponseEntity<ApiErrorResponse> handleTypeMismatchException(
       TypeMismatchException e, HttpServletRequest request) {

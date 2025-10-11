@@ -9,7 +9,6 @@ public record AuthorityDto(UUID id, RoleType role, UUID userId) {
   }
 
   public static class Builder {
-
     private UUID id;
     private RoleType role;
     private UUID userId;

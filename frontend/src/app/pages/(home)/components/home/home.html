@@ -22,7 +22,7 @@
 
     <mat-autocomplete #auto="matAutocomplete">
       @for (option of filteredStreets | async; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
+        <mat-option [value]="option.name">{{ option.name }}</mat-option>
       }
     </mat-autocomplete>
   </div>

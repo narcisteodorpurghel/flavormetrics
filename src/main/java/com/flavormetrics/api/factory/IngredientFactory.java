@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class IngredientFactory {
-
   private final IngredientRepository ingredientRepository;
 
   IngredientFactory(IngredientRepository ingredientRepository) {

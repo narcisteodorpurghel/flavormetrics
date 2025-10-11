@@ -1,7 +1,6 @@
 services:
   db:
-    image: postgres:17-alpine
-    container_name: postgres_flavormetrics
+    image: postgres:latest
     env_file:
       - .env
     ports:
@@ -9,15 +8,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  app:
-    build: .
-    container_name: flavormetrics_api
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env
-    depends_on:
-      - db
+#  app:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    env_file:
+#      - .env
+#    depends_on:
+#      - db
 
 volumes:
   postgres_data:

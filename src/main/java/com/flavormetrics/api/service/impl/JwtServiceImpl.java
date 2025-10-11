@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-
   private static final Logger log = LoggerFactory.getLogger(JwtServiceImpl.class);
 
   private final String secretKet;

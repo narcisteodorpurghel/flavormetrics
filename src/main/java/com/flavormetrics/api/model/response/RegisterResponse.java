@@ -10,7 +10,6 @@ public record RegisterResponse(
   }
 
   public static class Builder {
-
     private UUID id;
     private String email;
     private String firstName;

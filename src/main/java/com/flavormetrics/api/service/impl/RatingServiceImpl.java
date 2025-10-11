@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RatingServiceImpl implements RatingService {
-
   private static final Logger log = LoggerFactory.getLogger(RatingServiceImpl.class);
 
   private final UserRepository userRepository;

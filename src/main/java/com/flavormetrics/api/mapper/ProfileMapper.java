@@ -10,17 +10,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class ProfileMapper {
-
   private ProfileMapper() {}
 
   public static ProfileDto toDto(Profile profile) {
     if (profile == null) {
       throw new IllegalArgumentException("Profile cannot be null");
     }
+
     Set<AllergyDto> allergies =
         Optional.ofNullable(profile.getAllergies()).orElse(Collections.emptySet()).stream()
             .map(AllergyDto::new)
             .collect(Collectors.toSet());
+    
     return new ProfileDto(
         profile.getId(),
         profile.getBio(),

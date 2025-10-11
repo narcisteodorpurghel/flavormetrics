@@ -39,7 +39,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
   private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
   private final AuthenticationManager authenticationManager;
@@ -71,11 +70,11 @@ public class AuthServiceImpl implements AuthService {
       throw new EmailInUseException(req.email());
     }
     User user = new User();
-    Email email = new Email(req.email());
     Authority authority =
         authorityRepository
             .findAuthorityByType(RoleType.ROLE_USER)
             .orElseThrow(() -> new EntityNotFoundException("Authority not found"));
+    Email email = new Email(req.email());
     email.setUser(user);
     user.setEmail(email);
     user.setAuthorities(Set.of(authority));

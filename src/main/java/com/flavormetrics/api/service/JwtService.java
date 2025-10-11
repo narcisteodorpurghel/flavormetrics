@@ -17,7 +17,7 @@ public interface JwtService {
   /**
    * @param refreshToken above to expire
    * @return new JWT token with fresh expire score
-   * @throws JwtException if @param refreshToken is not valid
+   * @throws JwtException if refreshToken is not valid
    */
   String generateNewAccessToken(String refreshToken) throws JwtException;
 

@@ -39,7 +39,6 @@ public class Profile {
       columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
-  @NotNull
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @JoinTable(
       joinColumns = @JoinColumn(name = "profile_id"),

@@ -28,7 +28,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "users")
 public class User {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -67,29 +66,25 @@ public class User {
       columnDefinition = "timestamp not null default current_timestamp")
   private LocalDateTime createdAt;
 
-  @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "user")
   private Profile profile;
 
-  @NotNull
   @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   @JoinColumn(name = "email_id", nullable = false, unique = true)
   private Email email;
 
-  @NotNull
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "authority_id"))
   private Set<Authority> authorities = new HashSet<>();
 
-  @NotNull
   @OneToMany(
       fetch = FetchType.LAZY,
       mappedBy = "user",
       cascade = {CascadeType.REMOVE})
   private Set<Rating> ratings = new HashSet<>();
 
-  @NotNull
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   private Set<Recipe> recipes = new HashSet<>();
 
