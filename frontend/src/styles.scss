@@ -14,7 +14,7 @@ html {
         primary: palette.$primary-palette,
         tertiary: palette.$tertiary-palette,
       ),
-      typography: Inter,
+      typography: Roboto,
       density: 0,
     )
   );
@@ -42,10 +42,11 @@ html,
 body {
   height: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 body {
   margin: 0;
-  font-family: Inter, 'Helvetica Neue', sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 // for broken outline input -> tailwind conflict

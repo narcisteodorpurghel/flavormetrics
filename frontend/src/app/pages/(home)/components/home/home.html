@@ -8,7 +8,6 @@
           type="text"
           placeholder="Search"
           matInput
-          (change)="($event.target.value)"
           [formControl]="search"
           [matAutocomplete]="auto"
           [matAutocompleteConnectedTo]="origin"
@@ -21,7 +20,7 @@
     </div>
 
     <mat-autocomplete #auto="matAutocomplete">
-      @for (option of filteredStreets | async; track option) {
+      @for (option of options$ | async; track option) {
         <mat-option [value]="option.name">{{ option.name }}</mat-option>
       }
     </mat-autocomplete>
@@ -31,71 +30,18 @@
       <h1 class="text-2xl">Discover Recipes</h1>
       <div class="w-full flex flex-row gap-4 overflow-x-scroll flex-1">
         @for (card of cards; track card) {
-          <mat-card class="min-w-[350px] h-fit" appearance="outlined">
-            <mat-card-header>
-              <div mat-card-avatar class="example-header-image"></div>
-              <mat-card-title>Shiba Inu</mat-card-title>
-              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-            </mat-card-header>
-            <img
-              mat-card-image
-              class="mb-4"
-              src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
-              alt="Photo of a Shiba Inu"
-            />
-            <mat-card-content>
-              <p>
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-                from Japan. A small, agile dog that copes very well with mountainous terrain, the
-                Shiba Inu was originally bred for hunting.
-              </p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button matButton>LIKE</button>
-              <button matButton>SHARE</button>
-            </mat-card-actions>
-          </mat-card>
+          <!-- <app-recipe-card /> -->
         }
       </div>
     </div>
     <div class="flex flex-col gap-4 items-start">
       <h1 class="text-2xl">Top rated recipes</h1>
       <mat-card appearance="filled" class="p-4 gap-4">
-        <mat-card class="min-w-[300px]" appearance="outlined">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
-        <mat-card class="min-w-[300px]" appearance="outlined">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
-        <mat-card class="min-w-[300px]" appearance="outlined">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
-        <mat-card class="min-w-[300px]" appearance="outlined">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
-        <mat-card class="min-w-[300px]" appearance="outlined">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>{{ 'by @Dog Bread' }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
+        <app-review-card (cardClicked)="cardClicked()" />
+        <app-review-card />
+        <app-review-card />
+        <app-review-card />
+        <app-review-card />
       </mat-card>
     </div>
   </div>

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Upload an image</h2>
+<mat-dialog-content>
+  <div class="flex flex-row overflow-hidden min-h-36 justify-center items-center w-full">
+    <button matButton="tonal" (click)="imageInput.click()">
+      <mat-icon>upload</mat-icon>
+      Add image
+    </button>
+    <input #imageInput hidden type="file" accept="image/*" (change)="onFileSelected($event)" />
+    <img [src]="imagePreview()" alt="Image Preview" />
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close>Cancel</button>
+  <button matButton [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions>

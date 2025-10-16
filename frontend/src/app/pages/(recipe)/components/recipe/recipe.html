@@ -1,1 +1,141 @@
-<p>recipe works!</p>
+<section class="w-full flex justify-center items-center my-16">
+  <form
+    [formGroup]="addRecipeForm"
+    class="w-full h-full max-w-[850px] lg:w-3/4 lg:h-3/4 flex flex-col gap-3 items-start py-8 px-6 rounded recipe-form"
+  >
+    <div class="flex flex-col gap-6 items-center self-center">
+      <h2 class="text-3xl font-bold">Create new recipe</h2>
+      <button matButton="outlined" (click)="openDialog()">
+        <mat-icon>camera</mat-icon>
+        Add Image
+      </button>
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold my-2">Recipe Title</h2>
+      <div class="flex flex-row gap-6 w-full">
+        <div class="flex flex-1 flex-col gap-2">
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>Recipe title</mat-label>
+            <input matInput type="text" formControlName="name" />
+            <mat-error>Recipe name is required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Estimated calories</mat-label>
+            <input matInput type="number" min="0" formControlName="estimatedCalories" />
+            <mat-icon matIconSuffix>bolt</mat-icon>
+            <mat-error>Estimated calories are required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-1 flex-col justify-between">
+          <mat-form-field appearance="outline">
+            <mat-label>Preparation Time (minute)</mat-label>
+            <input matInput type="number" min="0" formControlName="prepTimeMinutes" />
+            <mat-icon matIconSuffix>timelapse</mat-icon>
+            <mat-error>Preparation time is required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Cooking time (minutes)</mat-label>
+            <input matInput type="number" min="0" formControlName="cookTimeMinutes" />
+            <mat-icon matIconSuffix>av_timer</mat-icon>
+            <mat-error>Cooking time is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold my-2">Ingredients</h2>
+      <div class="flex flex-row gap-6 w-full" formArrayName="ingredients">
+        @for (item of addRecipeForm.controls.ingredients.controls; track $index) {
+          <div [formGroupName]="$index" class="gap-2 flex flex-col flex-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Ingredient name</mat-label>
+              <input matInput type="text" formControlName="name" />
+              <mat-error>Ingredient name is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Quantity</mat-label>
+              <input matInput type="number" min="0" formControlName="quantity" />
+              <mat-icon matIconSuffix>123</mat-icon>
+              <mat-error>Quantity is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div
+            class="flex-1 h-fit flex flex-col justify-between gap-3 p-2 pb-0.5 rounded border-[1px] unit-type"
+          >
+            <h3 class="font-semibold text-lg text-">Unit Type</h3>
+            <mat-chip-listbox
+              formControlName="unit"
+              class="flex flex-col"
+              aria-label="Cutest dog breeds"
+            >
+              @for (unit of unitValues; track unit) {
+                <mat-chip-option>{{ unit }}</mat-chip-option>
+              }
+            </mat-chip-listbox>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold my-2">Instructions</h2>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Instructions</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold my-2">Extra details</h2>
+      <div class="flex flex-row w-full gap-6">
+        <div class="flex-1 flex flex-col">
+          <mat-form-field appearance="outline">
+            <mat-label>Difficulty</mat-label>
+            <mat-select>
+              <mat-option value="option1">{{ 'option1' }}</mat-option>
+              <mat-option value="option2">{{ 'option2' }}</mat-option>
+              <mat-option value="option3">{{ 'option3' }}</mat-option>
+            </mat-select>
+            <mat-icon matIconSuffix>stairs_2</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Dietary Preferences</mat-label>
+            <mat-select>
+              <mat-option value="option1">{{ 'option1' }}</mat-option>
+              <mat-option value="option2">{{ 'option2' }}</mat-option>
+              <mat-option value="option3">{{ 'option3' }}</mat-option>
+            </mat-select>
+            <mat-icon matIconSuffix>dining</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Allergies</mat-label>
+            <mat-select>
+              <mat-option value="option1">{{ 'option1' }}</mat-option>
+              <mat-option value="option2">{{ 'option2' }}</mat-option>
+              <mat-option value="option3">{{ 'option3' }}</mat-option>
+            </mat-select>
+            <mat-icon matIconSuffix>block</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 flex flex-col">
+          <mat-form-field class="h-full" appearance="outline">
+            <mat-label>Tags</mat-label>
+            <mat-chip-grid #reactiveChipGrid aria-label="Enter reactive form keywords">
+              @for (keyword of reactiveKeywords(); track keyword) {
+                <mat-chip-row (removed)="removeReactiveKeyword(keyword)">
+                  #{{ keyword }}
+                  <button matChipRemove [attr.aria-label]="'remove reactive form' + keyword">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
+            <input
+              placeholder="New tag..."
+              [matChipInputFor]="reactiveChipGrid"
+              (matChipInputTokenEnd)="addReactiveKeyword($event)"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

@@ -1,16 +1,9 @@
-.example-card {
-  max-width: 400px;
-}
-
-.example-header-image {
-  background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
-
 .search-container {
-  background-image: url('./cover.png');
+  background-image: url('/assets/cover.png');
 }
 
-::ng-deep .mat-mdc-form-field-subscript-wrapper {
-  display: none !important;
+:host {
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
 }

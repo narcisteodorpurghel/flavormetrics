@@ -1,19 +1,12 @@
-enum DifficultyType {
-  easy,
-  medium,
-  hard,
-  chef,
-}
-
-enum UnitType {
-  grams,
-  kilograms,
-  milliliters,
-  liters,
-  pieces,
-  tablespoons,
-  teaspoons,
-  cups,
-  cloves,
-  slices,
+export enum UnitType {
+  GRAMS = 'grams',
+  KILOGRAMS = 'kilograms',
+  MILLILITERS = 'milliliters',
+  LITERS = 'liters',
+  PIECES = 'pieces',
+  TABLESPOONS = 'tablespoons',
+  TEASPOONS = 'teaspoons',
+  CUPS = 'cups',
+  CLOVES = 'cloves',
+  SLICES = 'slices',
 }

@@ -1,0 +1,39 @@
+<mat-card class="h-fit" appearance="outlined">
+  <mat-card-header>
+    <img
+      mat-card-avatar
+      [src]="recipe().imageUrl ?? defaultImageUrl"
+    />
+    <mat-card-title>{{ recipe().name }}</mat-card-title>
+    <mat-card-subtitle>{{ `@${recipe().difficulty}` }}</mat-card-subtitle>
+  </mat-card-header>
+  <img
+    mat-card-image
+    class="mb-4"
+    alt="Recipe image"
+    [src]="recipe().imageUrl ?? defaultImageUrl"
+  />
+  <mat-card-content>
+    <p class="h-28 overflow-hidden">
+      @if (recipe().instructions?.length!! >= 240) {
+        {{ `${recipe().instructions?.substring(0, 240)}...` }}
+      } @else if (!!recipe().instructions) {
+        {{ recipe().instructions }}
+      } @else {
+        {{ 'No instructions provided' }}
+      }
+    </p>
+    <mat-chip-set aria-label="Tag selection">
+      @for (tag of recipe().tags; track tag.id; let i = $index) {
+        @if (i === 4) {
+          break;
+        }
+        <mat-chip>{{ tag.name }}</mat-chip>
+      }
+    </mat-chip-set>
+  </mat-card-content>
+  <mat-card-actions>
+    <button matButton>LIKE</button>
+    <button matButton>SHARE</button>
+  </mat-card-actions>
+</mat-card>

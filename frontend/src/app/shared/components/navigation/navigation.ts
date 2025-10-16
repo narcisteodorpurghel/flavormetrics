@@ -7,6 +7,11 @@ import { MatCardModule } from '@angular/material/card';
 import { Logo } from '../logo/logo';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
+type NavLink = {
+  label: string;
+  link: string;
+};
+
 @Component({
   selector: 'app-navigation',
   imports: [
@@ -18,12 +23,25 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     MatTabsModule,
     RouterOutlet,
     MatCardModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './navigation.html',
   styleUrl: './navigation.scss',
 })
 export class Navigation {
-  links = ['Recipes', 'Share', 'Community', 'Home'];
-  activeLink = this.links[0];
+  links: NavLink[] = [
+    {
+      link: 'recipes',
+      label: 'Recipes',
+    },
+    {
+      link: 'share',
+      label: 'Share',
+    },
+    {
+      link: 'community',
+      label: 'Community',
+    },
+  ];
+  activeLink = this.links[0].link;
 }

@@ -6,6 +6,4 @@ import { Navigation } from './shared/components/navigation/navigation';
   imports: [Navigation],
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('frontend');
-}
+export class App {}

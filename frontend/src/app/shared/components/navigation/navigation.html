@@ -11,22 +11,21 @@
     >
       <mat-icon>menu</mat-icon>
     </button>
-    <a routerLink="/" (click)="activeLink = 'Home'">
+    <a routerLink="/" (click)="activeLink = ''">
       <app-logo />
     </a>
     <span class="flex-1"></span>
     <div class="flex flex-row h-auto">
-      @for (link of links; track link) {
-        @if (link != 'Home') {
-          <a
-            class="custom-tab-link"
-            mat-tab-link
-            (click)="activeLink = link"
-            [active]="activeLink == link"
-          >
-            {{ link }}
-          </a>
-        }
+      @for (navLink of links; track navLink) {
+        <a
+          class="custom-tab-link"
+          mat-tab-link
+          (click)="activeLink = navLink.link"
+          [active]="activeLink == navLink.link"
+          [routerLink]="navLink.link"
+        >
+          {{ navLink.label }}
+        </a>
       }
     </div>
     <div class="h-16 flex flex-col justify-center mr-4 ml-4">

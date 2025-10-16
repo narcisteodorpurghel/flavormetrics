@@ -1,0 +1,92 @@
+<mat-drawer-container class="w-full" [style.height]="'calc(100vh - 64px)'">
+  <mat-drawer #drawer class="p-4 flex flex-col justify-center items-start gap-4" mode="over">
+    <div class="w-full flex flex-row justify-between items-center pb-4">
+      <p class="text-lg">Filters</p>
+      <button matIconButton (click)="drawer.toggle()">
+        <mat-icon>arrow_back_ios_new</mat-icon>
+      </button>
+    </div>
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>Preparation Time Minutes</mat-label>
+      <input [formControl]="prepTimeMinutes" matInput type="number" min="0" placeholder="0" />
+    </mat-form-field>
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>CookTime Minutes</mat-label>
+      <input [formControl]="cookTimeMinutes" matInput type="number" min="0" placeholder="0" />
+    </mat-form-field>
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>Estimated Calories</mat-label>
+      <input [formControl]="estimatedCalories" matInput type="number" min="0" placeholder="0" />
+    </mat-form-field>
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>Difficulty</mat-label>
+      <mat-select>
+        @for (difficulty of difficultyOptions; track difficulty) {
+          <mat-option [value]="difficulty.value">{{ difficulty.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>Dietary Preferences</mat-label>
+      <mat-select>
+        @for (option of dietaryPreferencesOptions; track option) {
+          <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <div class="flex flex-row w-full justify-end">
+      <button matButton="filled" class="clear-btn">Clear</button>
+      <div class="mx-1"></div>
+      <button (click)="applyFilters()" matButton="filled">Apply</button>
+    </div>
+  </mat-drawer>
+  <div class="p-4 h-full flex flex-col justify-between items-start gap-4 overflow-y-scroll">
+    <div
+      class="w-full h-fit flex flex-row gap-2 items-center justify-start p-2 rounded-sm bg-amber-300 action-bar"
+    >
+      <button type="button" matButton="text" (click)="drawer.toggle()" class="min-h-10 max-w-fit">
+        Filters
+      </button>
+      <div class="flex flex-row gap-2 items-center justify-center">
+        <mat-checkbox></mat-checkbox>
+        <label for="sort" class="text-sm font-medium mr-2">Sort by:</label>
+        <select id="sort" class="border rounded px-2 py-1 text-sm">
+          <option value="name_asc" class="hover:text-amber-900">Name (A-Z)</option>
+          <option value="name_desc">Name (Z-A)</option>
+          <option value="calories_asc">Calories ↑</option>
+          <option value="calories_desc">Calories ↓</option>
+        </select>
+      </div>
+    </div>
+    <div class="w-full flex-1 justify-between flex flex-col gap-8">
+      @let recipesData = recipes | async;
+      @if (recipesData?.length! > 0) {
+        <div
+          class="flex-1 grid w-3xl:grid-cols-6 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-4"
+        >
+          @for (recipe of recipesData; track recipe.id) {
+            <app-recipe-card [recipe]="recipe" />
+          }
+        </div>
+      } @else {
+        <div class="flex-1 flex-col flex justify-center items-center gap-2">
+          <mat-icon class="empty-icon">cloud_download</mat-icon>
+          <h3 class="text-2xl font-bold">No Content Yet</h3>
+          <p>Apply some filters to find your favorites recipes</p>
+          <button matButton="tonal" class="mt-1" (click)="drawer.toggle()">
+            <mat-icon>call_missed</mat-icon>
+            Find recipes
+          </button>
+        </div>
+      }
+      <mat-paginator
+        [length]="100"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions"
+        aria-label="Select page"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</mat-drawer-container>

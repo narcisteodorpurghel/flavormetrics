@@ -1,0 +1,19 @@
+.clear-btn {
+  background-color: var(--mat-sys-error) !important;
+}
+
+.empty-icon {
+  height: 100px !important;
+  width: 100px !important;
+  font-size: 100px !important;
+}
+
+.action-bar {
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+:host {
+  ::ng-deep .mat-drawer-inner-container {
+    overflow: hidden;
+  }
+}
