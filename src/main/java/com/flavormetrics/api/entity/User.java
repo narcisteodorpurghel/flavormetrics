@@ -14,7 +14,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "users")
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -47,13 +47,17 @@ public class User {
   @Column(nullable = false)
   private String lastName;
 
-  @Column private boolean isAccountNonExpired = true;
+  @Column
+  private boolean isAccountNonExpired = true;
 
-  @Column private boolean isAccountNonLocked = true;
+  @Column
+  private boolean isAccountNonLocked = true;
 
-  @Column private boolean isCredentialsNonExpired = true;
+  @Column
+  private boolean isCredentialsNonExpired = true;
 
-  @Column private boolean isEnabled = true;
+  @Column
+  private boolean isEnabled = true;
 
   @UpdateTimestamp
   @Column(name = "updated_at", columnDefinition = "timestamp not null default current_timestamp")
@@ -61,9 +65,10 @@ public class User {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @OneToOne(mappedBy = "user")
@@ -75,14 +80,12 @@ public class User {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "authority_id")
+  )
   private Set<Authority> authorities = new HashSet<>();
 
-  @OneToMany(
-      fetch = FetchType.LAZY,
-      mappedBy = "user",
-      cascade = {CascadeType.REMOVE})
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = { CascadeType.REMOVE })
   private Set<Rating> ratings = new HashSet<>();
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -213,25 +216,28 @@ public class User {
     if (!(o instanceof User user)) {
       return false;
     }
-    return (isAccountNonExpired == user.isAccountNonExpired
-        && isAccountNonLocked == user.isAccountNonLocked
-        && isCredentialsNonExpired == user.isCredentialsNonExpired
-        && isEnabled == user.isEnabled
-        && Objects.equals(passwordHash, user.passwordHash)
-        && Objects.equals(firstName, user.firstName)
-        && Objects.equals(lastName, user.lastName));
+    return (
+      isAccountNonExpired == user.isAccountNonExpired &&
+      isAccountNonLocked == user.isAccountNonLocked &&
+      isCredentialsNonExpired == user.isCredentialsNonExpired &&
+      isEnabled == user.isEnabled &&
+      Objects.equals(passwordHash, user.passwordHash) &&
+      Objects.equals(firstName, user.firstName) &&
+      Objects.equals(lastName, user.lastName)
+    );
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        passwordHash,
-        firstName,
-        lastName,
-        isAccountNonExpired,
-        isAccountNonLocked,
-        isCredentialsNonExpired,
-        isEnabled);
+      passwordHash,
+      firstName,
+      lastName,
+      isAccountNonExpired,
+      isAccountNonLocked,
+      isCredentialsNonExpired,
+      isEnabled
+    );
   }
 
   @Override

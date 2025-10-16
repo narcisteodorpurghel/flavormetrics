@@ -1,10 +1,6 @@
 package com.flavormetrics.api.controller;
 
-import com.flavormetrics.api.model.DataWithPagination;
-import com.flavormetrics.api.model.RecipeByOwner;
-import com.flavormetrics.api.model.RecipeDto;
-import com.flavormetrics.api.model.RecipeFilter;
-import com.flavormetrics.api.model.UploadImage;
+import com.flavormetrics.api.model.*;
 import com.flavormetrics.api.model.request.AddRecipeRequest;
 import com.flavormetrics.api.model.response.ApiErrorResponse;
 import com.flavormetrics.api.service.RecipeService;
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/recipe")
 public class RecipeController {
+
   private static final Logger log = LoggerFactory.getLogger(RecipeController.class);
 
   private final RecipeService recipeService;
@@ -524,8 +520,27 @@ public class RecipeController {
   }
 
   @GetMapping("/byName")
-  public List<RecipeDto> searchByName(@RequestParam String name) {
+  public DataWithPagination<List<RecipeDto>> searchByName(
+      @RequestParam String name, @RequestParam int page, @RequestParam int size) {
     log.info("Searching for recipe by name {}", name);
-    return recipeService.searchByName(name);
+    return recipeService.searchByName(
+        new DataWithPagination<>(
+            name,
+            new Pagination() {
+              @Override
+              public int pageSize() {
+                return size;
+              }
+
+              @Override
+              public int pageNumber() {
+                return page;
+              }
+
+              @Override
+              public int totalPages() {
+                return 0;
+              }
+            }));
   }
 }

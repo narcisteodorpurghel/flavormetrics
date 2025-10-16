@@ -33,5 +33,5 @@ public interface RecipeService {
 
   RecipeDto updateRecipeImageById(UUID id, MultipartFile file);
 
-  List<RecipeDto> searchByName(String name);
+  DataWithPagination<List<RecipeDto>> searchByName(DataWithPagination<String> request);
 }

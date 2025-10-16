@@ -1,7 +1,6 @@
 package com.flavormetrics.api.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -11,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "ratings")
 public class Rating {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -24,9 +24,10 @@ public class Rating {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @ManyToOne(fetch = FetchType.LAZY)

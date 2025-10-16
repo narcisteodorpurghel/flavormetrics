@@ -14,12 +14,7 @@ import com.flavormetrics.api.factory.IngredientFactory;
 import com.flavormetrics.api.factory.RecipeFactory;
 import com.flavormetrics.api.factory.TagFactory;
 import com.flavormetrics.api.mapper.RecipeMapper;
-import com.flavormetrics.api.model.DataWithPagination;
-import com.flavormetrics.api.model.RecipeByOwner;
-import com.flavormetrics.api.model.RecipeDto;
-import com.flavormetrics.api.model.RecipeFilter;
-import com.flavormetrics.api.model.UploadImage;
-import com.flavormetrics.api.model.UserDetailsImpl;
+import com.flavormetrics.api.model.*;
 import com.flavormetrics.api.model.request.AddRecipeRequest;
 import com.flavormetrics.api.repository.RecipeRepository;
 import com.flavormetrics.api.repository.UserRepository;
@@ -33,6 +28,7 @@ import javax.imageio.ImageIO;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -148,9 +144,12 @@ public class RecipeServiceImpl implements RecipeService {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     return Optional.of(recipeRepository.findAll(pageable))
         .map(
-            p -> {
-              List<RecipeDto> dtos = p.getContent().stream().map(RecipeDto::new).toList();
-              return new DataWithPagination<>(dtos, p.getSize(), pageNumber, p.getTotalPages());
+            recipePage -> {
+              List<RecipeDto> dtos = recipePage.getContent().stream().map(RecipeDto::new).toList();
+              return new DataWithPagination<>(
+                  dtos,
+                  new PageResponse(
+                      pageNumber, pageNumber - 1, pageSize, recipePage.getTotalPages()));
             })
         .get();
   }
@@ -162,12 +161,11 @@ public class RecipeServiceImpl implements RecipeService {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     return Optional.of(recipeRepository.findByOwner(email, pageable))
         .map(
-            p ->
+            recipePage ->
                 new DataWithPagination<>(
-                    RecipeMapper.toRecipeByOwner(p.getContent(), email),
-                    pageSize,
-                    pageNumber,
-                    p.getTotalPages()))
+                    RecipeMapper.toRecipeByOwner(recipePage.getContent(), email),
+                    new PageResponse(
+                        pageSize, pageNumber - 1, pageSize, recipePage.getTotalPages())))
         .get();
   }
 
@@ -187,7 +185,8 @@ public class RecipeServiceImpl implements RecipeService {
         .map(
             p -> {
               List<RecipeDto> dtos = p.getContent().stream().map(RecipeDto::new).toList();
-              return new DataWithPagination<>(dtos, p.getSize(), pageNumber, p.getTotalPages());
+              return new DataWithPagination<>(
+                  dtos, new PageResponse(pageNumber, pageNumber - 1, pageSize, p.getTotalPages()));
             })
         .get();
   }
@@ -206,7 +205,8 @@ public class RecipeServiceImpl implements RecipeService {
             p -> {
               Set<RecipeDto> dtos =
                   p.getContent().stream().map(RecipeDto::new).collect(Collectors.toSet());
-              return new DataWithPagination<>(dtos, p.getSize(), pageNumber, p.getTotalPages());
+              return new DataWithPagination<>(
+                  dtos, new PageResponse(pageNumber, pageNumber - 1, pageSize, p.getTotalPages()));
             })
         .get();
   }
@@ -222,13 +222,13 @@ public class RecipeServiceImpl implements RecipeService {
     return recipeRepository
         .getRecipeByIdEager(id)
         .map(
-            r -> {
-              if (r.getUser() == null || !r.getUser().getId().equals(principal.id())) {
+            recipe -> {
+              if (recipe.getUser() == null || !recipe.getUser().getId().equals(principal.id())) {
                 throw new UnAuthorizedException("You're not authorized to perform this operation");
               }
               String url = imageKitService.upload(request.url(), request.name());
-              r.setImageUrl(url);
-              return r;
+              recipe.setImageUrl(url);
+              return recipe;
             })
         .map(recipeRepository::save)
         .map(RecipeDto::new)
@@ -254,13 +254,13 @@ public class RecipeServiceImpl implements RecipeService {
     return recipeRepository
         .getRecipeByIdEager(id)
         .map(
-            r -> {
-              if (r.getUser() == null || !r.getUser().getId().equals(principal.id())) {
+            recipe -> {
+              if (recipe.getUser() == null || !recipe.getUser().getId().equals(principal.id())) {
                 throw new UnAuthorizedException("You're not authorized to perform this operation");
               }
               String url = imageKitService.upload(file, file.getOriginalFilename());
-              r.setImageUrl(url);
-              return r;
+              recipe.setImageUrl(url);
+              return recipe;
             })
         .map(recipeRepository::save)
         .map(RecipeDto::new)
@@ -269,11 +269,28 @@ public class RecipeServiceImpl implements RecipeService {
 
   @Override
   @Transactional
-  public List<RecipeDto> searchByName(String name) {
-    if (name.isEmpty()) {
+  public DataWithPagination<List<RecipeDto>> searchByName(DataWithPagination<String> request) {
+    if (request.data().isEmpty()) {
       log.debug("searchByName: Recipe name is empty");
-      return Collections.emptyList();
+      return new DataWithPagination<>(
+          Collections.emptyList(), new PageResponse(0, 0, request.pagination().pageSize(), 0));
     }
-    return recipeRepository.searchByName(name).stream().map(RecipeMapper::toDto).toList();
+    PageRequest pageRequest =
+        PageRequest.of(request.pagination().pageNumber(), request.pagination().pageSize());
+
+    Page<Recipe> recipesAsPage =
+        recipeRepository.searchByName(request.data().toLowerCase(Locale.ROOT), pageRequest);
+
+    List<RecipeDto> recipes = recipesAsPage.stream().map(RecipeDto::new).toList();
+
+    int lastPage =
+        request.pagination().pageNumber() != 0 ? request.pagination().pageNumber() - 1 : 0;
+    return new DataWithPagination<>(
+        recipes,
+        new PageResponse(
+            request.pagination().pageNumber(),
+            lastPage,
+            request.pagination().pageSize(),
+            recipesAsPage.getTotalPages()));
   }
 }

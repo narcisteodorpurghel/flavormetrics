@@ -5,7 +5,6 @@ import com.flavormetrics.api.model.TagDto;
 import com.flavormetrics.api.model.projection.TagProjection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,9 +30,10 @@ public class Tag {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @ManyToMany(mappedBy = "tags")

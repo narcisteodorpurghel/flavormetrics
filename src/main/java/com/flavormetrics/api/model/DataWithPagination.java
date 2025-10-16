@@ -1,3 +1,3 @@
 package com.flavormetrics.api.model;
 
-public record DataWithPagination<T>(T data, int pageSize, int pageNumber, int totalPages) {}
+public record DataWithPagination<T>(T data, Pagination pagination) {}
