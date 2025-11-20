@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+
   private static final Logger log = LoggerFactory.getLogger(JwtServiceImpl.class);
 
   private final String secretKet;
@@ -40,14 +41,14 @@ public class JwtServiceImpl implements JwtService {
     }
     long expiration = type == JwtTokens.ACCESS ? ACCESS_TOKEN_EXPIRATION : REFRESH_TOKEN_EXPIRATION;
     return JWT.create()
-        .withJWTId(UUID.randomUUID().toString())
-        .withIssuer(ISSUER)
-        .withAudience(AUDIENCE)
-        .withSubject(email)
-        .withIssuedAt(now())
-        .withNotBefore(now())
-        .withExpiresAt(now().plusMillis(expiration))
-        .sign(getAlgorithm());
+      .withJWTId(UUID.randomUUID().toString())
+      .withIssuer(ISSUER)
+      .withAudience(AUDIENCE)
+      .withSubject(email)
+      .withIssuedAt(now())
+      .withNotBefore(now())
+      .withExpiresAt(now().plusMillis(expiration))
+      .sign(getAlgorithm());
   }
 
   @Override
@@ -73,14 +74,13 @@ public class JwtServiceImpl implements JwtService {
 
   @Override
   public DecodedJWT decodeToken(String token) throws JwtException {
-    JWTVerifier verifier =
-        JWT.require(getAlgorithm())
-            .withIssuer(ISSUER)
-            .withAudience(AUDIENCE)
-            .acceptNotBefore(5)
-            .acceptExpiresAt(5)
-            .withClaimPresence("jti")
-            .build();
+    JWTVerifier verifier = JWT.require(getAlgorithm())
+      .withIssuer(ISSUER)
+      .withAudience(AUDIENCE)
+      .acceptNotBefore(5)
+      .acceptExpiresAt(5)
+      .withClaimPresence("jti")
+      .build();
     try {
       return verifier.verify(token);
     } catch (JWTVerificationException e) {
@@ -113,13 +113,13 @@ public class JwtServiceImpl implements JwtService {
       return null;
     }
     return Optional.ofNullable(request.getCookies())
-        .map(Arrays::asList)
-        .orElse(Collections.emptyList())
-        .stream()
-        .filter(c -> cookieName.equals(c.getName()))
-        .findFirst()
-        .map(Cookie::getValue)
-        .orElse(null);
+      .map(Arrays::asList)
+      .orElse(Collections.emptyList())
+      .stream()
+      .filter(c -> cookieName.equals(c.getName()))
+      .findFirst()
+      .map(Cookie::getValue)
+      .orElse(null);
   }
 
   @Override

@@ -6,6 +6,7 @@ import com.flavormetrics.api.model.RecipeDto;
 import java.util.List;
 
 public final class RecipeMapper {
+
   RecipeMapper() {}
 
   public static RecipeByOwner toRecipeByOwner(List<Recipe> recipes, String owner) {

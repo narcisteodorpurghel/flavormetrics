@@ -54,14 +54,14 @@ class RatingMapperTest {
   @Test
   void testIf_toRatingDto_throwsExceptionWhenNull() {
     assertThatThrownBy(() -> RatingMapper.toRatingDto(null))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Rating cannot be null");
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("Rating cannot be null");
   }
 
   @Test
   void testIf_toRatingWithScore_throwsExceptionWhenNull() {
     assertThatThrownBy(() -> RatingMapper.toRatingWithScore(null))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Rating cannot be null");
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("Rating cannot be null");
   }
 }

@@ -33,7 +33,7 @@ class RecipeMapperTest {
   @Test
   void toRecipeByOwner_shouldThrowWhenNull() {
     assertThatThrownBy(() -> RecipeMapper.toRecipeByOwner(null, "owner"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Recipe cannot be null");
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("Recipe cannot be null");
   }
 }

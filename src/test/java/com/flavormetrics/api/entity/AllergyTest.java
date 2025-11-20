@@ -129,9 +129,10 @@ class AllergyTest {
       originalProfiles.add(new Profile());
 
       assertEquals(
-          1,
-          allergy.getProfiles().size(),
-          "Internal set should not be affected by changes to the original set.");
+        1,
+        allergy.getProfiles().size(),
+        "Internal set should not be affected by changes to the original set."
+      );
     }
 
     @Test
@@ -142,8 +143,9 @@ class AllergyTest {
       retrievedProfiles.add(new Profile());
 
       assertTrue(
-          allergy.getProfiles().isEmpty(),
-          "Internal set should not be modifiable from the outside.");
+        allergy.getProfiles().isEmpty(),
+        "Internal set should not be modifiable from the outside."
+      );
     }
   }
 

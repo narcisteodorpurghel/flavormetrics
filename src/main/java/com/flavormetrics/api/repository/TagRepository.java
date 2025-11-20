@@ -11,11 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, UUID> {
   @Query(
-      """
+    """
     SELECT t.id AS id,
            t.name AS name
     FROM Tag t
     WHERE t.name IN (?1)
-    """)
+    """
+  )
   List<TagProjection> getIdsAndNames(List<String> names);
 }

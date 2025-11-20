@@ -28,9 +28,10 @@ public class Email {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @OneToOne(mappedBy = "email")

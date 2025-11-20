@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
   private final UserRepository userRepository;
 
   public UserServiceImpl(UserRepository userRepository) {
@@ -24,32 +25,33 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true)
   public Set<UserDto> findAllUsers() {
-    return userRepository.findAllComplete().stream()
-        .map(UserMapper::toUserDto)
-        .collect(Collectors.toUnmodifiableSet());
+    return userRepository
+      .findAllComplete()
+      .stream()
+      .map(UserMapper::toUserDto)
+      .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
   @Transactional(readOnly = true)
   public UserDto findUserById(UUID id) {
     return userRepository
-        .findByIdEager(id)
-        .map(UserMapper::toUserDto)
-        .orElseThrow(UserNotFoundException::new);
+      .findByIdEager(id)
+      .map(UserMapper::toUserDto)
+      .orElseThrow(UserNotFoundException::new);
   }
 
   @Override
   @Transactional
   public UserDetailsImpl lockUserById(UUID id) {
     return userRepository
-        .findById(id)
-        .map(
-            u -> {
-              u.setAccountNonLocked(false);
-              return userRepository.save(u);
-            })
-        .map(UserDetailsImpl::new)
-        .orElseThrow(UserNotFoundException::new);
+      .findById(id)
+      .map(u -> {
+        u.setAccountNonLocked(false);
+        return userRepository.save(u);
+      })
+      .map(UserDetailsImpl::new)
+      .orElseThrow(UserNotFoundException::new);
   }
 
   @Override
@@ -66,13 +68,12 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserDetailsImpl unlockUserById(UUID id) {
     return userRepository
-        .findById(id)
-        .map(
-            u -> {
-              u.setAccountNonLocked(true);
-              return userRepository.save(u);
-            })
-        .map(UserDetailsImpl::new)
-        .orElseThrow(UserNotFoundException::new);
+      .findById(id)
+      .map(u -> {
+        u.setAccountNonLocked(true);
+        return userRepository.save(u);
+      })
+      .map(UserDetailsImpl::new)
+      .orElseThrow(UserNotFoundException::new);
   }
 }

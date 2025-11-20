@@ -72,7 +72,7 @@ class JwtServiceImplTest {
   void getCookieValueFromRequest_cookieExists_shouldReturnValue() {
     HttpServletRequest request = mock(HttpServletRequest.class);
     Cookie cookie = new Cookie("Auth", "jwt-token");
-    when(request.getCookies()).thenReturn(new Cookie[] {cookie});
+    when(request.getCookies()).thenReturn(new Cookie[] { cookie });
 
     String result = jwtService.getCookieValueFromRequest(request, "Auth");
     assertEquals("jwt-token", result);
@@ -101,15 +101,14 @@ class JwtServiceImplTest {
 
   @Test
   void decodeToken_expiredToken_shouldThrowJwtTokenExpiredException() {
-    String expiredToken =
-        JWT.create()
-            .withJWTId("test-id")
-            .withIssuer(ISSUER)
-            .withAudience(AUDIENCE)
-            .withSubject("test@email.com")
-            .withIssuedAt(Instant.now().minusSeconds(3600))
-            .withExpiresAt(Instant.now().minusSeconds(1800))
-            .sign(Algorithm.HMAC256(secret));
+    String expiredToken = JWT.create()
+      .withJWTId("test-id")
+      .withIssuer(ISSUER)
+      .withAudience(AUDIENCE)
+      .withSubject("test@email.com")
+      .withIssuedAt(Instant.now().minusSeconds(3600))
+      .withExpiresAt(Instant.now().minusSeconds(1800))
+      .sign(Algorithm.HMAC256(secret));
 
     assertThrows(JwtTokenExpiredException.class, () -> jwtService.decodeToken(expiredToken));
   }

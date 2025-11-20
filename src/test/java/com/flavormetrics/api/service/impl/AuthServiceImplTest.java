@@ -35,31 +35,46 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceImplTest {
 
-  @Mock private AuthenticationManager authManager;
+  @Mock
+  private AuthenticationManager authManager;
 
-  @Mock private JwtService jwtService;
+  @Mock
+  private JwtService jwtService;
 
-  @Mock private UserRepository userRepo;
+  @Mock
+  private UserRepository userRepo;
 
-  @Mock private PasswordEncoder passwordEncoder;
+  @Mock
+  private PasswordEncoder passwordEncoder;
 
-  @Mock private AuthorityRepository authorityRepo;
+  @Mock
+  private AuthorityRepository authorityRepo;
 
-  @Mock private HttpServletResponse httpResponse;
+  @Mock
+  private HttpServletResponse httpResponse;
 
   private AuthServiceImpl authService;
 
   @BeforeEach
   void setUp() {
-    authService =
-        new AuthServiceImpl(
-            authManager, jwtService, userRepo, passwordEncoder, authorityRepo, "dev");
+    authService = new AuthServiceImpl(
+      authManager,
+      jwtService,
+      userRepo,
+      passwordEncoder,
+      authorityRepo,
+      "dev"
+    );
   }
 
   @Test
   void signup_validRequest_returnsResponse() {
-    var req =
-        new RegisterRequest("test@email.com", "TestFirstName", "TestLastName", "testPassword");
+    var req = new RegisterRequest(
+      "test@email.com",
+      "TestFirstName",
+      "TestLastName",
+      "testPassword"
+    );
     when(userRepo.existsByEmail_Address(req.email())).thenReturn(false);
     Authority authority = new Authority(RoleType.ROLE_USER);
     when(authorityRepo.findAuthorityByType(RoleType.ROLE_USER)).thenReturn(Optional.of(authority));
@@ -77,19 +92,28 @@ class AuthServiceImplTest {
 
   @Test
   void signup_emailExists_throwsEmailInUseException() {
-    var req =
-        new RegisterRequest("test@email.com", "TestFirstName", "TestLastName", "testPassword");
+    var req = new RegisterRequest(
+      "test@email.com",
+      "TestFirstName",
+      "TestLastName",
+      "testPassword"
+    );
     when(userRepo.existsByEmail_Address(req.email())).thenReturn(true);
     assertThrows(EmailInUseException.class, () -> authService.signup(req));
   }
 
   @Test
   void signup_authorityNotFound_throwsEntityNotFoundException() {
-    var req =
-        new RegisterRequest("test@email.com", "TestFirstName", "TestLastName", "testPassword");
+    var req = new RegisterRequest(
+      "test@email.com",
+      "TestFirstName",
+      "TestLastName",
+      "testPassword"
+    );
     when(userRepo.existsByEmail_Address(req.email())).thenReturn(false);
-    when(authorityRepo.findAuthorityByType(any()))
-        .thenThrow(new EntityNotFoundException("Authority not found"));
+    when(authorityRepo.findAuthorityByType(any())).thenThrow(
+      new EntityNotFoundException("Authority not found")
+    );
     assertThrows(EntityNotFoundException.class, () -> authService.signup(req));
   }
 
@@ -103,10 +127,12 @@ class AuthServiceImplTest {
     Authentication auth = mock(Authentication.class);
     when(authManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(auth);
     when(auth.getPrincipal()).thenReturn(userDetails);
-    when(jwtService.generateToken(eq(req.email()), eq(JwtTokens.ACCESS)))
-        .thenReturn("access-token");
-    when(jwtService.generateToken(eq(req.email()), eq(JwtTokens.REFRESH)))
-        .thenReturn("refresh-token");
+    when(jwtService.generateToken(eq(req.email()), eq(JwtTokens.ACCESS))).thenReturn(
+      "access-token"
+    );
+    when(jwtService.generateToken(eq(req.email()), eq(JwtTokens.REFRESH))).thenReturn(
+      "refresh-token"
+    );
     UserDetailsImpl result = authService.authenticate(req, httpResponse);
     assertEquals(userDetails.getUsername(), result.getUsername());
     verify(httpResponse, atLeastOnce()).addHeader(eq("Set-Cookie"), contains("accessToken"));

@@ -1,0 +1,27 @@
+{
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": "*.java",
+      "options": {
+        "plugins": ["prettier-plugin-java"],
+        "tabWidth": 2,
+        "printWidth": 100
+      }
+    },
+    {
+      "files": "*.sql",
+      "options": {
+        "plugins": ["prettier-plugin-sql"],
+        "tabWidth": 2,
+        "printWidth": 100,
+        "sqlFormatter": {
+          "keywordCase": "upper",
+          "indentStyle": "standard",
+          "linesBetweenQueries": 1
+        }
+      }
+    }
+  ]
+}

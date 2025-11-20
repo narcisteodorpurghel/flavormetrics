@@ -26,9 +26,11 @@ class UserServiceImplTest {
 
   private static final UUID USER_ID = UUID.randomUUID();
 
-  @Mock private UserRepository userRepository;
+  @Mock
+  private UserRepository userRepository;
 
-  @InjectMocks private UserServiceImpl userService;
+  @InjectMocks
+  private UserServiceImpl userService;
 
   private User user;
 
@@ -78,8 +80,9 @@ class UserServiceImplTest {
 
   @Test
   void findUserById_ThrowsException() {
-    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID()))
-        .isInstanceOf(UserNotFoundException.class);
+    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID())).isInstanceOf(
+      UserNotFoundException.class
+    );
   }
 
   @Test
@@ -93,8 +96,9 @@ class UserServiceImplTest {
 
   @Test
   void lockUserById_ThrowsException() {
-    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID()))
-        .isInstanceOf(UserNotFoundException.class);
+    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID())).isInstanceOf(
+      UserNotFoundException.class
+    );
   }
 
   @Test
@@ -105,8 +109,9 @@ class UserServiceImplTest {
 
   @Test
   void deleteUserById_ThrowsException() {
-    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID()))
-        .isInstanceOf(UserNotFoundException.class);
+    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID())).isInstanceOf(
+      UserNotFoundException.class
+    );
   }
 
   @Test
@@ -120,7 +125,8 @@ class UserServiceImplTest {
 
   @Test
   void unlockUserById_ThrowsException() {
-    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID()))
-        .isInstanceOf(UserNotFoundException.class);
+    assertThatThrownBy(() -> userService.findUserById(UUID.randomUUID())).isInstanceOf(
+      UserNotFoundException.class
+    );
   }
 }

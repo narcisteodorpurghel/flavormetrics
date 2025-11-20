@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthenticationFilter extends JwtFilter {
+
   private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
   private final JwtService jwtService;
@@ -39,10 +40,10 @@ public class JwtAuthenticationFilter extends JwtFilter {
 
   @Override
   public void doFilterInternal(
-      @NonNull HttpServletRequest request,
-      @NonNull HttpServletResponse response,
-      @NonNull FilterChain filterChain)
-      throws ServletException, IOException {
+    @NonNull HttpServletRequest request,
+    @NonNull HttpServletResponse response,
+    @NonNull FilterChain filterChain
+  ) throws ServletException, IOException {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     if (auth != null) {
@@ -140,14 +141,12 @@ public class JwtAuthenticationFilter extends JwtFilter {
   }
 
   protected boolean isPublicEndpoint(String endpoint) {
-    return PUBLIC_ENDPOINTS.stream()
-        .anyMatch(
-            pe -> {
-              if (pe.endsWith("/**")) {
-                return endpoint.startsWith(pe.substring(0, pe.length() - 3));
-              }
-              return endpoint.equals(pe);
-            });
+    return PUBLIC_ENDPOINTS.stream().anyMatch(pe -> {
+      if (pe.endsWith("/**")) {
+        return endpoint.startsWith(pe.substring(0, pe.length() - 3));
+      }
+      return endpoint.equals(pe);
+    });
   }
 
   protected void setAuthentication(String email) {
@@ -155,8 +154,11 @@ public class JwtAuthenticationFilter extends JwtFilter {
       throw new IllegalArgumentException("Email cannot be null");
     }
     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-    var authToken =
-        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    var authToken = new UsernamePasswordAuthenticationToken(
+      userDetails,
+      null,
+      userDetails.getAuthorities()
+    );
     SecurityContextHolder.getContext().setAuthentication(authToken);
   }
 }

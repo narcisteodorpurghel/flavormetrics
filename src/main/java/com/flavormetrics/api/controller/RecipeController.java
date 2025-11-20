@@ -49,95 +49,109 @@ public class RecipeController {
 
   @Operation(summary = "Create e new recipe", description = "Requires to be authenticated")
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "201",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "201",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @PostMapping("/create")
   public ResponseEntity<Map<String, String>> create(@RequestBody @Valid AddRecipeRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(
-            Map.of(
-                "message",
-                "Recipe created successfully",
-                "id",
-                String.valueOf(recipeService.create(request))));
+    return ResponseEntity.status(HttpStatus.CREATED).body(
+      Map.of(
+        "message",
+        "Recipe created successfully",
+        "id",
+        String.valueOf(recipeService.create(request))
+      )
+    );
   }
 
   @Operation(
-      summary = "Get a recipe by given id",
-      description = "Can be accessed without authentication")
+    summary = "Get a recipe by given id",
+    description = "Can be accessed without authentication"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Recipe not found",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "404",
+        description = "Recipe not found",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @GetMapping("/byId/{id}")
   public ResponseEntity<RecipeDto> getById(@PathVariable("id") UUID id) {
     return ResponseEntity.ok(recipeService.getById(id));
@@ -145,96 +159,111 @@ public class RecipeController {
 
   @Operation(summary = "Update a recipe by id", description = "Requires to be authenticated")
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Recipe not found",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "404",
+        description = "Recipe not found",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @PutMapping("/update/{id}")
   public ResponseEntity<RecipeDto> updateRecipeById(
-      @PathVariable UUID id, @RequestBody @Valid AddRecipeRequest request) {
+    @PathVariable UUID id,
+    @RequestBody @Valid AddRecipeRequest request
+  ) {
     RecipeDto responseBody = recipeService.updateById(id, request);
     return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
   @Operation(summary = "Delete a recipe by id", description = "Requires to be authenticated")
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = String.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Recipe not found",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = String.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "404",
+        description = "Recipe not found",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
     recipeService.deleteById(id);
@@ -243,304 +272,358 @@ public class RecipeController {
 
   @Operation(summary = "Get all recipes", description = "Can be accessed without authentication")
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @GetMapping("/all")
   public ResponseEntity<DataWithPagination<List<RecipeDto>>> getALL(
-      @RequestParam("pageNumber") @Min(0) int pageNumber,
-      @RequestParam("pageSize") @Min(1) int pageSize) {
+    @RequestParam("pageNumber") @Min(0) int pageNumber,
+    @RequestParam("pageSize") @Min(1) int pageSize
+  ) {
     return ResponseEntity.ok(recipeService.findAll(pageNumber, pageSize));
   }
 
   @Operation(
-      summary = "Get all recipes by user's email",
-      description = "Can be accessed without authentication")
+    summary = "Get all recipes by user's email",
+    description = "Can be accessed without authentication"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "404",
-            description = "User not found",
-            content =
-                @Content(
-                    mediaType = " application / json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "404",
+        description = "User not found",
+        content = @Content(
+          mediaType = " application / json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @GetMapping("/byOwner/{email}")
   public ResponseEntity<DataWithPagination<RecipeByOwner>> getAllByUserEmail(
-      @PathVariable("email") @NotBlank @Email(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")
-          String email,
-      @RequestParam("pageNumber") @Min(0) int pageNumber,
-      @RequestParam("pageSize") @Min(1) int pageSize) {
+    @PathVariable("email") @NotBlank @Email(
+      regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+"
+    ) String email,
+    @RequestParam("pageNumber") @Min(0) int pageNumber,
+    @RequestParam("pageSize") @Min(1) int pageSize
+  ) {
     return ResponseEntity.ok(recipeService.findAllByUserEmail(email, pageNumber, pageSize));
   }
 
   @Operation(
-      summary = "Get all recipes by specified filter",
-      description = "Can be accessed without authentication")
+    summary = "Get all recipes by specified filter",
+    description = "Can be accessed without authentication"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @PostMapping("/byFilter")
   public ResponseEntity<DataWithPagination<List<RecipeDto>>> getAllByFilter(
-      @RequestBody @Valid RecipeFilter filter,
-      @RequestParam("pageNumber") @Min(0) int pageNumber,
-      @RequestParam("pageSize") @Min(1) int pageSize) {
+    @RequestBody @Valid RecipeFilter filter,
+    @RequestParam("pageNumber") @Min(0) int pageNumber,
+    @RequestParam("pageSize") @Min(1) int pageSize
+  ) {
     return ResponseEntity.ok(recipeService.findAllByRecipeFilter(filter, pageNumber, pageSize));
   }
 
   @Operation(
-      summary = "Get recommendations by profile",
-      description = "Requires to be authenticated and a profile created")
+    summary = "Get recommendations by profile",
+    description = "Requires to be authenticated and a profile created"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = DataWithPagination.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Unauthorized",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = DataWithPagination.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "403",
+        description = "Unauthorized",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @GetMapping("/recommendations")
   public ResponseEntity<DataWithPagination<Set<RecipeDto>>> getRecommendations(
-      @RequestParam @Min(0) int pageNumber, @RequestParam @Min(1) int pageSize) {
+    @RequestParam @Min(0) int pageNumber,
+    @RequestParam @Min(1) int pageSize
+  ) {
     return ResponseEntity.ok(recipeService.getRecommendations(pageNumber, pageSize));
   }
 
   @Operation(
-      summary = "Update a recipe's image url by given id",
-      description =
-          "Requires to be authenticated as nutritionist and to be the owner of the recipe")
+    summary = "Update a recipe's image url by given id",
+    description = "Requires to be authenticated as nutritionist and to be the owner of the recipe"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @PatchMapping("/uploadImage/byUrl/{id}")
   public ResponseEntity<RecipeDto> uploadByUrl(
-      @RequestBody @Valid UploadImage request, @PathVariable UUID id) {
+    @RequestBody @Valid UploadImage request,
+    @PathVariable UUID id
+  ) {
     return ResponseEntity.ok(recipeService.updateRecipeImageById(id, request));
   }
 
   @Operation(
-      summary = "Update a recipe's image url by given id",
-      description =
-          "Requires to be authenticated as nutritionist and to be the owner of the recipe")
+    summary = "Update a recipe's image url by given id",
+    description = "Requires to be authenticated as nutritionist and to be the owner of the recipe"
+  )
   @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Operation success",
-            content =
-                @Content(
-                    schema = @Schema(implementation = RecipeDto.class),
-                    mediaType = "application/json")),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request data",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthenticated",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = String.class))),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ApiErrorResponse.class))),
-      })
+    value = {
+      @ApiResponse(
+        responseCode = "200",
+        description = "Operation success",
+        content = @Content(
+          schema = @Schema(implementation = RecipeDto.class),
+          mediaType = "application/json"
+        )
+      ),
+      @ApiResponse(
+        responseCode = "400",
+        description = "Invalid request data",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "401",
+        description = "Unauthenticated",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = String.class)
+        )
+      ),
+      @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(implementation = ApiErrorResponse.class)
+        )
+      ),
+    }
+  )
   @PatchMapping(
-      value = "/uploadImage/byMultipartFile/{id}",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    value = "/uploadImage/byMultipartFile/{id}",
+    consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+  )
   public ResponseEntity<RecipeDto> uploadByMultipartFile(
-      @Parameter(description = "Image file to upload", required = true) @RequestBody
-          MultipartFile file,
-      @PathVariable UUID id) {
+    @Parameter(
+      description = "Image file to upload",
+      required = true
+    ) @RequestBody MultipartFile file,
+    @PathVariable UUID id
+  ) {
     return ResponseEntity.ok(recipeService.updateRecipeImageById(id, file));
   }
 
   @GetMapping("/byName")
   public DataWithPagination<List<RecipeDto>> searchByName(
-      @RequestParam String name, @RequestParam int page, @RequestParam int size) {
+    @RequestParam String name,
+    @RequestParam int page,
+    @RequestParam int size
+  ) {
     log.info("Searching for recipe by name {}", name);
     return recipeService.searchByName(
-        new DataWithPagination<>(
-            name,
-            new Pagination() {
-              @Override
-              public int pageSize() {
-                return size;
-              }
+      new DataWithPagination<>(
+        name,
+        new Pagination() {
+          @Override
+          public int pageSize() {
+            return size;
+          }
 
-              @Override
-              public int pageNumber() {
-                return page;
-              }
+          @Override
+          public int pageNumber() {
+            return page;
+          }
 
-              @Override
-              public int totalPages() {
-                return 0;
-              }
-            }));
+          @Override
+          public int totalPages() {
+            return 0;
+          }
+        }
+      )
+    );
   }
 }

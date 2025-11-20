@@ -15,26 +15,23 @@ public class TestSecurityConfig {
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.authorizeHttpRequests(
-            request -> {
-              request
-                  .requestMatchers(EndpointsConstants.PUBLIC_ENDPOINTS.toArray(new String[0]))
-                  .permitAll();
-              request.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
-              request.anyRequest().authenticated();
-            })
-        .cors(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable)
-        .logout(AbstractHttpConfigurer::disable)
-        .exceptionHandling(
-            eh -> {
-              eh.authenticationEntryPoint(
-                  (req, res, e) -> {
-                    res.sendError(401, e.getMessage());
-                  });
-            })
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .build();
+    return http
+      .authorizeHttpRequests(request -> {
+        request
+          .requestMatchers(EndpointsConstants.PUBLIC_ENDPOINTS.toArray(new String[0]))
+          .permitAll();
+        request.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
+        request.anyRequest().authenticated();
+      })
+      .cors(AbstractHttpConfigurer::disable)
+      .csrf(AbstractHttpConfigurer::disable)
+      .logout(AbstractHttpConfigurer::disable)
+      .exceptionHandling(eh -> {
+        eh.authenticationEntryPoint((req, res, e) -> {
+          res.sendError(401, e.getMessage());
+        });
+      })
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .build();
   }
 }

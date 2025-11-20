@@ -13,7 +13,6 @@ import com.flavormetrics.api.entity.User;
 import com.flavormetrics.api.enums.DietaryPreferenceType;
 import com.flavormetrics.api.enums.DifficultyType;
 import com.flavormetrics.api.enums.UnitType;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -29,17 +28,23 @@ class RecipeRepositoryTest {
 
   private static final String EMAIL_ADDRESS = "mock-email@mock.com";
 
-  @Autowired private RecipeRepository recipeRepository;
+  @Autowired
+  private RecipeRepository recipeRepository;
 
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-  @Autowired private IngredientRepository ingredientRepository;
+  @Autowired
+  private IngredientRepository ingredientRepository;
 
-  @Autowired private TagRepository tagRepository;
+  @Autowired
+  private TagRepository tagRepository;
 
-  @Autowired private ProfileRepository profileRepository;
+  @Autowired
+  private ProfileRepository profileRepository;
 
-  @Autowired private AllergyRepository allergyRepository;
+  @Autowired
+  private AllergyRepository allergyRepository;
 
   private User user;
   private Recipe recipe;
@@ -105,9 +110,14 @@ class RecipeRepositoryTest {
 
   @Test
   void testIf_FindAllByFilter_ReturnsNotEmpty() {
-    Page<Recipe> page =
-        recipeRepository.findAllByFilter(
-            10, 300, 10, DifficultyType.easy, DietaryPreferenceType.vegan, PageRequest.of(0, 10));
+    Page<Recipe> page = recipeRepository.findAllByFilter(
+      10,
+      300,
+      10,
+      DifficultyType.easy,
+      DietaryPreferenceType.vegan,
+      PageRequest.of(0, 10)
+    );
     assertThat(page.getContent()).isNotEmpty();
     assertEquals(1, page.getTotalElements());
     assertEquals(recipe, page.getContent().getFirst());
@@ -115,9 +125,14 @@ class RecipeRepositoryTest {
 
   @Test
   void testIf_FindAllByFilter_ReturnsEmpty() {
-    Page<Recipe> page =
-        recipeRepository.findAllByFilter(
-            100, 199, 5, DifficultyType.easy, DietaryPreferenceType.vegan, PageRequest.of(0, 10));
+    Page<Recipe> page = recipeRepository.findAllByFilter(
+      100,
+      199,
+      5,
+      DifficultyType.easy,
+      DietaryPreferenceType.vegan,
+      PageRequest.of(0, 10)
+    );
     assertThat(page.getContent()).isEmpty();
   }
 
@@ -130,8 +145,10 @@ class RecipeRepositoryTest {
 
   @Test
   void testIf_FindByOwner_ReturnsEmpty() {
-    Page<Recipe> page =
-        recipeRepository.findByOwner("mock-email-with-no-recipes", PageRequest.of(0, 5));
+    Page<Recipe> page = recipeRepository.findByOwner(
+      "mock-email-with-no-recipes",
+      PageRequest.of(0, 5)
+    );
     assertThat(page.getContent()).isEmpty();
   }
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class TagFactory {
+
   private final TagRepository tagRepository;
 
   TagFactory(TagRepository tagRepository) {
@@ -24,21 +25,23 @@ public class TagFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    List<String> tagsName =
-        Optional.ofNullable(req.tags()).orElse(Collections.emptySet()).stream()
-            .map(TagDto::name)
-            .toList();
+    List<String> tagsName = Optional.ofNullable(req.tags())
+      .orElse(Collections.emptySet())
+      .stream()
+      .map(TagDto::name)
+      .toList();
 
     List<TagProjection> existing = tagRepository.getIdsAndNames(tagsName);
     List<String> existingNames = existing.stream().map(TagProjection::getName).toList();
 
     List<Tag> newTags;
     if (!existing.isEmpty()) {
-      newTags =
-          Optional.ofNullable(req.tags()).orElse(Collections.emptySet()).stream()
-              .filter(t -> !existingNames.contains(t.name()))
-              .map(Tag::new)
-              .toList();
+      newTags = Optional.ofNullable(req.tags())
+        .orElse(Collections.emptySet())
+        .stream()
+        .filter(t -> !existingNames.contains(t.name()))
+        .map(Tag::new)
+        .toList();
     } else {
       newTags = tagsName.stream().map(Tag::new).toList();
     }

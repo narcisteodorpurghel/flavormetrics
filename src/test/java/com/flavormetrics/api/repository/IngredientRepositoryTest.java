@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.flavormetrics.api.entity.Ingredient;
 import com.flavormetrics.api.enums.UnitType;
 import com.flavormetrics.api.model.IngredientDto;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class IngredientRepositoryTest {
 
-  @Autowired private IngredientRepository ingredientRepository;
+  @Autowired
+  private IngredientRepository ingredientRepository;
 
   @Test
   void testIf_getIdsAndNames_returnsPopulatedIdsAndNames() {

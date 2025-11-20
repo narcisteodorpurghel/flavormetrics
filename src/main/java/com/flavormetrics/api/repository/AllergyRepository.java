@@ -11,11 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AllergyRepository extends JpaRepository<Allergy, UUID> {
   @Query(
-      """
+    """
     SELECT a.id AS id,
            a.name AS name
     FROM Allergy a
     WHERE a.name IN (?1)
-    """)
+    """
+  )
   List<AllergyProjection> getIdsAndNames(List<String> names);
 }

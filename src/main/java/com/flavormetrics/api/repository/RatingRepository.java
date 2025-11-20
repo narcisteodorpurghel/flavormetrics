@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, UUID> {
   @Query(
-      """
+    """
     SELECT new com.flavormetrics.api.model.RatingDto(
         rc.id,
         e.address,
@@ -22,20 +22,22 @@ public interface RatingRepository extends JpaRepository<Rating, UUID> {
     LEFT JOIN r.user u
     LEFT JOIN u.email e
     WHERE u.id = ?1
-    """)
+    """
+  )
   Set<RatingDto> findAllRatingsByUserId(UUID userId);
 
   @Query(
-      """
+    """
     SELECT (COUNT(r) > 0)
     FROM Rating r
     WHERE r.user.id = ?1
     AND r.recipe.id = ?2
-    """)
+    """
+  )
   boolean isRecipeAlreadyRatedByUser(UUID userId, UUID recipeId);
 
   @Query(
-      """
+    """
     SELECT new com.flavormetrics.api.model.RatingDto(
         rc.id,
         e.address,
@@ -46,6 +48,7 @@ public interface RatingRepository extends JpaRepository<Rating, UUID> {
     LEFT JOIN r.user u
     LEFT JOIN u.email e
     WHERE rc.id = ?1
-    """)
+    """
+  )
   Set<RatingDto> findAllByRecipeId(UUID recipeId);
 }

@@ -21,11 +21,14 @@ class RatingRepositoryTest {
 
   private static final String EMAIL_ADDRESS = "mock-address@mock.com";
 
-  @Autowired private RatingRepository ratingRepository;
+  @Autowired
+  private RatingRepository ratingRepository;
 
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-  @Autowired private RecipeRepository recipeRepository;
+  @Autowired
+  private RecipeRepository recipeRepository;
 
   private UUID userId;
   private UUID recipeId;

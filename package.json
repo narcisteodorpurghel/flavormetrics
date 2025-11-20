@@ -1,0 +1,24 @@
+{
+  "name": "flavormetrics",
+  "version": "0.0.1",
+  "description": "FlavorMetrics is a robust RESTful API built with Spring Boot 3 that allows users to manage recipes, provide ratings, and interact through a secure and role-based authorization system. This API is designed with clean architecture principles, DTO separation, and data validation, making it scalable and easy to maintain.",
+  "homepage": "https://github.com/narcisteodorpurghel/flavormetrics#readme",
+  "bugs": {
+    "url": "https://github.com/narcisteodorpurghel/flavormetrics/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/narcisteodorpurghel/flavormetrics.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Narcis-Teodor Purghel",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "prettier": "^3.6.2",
+    "prettier-plugin-java": "^2.7.7"
+  }
+}

@@ -18,33 +18,36 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public record UserDetailsImpl(
-    @NotEmpty UUID id,
-    @NotBlank String email,
-    @NotBlank @JsonIgnore String passwordHash,
-    @Override boolean isAccountNonExpired,
-    @Override boolean isAccountNonLocked,
-    @Override boolean isCredentialsNonExpired,
-    @Override boolean isEnabled,
-    @JsonIgnore Set<Authority> authorities)
-    implements UserDetails {
+  @NotEmpty UUID id,
+  @NotBlank String email,
+  @NotBlank @JsonIgnore String passwordHash,
+  @Override boolean isAccountNonExpired,
+  @Override boolean isAccountNonLocked,
+  @Override boolean isCredentialsNonExpired,
+  @Override boolean isEnabled,
+  @JsonIgnore Set<Authority> authorities
+) implements UserDetails {
   public UserDetailsImpl(@NonNull User user) {
     this(
-        user.getId(),
-        user.getEmail() != null ? user.getEmail().getAddress() : null,
-        user.getPasswordHash(),
-        user.isAccountNonExpired(),
-        user.isAccountNonLocked(),
-        user.isCredentialsNonExpired(),
-        user.isEnabled(),
-        user.getAuthorities() != null ? user.getAuthorities() : Collections.emptySet());
+      user.getId(),
+      user.getEmail() != null ? user.getEmail().getAddress() : null,
+      user.getPasswordHash(),
+      user.isAccountNonExpired(),
+      user.isAccountNonLocked(),
+      user.isCredentialsNonExpired(),
+      user.isEnabled(),
+      user.getAuthorities() != null ? user.getAuthorities() : Collections.emptySet()
+    );
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Optional.ofNullable(authorities).orElse(Collections.emptySet()).stream()
-        .map(Authority::getAuthority)
-        .map(SimpleGrantedAuthority::new)
-        .collect(Collectors.toUnmodifiableSet());
+    return Optional.ofNullable(authorities)
+      .orElse(Collections.emptySet())
+      .stream()
+      .map(Authority::getAuthority)
+      .map(SimpleGrantedAuthority::new)
+      .collect(Collectors.toUnmodifiableSet());
   }
 
   /**
@@ -75,23 +78,26 @@ public record UserDetailsImpl(
     if (!(o instanceof UserDetailsImpl that)) {
       return false;
     }
-    return (isEnabled == that.isEnabled
-        && isAccountNonLocked == that.isAccountNonLocked
-        && isAccountNonExpired == that.isAccountNonExpired
-        && isCredentialsNonExpired == that.isCredentialsNonExpired
-        && Objects.equals(email, that.email)
-        && Objects.equals(passwordHash, that.passwordHash));
+    return (
+      isEnabled == that.isEnabled &&
+      isAccountNonLocked == that.isAccountNonLocked &&
+      isAccountNonExpired == that.isAccountNonExpired &&
+      isCredentialsNonExpired == that.isCredentialsNonExpired &&
+      Objects.equals(email, that.email) &&
+      Objects.equals(passwordHash, that.passwordHash)
+    );
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        email,
-        passwordHash,
-        isAccountNonExpired,
-        isAccountNonLocked,
-        isCredentialsNonExpired,
-        isEnabled);
+      email,
+      passwordHash,
+      isAccountNonExpired,
+      isAccountNonLocked,
+      isCredentialsNonExpired,
+      isEnabled
+    );
   }
 
   @Override

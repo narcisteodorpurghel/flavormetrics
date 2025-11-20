@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ImageKitServiceImpl implements ImageKitService {
+
   private static final ImageKit IMAGE_KIT = ImageKit.getInstance();
 
   private final String publicKey;
@@ -20,9 +21,10 @@ public class ImageKitServiceImpl implements ImageKitService {
   private final String urlEndpoint;
 
   public ImageKitServiceImpl(
-      @Value("${imagekit.url}") String publicKey,
-      @Value("${imagekit.private-key}") String privateKey,
-      @Value("${imagekit.public-key}") String urlEndpoint) {
+    @Value("${imagekit.url}") String publicKey,
+    @Value("${imagekit.private-key}") String privateKey,
+    @Value("${imagekit.public-key}") String urlEndpoint
+  ) {
     this.publicKey = publicKey;
     this.privateKey = privateKey;
     this.urlEndpoint = urlEndpoint;

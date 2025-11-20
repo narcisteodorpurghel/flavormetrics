@@ -8,48 +8,58 @@ import java.util.stream.Collectors;
 import org.springframework.lang.NonNull;
 
 public record RecipeDto(
-    UUID id,
-    String name,
-    String user,
-    String instructions,
-    String imageUrl,
-    Integer prepTimeMinutes,
-    Integer cookTimeMinutes,
-    DifficultyType difficulty,
-    Integer estimatedCalories,
-    Float averageRating,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt,
-    Set<TagDto> tags,
-    Set<IngredientDto> ingredients,
-    Set<RatingDto> ratings,
-    Set<AllergyDto> allergies) {
+  UUID id,
+  String name,
+  String user,
+  String instructions,
+  String imageUrl,
+  Integer prepTimeMinutes,
+  Integer cookTimeMinutes,
+  DifficultyType difficulty,
+  Integer estimatedCalories,
+  Float averageRating,
+  LocalDateTime createdAt,
+  LocalDateTime updatedAt,
+  Set<TagDto> tags,
+  Set<IngredientDto> ingredients,
+  Set<RatingDto> ratings,
+  Set<AllergyDto> allergies
+) {
   public RecipeDto(@NonNull Recipe recipe) {
     this(
-        recipe.getId(),
-        recipe.getName(),
-        recipe.getUser().getEmail().getAddress(),
-        recipe.getInstructions(),
-        recipe.getImageUrl(),
-        recipe.getPrepTimeMinutes(),
-        recipe.getCookTimeMinutes(),
-        recipe.getDifficulty(),
-        recipe.getEstimatedCalories(),
-        recipe.getAverageRating(),
-        recipe.getCreatedAt(),
-        recipe.getUpdatedAt(),
-        Optional.ofNullable(recipe.getTags()).orElse(Collections.emptySet()).stream()
-            .map(TagDto::new)
-            .collect(Collectors.toSet()),
-        Optional.ofNullable(recipe.getIngredients()).orElse(Collections.emptySet()).stream()
-            .map(IngredientDto::new)
-            .collect(Collectors.toSet()),
-        Optional.ofNullable(recipe.getRatings()).orElse(Collections.emptySet()).stream()
-            .map(RatingDto::new)
-            .collect(Collectors.toSet()),
-        Optional.ofNullable(recipe.getAllergies()).orElse(Collections.emptySet()).stream()
-            .map(AllergyDto::new)
-            .collect(Collectors.toSet()));
+      recipe.getId(),
+      recipe.getName(),
+      recipe.getUser().getEmail().getAddress(),
+      recipe.getInstructions(),
+      recipe.getImageUrl(),
+      recipe.getPrepTimeMinutes(),
+      recipe.getCookTimeMinutes(),
+      recipe.getDifficulty(),
+      recipe.getEstimatedCalories(),
+      recipe.getAverageRating(),
+      recipe.getCreatedAt(),
+      recipe.getUpdatedAt(),
+      Optional.ofNullable(recipe.getTags())
+        .orElse(Collections.emptySet())
+        .stream()
+        .map(TagDto::new)
+        .collect(Collectors.toSet()),
+      Optional.ofNullable(recipe.getIngredients())
+        .orElse(Collections.emptySet())
+        .stream()
+        .map(IngredientDto::new)
+        .collect(Collectors.toSet()),
+      Optional.ofNullable(recipe.getRatings())
+        .orElse(Collections.emptySet())
+        .stream()
+        .map(RatingDto::new)
+        .collect(Collectors.toSet()),
+      Optional.ofNullable(recipe.getAllergies())
+        .orElse(Collections.emptySet())
+        .stream()
+        .map(AllergyDto::new)
+        .collect(Collectors.toSet())
+    );
   }
 
   public static Builder builder() {
@@ -57,6 +67,7 @@ public record RecipeDto(
   }
 
   public static class Builder {
+
     private UUID id;
     private String name;
     private String user;
@@ -160,46 +171,7 @@ public record RecipeDto(
 
     public RecipeDto build() {
       return new RecipeDto(
-          id,
-          name,
-          user,
-          instructions,
-          imageUrl,
-          prepTimeMinutes,
-          cookTimeMinutes,
-          difficulty,
-          estimatedCalories,
-          averageRating,
-          createdAt,
-          updatedAt,
-          tags,
-          ingredients,
-          ratings,
-          allergies);
-    }
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof RecipeDto recipeDto)) {
-      return false;
-    }
-    return (Objects.equals(name, recipeDto.name)
-        && Objects.equals(imageUrl, recipeDto.imageUrl)
-        && Objects.equals(user, recipeDto.user)
-        && Objects.equals(instructions, recipeDto.instructions)
-        && Objects.equals(averageRating, recipeDto.averageRating)
-        && Objects.equals(prepTimeMinutes, recipeDto.prepTimeMinutes)
-        && Objects.equals(cookTimeMinutes, recipeDto.cookTimeMinutes)
-        && Objects.equals(createdAt, recipeDto.createdAt)
-        && Objects.equals(updatedAt, recipeDto.updatedAt)
-        && difficulty == recipeDto.difficulty
-        && Objects.equals(estimatedCalories, recipeDto.estimatedCalories));
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(
+        id,
         name,
         user,
         instructions,
@@ -210,7 +182,50 @@ public record RecipeDto(
         estimatedCalories,
         averageRating,
         createdAt,
-        updatedAt);
+        updatedAt,
+        tags,
+        ingredients,
+        ratings,
+        allergies
+      );
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof RecipeDto recipeDto)) {
+      return false;
+    }
+    return (
+      Objects.equals(name, recipeDto.name) &&
+      Objects.equals(imageUrl, recipeDto.imageUrl) &&
+      Objects.equals(user, recipeDto.user) &&
+      Objects.equals(instructions, recipeDto.instructions) &&
+      Objects.equals(averageRating, recipeDto.averageRating) &&
+      Objects.equals(prepTimeMinutes, recipeDto.prepTimeMinutes) &&
+      Objects.equals(cookTimeMinutes, recipeDto.cookTimeMinutes) &&
+      Objects.equals(createdAt, recipeDto.createdAt) &&
+      Objects.equals(updatedAt, recipeDto.updatedAt) &&
+      difficulty == recipeDto.difficulty &&
+      Objects.equals(estimatedCalories, recipeDto.estimatedCalories)
+    );
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      name,
+      user,
+      instructions,
+      imageUrl,
+      prepTimeMinutes,
+      cookTimeMinutes,
+      difficulty,
+      estimatedCalories,
+      averageRating,
+      createdAt,
+      updatedAt
+    );
   }
 
   @Override

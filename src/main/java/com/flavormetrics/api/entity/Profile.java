@@ -34,15 +34,17 @@ public class Profile {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @JoinTable(
-      joinColumns = @JoinColumn(name = "profile_id"),
-      inverseJoinColumns = @JoinColumn(name = "allergy_id"))
+    joinColumns = @JoinColumn(name = "profile_id"),
+    inverseJoinColumns = @JoinColumn(name = "allergy_id")
+  )
   private Set<Allergy> allergies = new HashSet<>();
 
   @OneToOne(fetch = FetchType.LAZY)

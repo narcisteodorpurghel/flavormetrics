@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
   private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
   private final AuthenticationManager authenticationManager;
@@ -49,12 +50,13 @@ public class AuthServiceImpl implements AuthService {
   private final String profile;
 
   public AuthServiceImpl(
-      AuthenticationManager authenticationManager,
-      JwtService jwtService,
-      UserRepository userRepository,
-      PasswordEncoder pe,
-      AuthorityRepository authorityRepository,
-      @Value("${spring.profiles.active}") String profile) {
+    AuthenticationManager authenticationManager,
+    JwtService jwtService,
+    UserRepository userRepository,
+    PasswordEncoder pe,
+    AuthorityRepository authorityRepository,
+    @Value("${spring.profiles.active}") String profile
+  ) {
     this.authenticationManager = authenticationManager;
     this.jwtService = jwtService;
     this.userRepository = userRepository;
@@ -70,10 +72,9 @@ public class AuthServiceImpl implements AuthService {
       throw new EmailInUseException(req.email());
     }
     User user = new User();
-    Authority authority =
-        authorityRepository
-            .findAuthorityByType(RoleType.ROLE_USER)
-            .orElseThrow(() -> new EntityNotFoundException("Authority not found"));
+    Authority authority = authorityRepository
+      .findAuthorityByType(RoleType.ROLE_USER)
+      .orElseThrow(() -> new EntityNotFoundException("Authority not found"));
     Email email = new Email(req.email());
     email.setUser(user);
     user.setEmail(email);
@@ -92,10 +93,16 @@ public class AuthServiceImpl implements AuthService {
       UserDetailsImpl user = (UserDetailsImpl) auth.getPrincipal();
       String accessToken = jwtService.generateToken(req.email(), ACCESS);
       String refreshToken = jwtService.generateToken(req.email(), REFRESH);
-      ResponseCookie accessCookie =
-          this.generateLoginCookie(ACCESS_TOKEN_NAME, accessToken, ACCESS);
-      ResponseCookie refreshCookie =
-          this.generateLoginCookie(REFRESH_TOKEN_NAME, refreshToken, REFRESH);
+      ResponseCookie accessCookie = this.generateLoginCookie(
+        ACCESS_TOKEN_NAME,
+        accessToken,
+        ACCESS
+      );
+      ResponseCookie refreshCookie = this.generateLoginCookie(
+        REFRESH_TOKEN_NAME,
+        refreshToken,
+        REFRESH
+      );
       res.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
       res.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
       return user;
@@ -119,11 +126,11 @@ public class AuthServiceImpl implements AuthService {
     boolean secure = !profile.equals("dev");
     long maxAge = type == ACCESS ? ACCESS_TOKEN_EXPIRATION : REFRESH_TOKEN_EXPIRATION;
     return ResponseCookie.from(name, value)
-        .path("/")
-        .maxAge(maxAge)
-        .secure(secure)
-        .httpOnly(secure)
-        .build();
+      .path("/")
+      .maxAge(maxAge)
+      .secure(secure)
+      .httpOnly(secure)
+      .build();
   }
 
   private ResponseCookie generateLogoutCookie(String name) {

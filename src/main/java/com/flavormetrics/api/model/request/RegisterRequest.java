@@ -7,13 +7,14 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "Register request")
 public record RegisterRequest(
-    @Schema(description = "Unique identifier", example = "narcispurghel@example.com")
-        @Email(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")
-        @NotEmpty
-        String email,
-    @Schema(description = "User first name", example = "Narcis") @NotEmpty String firstName,
-    @Schema(description = "User last name", example = "Purghel") @NotEmpty String lastName,
-    @Schema(description = "User credentials", example = "strongPassword")
-        @NotEmpty
-        @Size(min = 8, max = 1000)
-        String password) {}
+  @Schema(description = "Unique identifier", example = "narcispurghel@example.com")
+  @Email(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")
+  @NotEmpty
+  String email,
+  @Schema(description = "User first name", example = "Narcis") @NotEmpty String firstName,
+  @Schema(description = "User last name", example = "Purghel") @NotEmpty String lastName,
+  @Schema(description = "User credentials", example = "strongPassword")
+  @NotEmpty
+  @Size(min = 8, max = 1000)
+  String password
+) {}

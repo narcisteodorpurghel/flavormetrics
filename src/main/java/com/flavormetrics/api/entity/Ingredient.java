@@ -17,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "ingredients")
 public class Ingredient {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -39,9 +40,10 @@ public class Ingredient {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @NotNull
@@ -107,9 +109,11 @@ public class Ingredient {
     if (!(o instanceof Ingredient that)) {
       return false;
     }
-    return (Objects.equals(name, that.name)
-        && Objects.equals(quantity, that.quantity)
-        && Objects.equals(unit, that.unit));
+    return (
+      Objects.equals(name, that.name) &&
+      Objects.equals(quantity, that.quantity) &&
+      Objects.equals(unit, that.unit)
+    );
   }
 
   @Override

@@ -12,7 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class AuthorityRepositoryTest {
 
-  @Autowired private AuthorityRepository authorityRepository;
+  @Autowired
+  private AuthorityRepository authorityRepository;
 
   @Test
   void testIf_findAuthorityByType_ReturnsNotEmpty() {

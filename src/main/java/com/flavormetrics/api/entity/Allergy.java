@@ -15,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "allergies")
 public class Allergy {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -34,9 +35,10 @@ public class Allergy {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @NotNull
@@ -56,12 +58,12 @@ public class Allergy {
   }
 
   public Allergy(AllergyType type) {
-    this.name =
-        Optional.ofNullable(type).map(AllergyType::name).orElseThrow(IllegalArgumentException::new);
-    this.description =
-        Optional.of(type)
-            .map(AllergyType::getDescription)
-            .orElseThrow(IllegalArgumentException::new);
+    this.name = Optional.ofNullable(type)
+      .map(AllergyType::name)
+      .orElseThrow(IllegalArgumentException::new);
+    this.description = Optional.of(type)
+      .map(AllergyType::getDescription)
+      .orElseThrow(IllegalArgumentException::new);
   }
 
   public Allergy(String name) {

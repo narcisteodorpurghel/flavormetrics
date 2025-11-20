@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "authorities")
 public class Authority {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(nullable = false)
@@ -27,9 +28,10 @@ public class Authority {
 
   @CreationTimestamp
   @Column(
-      name = "created_at",
-      updatable = false,
-      columnDefinition = "timestamp not null default current_timestamp")
+    name = "created_at",
+    updatable = false,
+    columnDefinition = "timestamp not null default current_timestamp"
+  )
   private LocalDateTime createdAt;
 
   @NotNull

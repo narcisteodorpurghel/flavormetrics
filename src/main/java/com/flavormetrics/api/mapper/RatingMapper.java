@@ -9,6 +9,7 @@ import com.flavormetrics.api.model.RatingWithScore;
 import java.util.Optional;
 
 public final class RatingMapper {
+
   private RatingMapper() {}
 
   public static RatingDto toRatingDto(Rating rating) {
@@ -16,12 +17,10 @@ public final class RatingMapper {
       throw new IllegalArgumentException("Rating cannot be null");
     }
     return new RatingDto(
-        Optional.ofNullable(rating.getRecipe()).map(Recipe::getId).orElse(null),
-        Optional.ofNullable(rating.getUser())
-            .map(User::getEmail)
-            .map(Email::getAddress)
-            .orElse(null),
-        rating.getScore());
+      Optional.ofNullable(rating.getRecipe()).map(Recipe::getId).orElse(null),
+      Optional.ofNullable(rating.getUser()).map(User::getEmail).map(Email::getAddress).orElse(null),
+      rating.getScore()
+    );
   }
 
   public static RatingWithScore toRatingWithScore(Rating rating) {
@@ -29,6 +28,8 @@ public final class RatingMapper {
       throw new IllegalArgumentException("Rating cannot be null");
     }
     return new RatingWithScore(
-        Optional.ofNullable(rating.getRecipe()).map(Recipe::getId).orElse(null), rating.getScore());
+      Optional.ofNullable(rating.getRecipe()).map(Recipe::getId).orElse(null),
+      rating.getScore()
+    );
   }
 }

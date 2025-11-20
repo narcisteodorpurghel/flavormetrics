@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AllergyFactory {
+
   private final AllergyRepository allergyRepository;
 
   AllergyFactory(AllergyRepository allergyRepository) {
@@ -23,21 +24,23 @@ public class AllergyFactory {
       throw new IllegalArgumentException("AddRecipeRequest cannot be null");
     }
 
-    List<String> allergyNames =
-        Optional.of(allergies).orElse(Collections.emptySet()).stream()
-            .map(AllergyDto::name)
-            .toList();
+    List<String> allergyNames = Optional.of(allergies)
+      .orElse(Collections.emptySet())
+      .stream()
+      .map(AllergyDto::name)
+      .toList();
 
     List<AllergyProjection> existing = allergyRepository.getIdsAndNames(allergyNames);
     List<String> existingNames = existing.stream().map(AllergyProjection::getName).toList();
 
     List<Allergy> newAllergies;
     if (!existing.isEmpty()) {
-      newAllergies =
-          Optional.of(allergies).orElse(Collections.emptySet()).stream()
-              .filter(a -> !existingNames.contains(a.name()))
-              .map(Allergy::new)
-              .toList();
+      newAllergies = Optional.of(allergies)
+        .orElse(Collections.emptySet())
+        .stream()
+        .filter(a -> !existingNames.contains(a.name()))
+        .map(Allergy::new)
+        .toList();
     } else {
       newAllergies = allergyNames.stream().map(Allergy::new).toList();
     }

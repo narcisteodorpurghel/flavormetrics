@@ -36,20 +36,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceImplTest {
 
-  private static final Set<AllergyDto> allergiesDtos =
-      Set.of(new AllergyDto(null, AllergyType.EGGS.name(), AllergyType.EGGS.getDescription()));
+  private static final Set<AllergyDto> allergiesDtos = Set.of(
+    new AllergyDto(null, AllergyType.EGGS.name(), AllergyType.EGGS.getDescription())
+  );
 
   private UUID userId;
   private UUID profileId;
   private User user;
 
-  @Mock private ProfileRepository profileRepository;
+  @Mock
+  private ProfileRepository profileRepository;
 
-  @Mock private UserRepository userRepository;
+  @Mock
+  private UserRepository userRepository;
 
-  @Mock private AllergyFactory allergyFactory;
+  @Mock
+  private AllergyFactory allergyFactory;
 
-  @InjectMocks private ProfileServiceImpl profileService;
+  @InjectMocks
+  private ProfileServiceImpl profileService;
 
   @BeforeEach
   void setUp() {
@@ -65,8 +70,10 @@ class ProfileServiceImplTest {
 
   @Test
   void create_validRequest_createsProfile() {
-    CreateProfileRequest request =
-        new CreateProfileRequest(DietaryPreferenceType.vegan, allergiesDtos);
+    CreateProfileRequest request = new CreateProfileRequest(
+      DietaryPreferenceType.vegan,
+      allergiesDtos
+    );
     Set<Allergy> allergies = new HashSet<>();
     Profile saved = new Profile();
     saved.setId(profileId);
@@ -95,8 +102,10 @@ class ProfileServiceImplTest {
   void updateById_updatesProfileSuccessfully() {
     Profile profile = new Profile();
     Set<Allergy> allergies = new HashSet<>();
-    CreateProfileRequest request =
-        new CreateProfileRequest(DietaryPreferenceType.diabetic_friendly, allergiesDtos);
+    CreateProfileRequest request = new CreateProfileRequest(
+      DietaryPreferenceType.diabetic_friendly,
+      allergiesDtos
+    );
 
     when(profileRepository.findByIdUserId(userId)).thenReturn(Optional.of(profile));
     when(allergyFactory.checkIfExistsOrElseSave(any())).thenReturn(allergies);
@@ -111,8 +120,10 @@ class ProfileServiceImplTest {
   @Test
   void updateById_notFound_throwsException() {
     when(profileRepository.findByIdUserId(userId)).thenReturn(Optional.empty());
-    CreateProfileRequest request =
-        new CreateProfileRequest(DietaryPreferenceType.vegan, Set.copyOf(allergiesDtos));
+    CreateProfileRequest request = new CreateProfileRequest(
+      DietaryPreferenceType.vegan,
+      Set.copyOf(allergiesDtos)
+    );
 
     assertThrows(ProfileNotFoundException.class, () -> profileService.updateById(request));
   }

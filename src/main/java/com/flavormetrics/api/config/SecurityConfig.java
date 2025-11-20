@@ -4,7 +4,6 @@ import com.flavormetrics.api.constants.EndpointsConstants;
 import com.flavormetrics.api.security.JwtFilter;
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
   private final UserDetailsService userDetailsService;
   private final JwtFilter jwtFilter;
 
@@ -37,24 +37,24 @@ public class SecurityConfig {
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.authorizeHttpRequests(
-            request -> {
-              request
-                  .requestMatchers(EndpointsConstants.PUBLIC_ENDPOINTS.toArray(new String[0]))
-                  .permitAll();
-              request.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
-              request.anyRequest().authenticated();
-            })
-        .cors(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable)
-        .logout(AbstractHttpConfigurer::disable)
-        .authenticationManager(authenticationManager())
-        .exceptionHandling(
-            eh -> eh.authenticationEntryPoint((req, res, e) -> res.sendError(401, e.getMessage())))
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterAfter(jwtFilter, SecurityContextHolderFilter.class)
-        .build();
+    return http
+      .authorizeHttpRequests(request -> {
+        request
+          .requestMatchers(EndpointsConstants.PUBLIC_ENDPOINTS.toArray(new String[0]))
+          .permitAll();
+        request.requestMatchers("/api/v1/users/**").hasRole("ADMIN");
+        request.anyRequest().authenticated();
+      })
+      .cors(Customizer.withDefaults())
+      .csrf(AbstractHttpConfigurer::disable)
+      .logout(AbstractHttpConfigurer::disable)
+      .authenticationManager(authenticationManager())
+      .exceptionHandling(eh ->
+        eh.authenticationEntryPoint((req, res, e) -> res.sendError(401, e.getMessage()))
+      )
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .addFilterAfter(jwtFilter, SecurityContextHolderFilter.class)
+      .build();
   }
 
   @Bean
@@ -72,7 +72,9 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:4200"));
+    configuration.setAllowedOrigins(
+      Arrays.asList("http://localhost:5173", "http://localhost:4200")
+    );
     configuration.setAllowedMethods(List.of("*"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
